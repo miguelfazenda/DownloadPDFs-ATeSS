@@ -16,6 +16,7 @@ namespace Download_PDFs_AT_e_SS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
             Application.Run(new Form1());
         }
     }
