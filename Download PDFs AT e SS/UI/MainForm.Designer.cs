@@ -52,6 +52,7 @@
             this.lblVersao = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.btnDefinicoes = new System.Windows.Forms.Button();
+            this.linkGithub = new System.Windows.Forms.LinkLabel();
             this.ctxMenuEmpresa.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -267,11 +268,24 @@
             this.btnDefinicoes.Text = "Definições";
             this.btnDefinicoes.UseVisualStyleBackColor = true;
             // 
+            // linkGithub
+            // 
+            this.linkGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkGithub.AutoSize = true;
+            this.linkGithub.Location = new System.Drawing.Point(544, 457);
+            this.linkGithub.Name = "linkGithub";
+            this.linkGithub.Size = new System.Drawing.Size(40, 13);
+            this.linkGithub.TabIndex = 18;
+            this.linkGithub.TabStop = true;
+            this.linkGithub.Text = "GitHub";
+            this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGithub_LinkClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(596, 505);
+            this.Controls.Add(this.linkGithub);
             this.Controls.Add(this.btnDefinicoes);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.lblVersao);
@@ -323,6 +337,7 @@
         private System.Windows.Forms.Label lblVersao;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button btnDefinicoes;
+        private System.Windows.Forms.LinkLabel linkGithub;
     }
 }
 
