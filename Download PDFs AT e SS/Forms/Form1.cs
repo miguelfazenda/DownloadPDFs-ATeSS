@@ -18,7 +18,6 @@ namespace Download_PDFs_AT_e_SS
         public Form1()
         {
             InitializeComponent();
-            Declaracao.Load();
             Dados.Load();
 
             

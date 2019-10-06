@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -116,7 +117,34 @@ namespace Download_PDFs_AT_e_SS
             var directory = new DirectoryInfo(folder);
             var ficheiro = directory.GetFiles()
                 .OrderByDescending(f => f.LastWriteTime).First();
-            File.Move(ficheiro.FullName, Path.Combine(ficheiro.DirectoryName, newName));
+
+            //Muda o ficheiro de nome. Para isso verifica se um ficheiro com o mesmo nome já existe. Caso afirmativo, tenta acrescentar um (1) no nome do ficheiro
+
+            //Gera o nome (acrescenta um numero à frente se já existir)
+            int newNameTries = 0;
+            var fileName = newName;
+            while (File.Exists(Path.Combine(ficheiro.DirectoryName, fileName)))
+            {
+                newNameTries++;
+                fileName = Path.GetFileNameWithoutExtension(newName)
+                    + " (" + newNameTries + ")" + Path.GetExtension(newName);
+            }
+
+            //Renomeia o ficheiro
+            File.Move(ficheiro.FullName, Path.Combine(ficheiro.DirectoryName, fileName));
+        }
+
+        public static bool IsElementPresent(IWebDriver driver, By by)
+        {
+            try
+            {
+                driver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
     }
 }

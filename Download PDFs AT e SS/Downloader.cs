@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Download_PDFs_AT_e_SS
 {
-    class Downloader
+    partial class Downloader
     {
         static IWebDriver driver;
         static bool[] autenticadoEm; //Seviços em que está autenticado (Indices de Declaracao.Autenticacao)
@@ -23,6 +23,19 @@ namespace Download_PDFs_AT_e_SS
 
         internal static List<string> errors = new List<string>();
 
+        internal static StringBuilder logMessage;
+        internal static void Log(string tipoDeclaracao, string message)
+        {
+            if(logMessage == null)
+                logMessage = new StringBuilder();
+
+            logMessage.Append("[");
+            logMessage.Append(empresaAutenticada.NIF);
+            logMessage.Append(" ");
+            logMessage.Append(tipoDeclaracao);
+            logMessage.Append("] ");
+            logMessage.AppendLine(message);
+        }
 
         internal static void Executar(Empresa[] empresas,
             Declaracao[] declaracoesMensais, Declaracao[] declaracoesAnuais,
@@ -30,6 +43,7 @@ namespace Download_PDFs_AT_e_SS
             string downloadFolder)
         {
             filesToRename = new List<string>();
+            logMessage = new StringBuilder();
 
             foreach (Empresa empresa in empresas)
             {
@@ -54,7 +68,10 @@ namespace Download_PDFs_AT_e_SS
                 {
                     try
                     {
-                        declaracao.DownloadFunction.Invoke(ano, mes);
+                        if (declaracao.DownloadFunctionAnual != null)
+                            declaracao.DownloadFunctionAnual.Invoke(ano);
+                        else if (declaracao.DownloadFunctionMensal != null)
+                            declaracao.DownloadFunctionMensal.Invoke(ano, mes);
                     }
                     catch (Exception ex)
                     {
@@ -62,12 +79,16 @@ namespace Download_PDFs_AT_e_SS
                         LogError(ex);
                     }
                 }
+                //TODO retirar codigo repetido (declaracoesMensais e declaracoesAnuais)
                 //Para cada declaração executa o que tem a fazer
                 foreach (Declaracao declaracao in declaracoesAnuais)
                 {
                     try
                     {
-                        declaracao.DownloadFunction.Invoke(ano, mes);
+                        if (declaracao.DownloadFunctionAnual != null)
+                            declaracao.DownloadFunctionAnual.Invoke(ano);
+                        else if (declaracao.DownloadFunctionMensal != null)
+                            declaracao.DownloadFunctionMensal.Invoke(ano, mes);
                     }
                     catch (Exception ex)
                     {
@@ -88,8 +109,7 @@ namespace Download_PDFs_AT_e_SS
                     LogError(ex);
                     break;
                 }
-
-                //Util.RenameDownloadedFiles(downloadFolderEmpresa, filesToRename);
+                
                 filesToRename.Clear();
             }
 
@@ -117,24 +137,42 @@ namespace Download_PDFs_AT_e_SS
 
         internal static void DownloadFundoCompDocPag(int ano, int mes)
         {
-            driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/fc/gfct/home?windowId=c05");
-            driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/h3/a")).Click();
-            Thread.Sleep(500);
-            driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/div/ul/li/a")).Click();
+            try
+            {
+                /*driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/fc/gfct/home?windowId=c05");
+                driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/h3/a")).Click();
+                Thread.Sleep(500);
+                driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/div/ul/li/a")).Click();
 
-            var printBtn = driver.FindElement(By.Id("form:btnPrintReport"));
-            var gerarBtn = driver.FindElement(By.Id("form:btnGenReport"));
-            ExpectDownload();
-            if (gerarBtn.GetAttribute("aria-disabled") == "false")
+                var printBtn = driver.FindElement(By.Id("form:btnPrintReport"));
+                var gerarBtn = driver.FindElement(By.Id("form:btnGenReport"));
+                ExpectDownload();
+                if (gerarBtn.GetAttribute("aria-disabled") == "false")
+                {
+                    gerarBtn.Click();
+                }
+                else
+                {
+                    printBtn.Click();
+                }
+                WaitForDownloadFinish(null);*/
+                //Util.RenameDownloadedFile(downloadFolderEmpresa, "");
+            } catch(Exception ex)
             {
-                gerarBtn.Click();
+
             }
-            else
-            {
-                printBtn.Click();
-            }
-            WaitForDownloadFinish(null);
-            //Util.RenameDownloadedFile(downloadFolderEmpresa, "");
+            /*
+            string 
+
+            driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/fc/gfct/consulta/documentosEmpregador?frawMenu=1&windowId=automatedEntryPoint");
+            ((IJavaScriptExecutor)driver).ExecuteScript("document.getElementById(\"form:inputDtInicioBegin:calendar\").value = \"" + anoMesDiaStr + "\"");
+            ((IJavaScriptExecutor)driver).ExecuteScript("document.getElementById(\"form:inputDtInicioEnd:calendar\").value = \"" + anoMesDiaStr + "\"");
+            driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[2]/div/div[3]/form/div[3]/div/div/div[3]"));
+            driver.FindElement(By.XPath("/html/body/div[5]/div/ul/li[4]")).Click();
+            driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[2]/div/div[3]/form/span/div[2]/div[1]/table/tbody/tr/td[2]/a")).Click();
+              */  
+
+            
         }
 
         //Cria a instacia do driver(chrome)
@@ -356,24 +394,45 @@ namespace Download_PDFs_AT_e_SS
         internal static void DownloadExtratoRemuneracoes(int ano, int mes)
         {
             driver.Navigate().GoToUrl("https://app.seg-social.pt/ptss/gr/pesquisa/consultarDR?dswid=7064&frawMenu=1");
+
+            //Coloca as datas nos campos
             string anoMesStr = ano + "-" + (mes < 10 ? ("0" + mes) : mes.ToString());
+            string anoMesDiaStr = ano + "-" + (mes < 10 ? ("0" + mes) : mes.ToString()) + "-01";
             ((IJavaScriptExecutor)driver).ExecuteScript("document.getElementById(\"dadosPesquisaDeclaracoes:dataReferenciaFimMonthPicker:calendar_input\").value = \"" + anoMesStr + "\"");
             ((IJavaScriptExecutor)driver).ExecuteScript("document.getElementById(\"dadosPesquisaDeclaracoes:dataReferenciaInicioMonthPicker:calendar_input\").value = \"" + anoMesStr + "\"");
+            ((IJavaScriptExecutor)driver).ExecuteScript("document.getElementById(\"dadosPesquisaDeclaracoes:dataEntregaInicio:calendar_input\").value = \"" + anoMesDiaStr + "\"");
+
+            //Pesquisar (quando concluir cria um elemento com id=PesquisaConcluida)
+            /*((IJavaScriptExecutor)driver).ExecuteScript("PrimeFaces.ab({s:\"dadosPesquisaDeclaracoes:pesquisa\",p:\"dadosPesquisaDeclaracoes\",u:\"dadosPesquisaDeclaracoes listaDeclaracoes\",onst:function(cfg){PF('frawPageBlocker').show(); try{PF('varTabelaDeclaracoes').getPaginator().setPage(0)}catch(err){};},onco:function(xhr,status,args){PF('frawPageBlocker').hide();" +
+                "document.body.innerHTML += '<div id=\"PesquisaConcluida\"></div>';}});return false;");
+                */
+            //Esperar que acabe de pesquisar (espera que apareça um elemento com id=PesquisaConcluida)
+
+
             driver.FindElement(By.Id("dadosPesquisaDeclaracoes:pesquisa")).Click();
-            Console.WriteLine();
-
-            var numExtratos = driver.FindElements(By.XPath("//*[@id=\"formListaDeclaracoes:tabelaDeclaracoes_data\"]/*")).Count;
-
-            for (int i = 0; i<numExtratos; i++)
-            {
-                ExpectDownload();
-                driver.FindElement(By.Id("formListaDeclaracoes:tabelaDeclaracoes:" + i + ":menuAccoes_button")).Click();
-                driver.FindElement(By.Id("formListaDeclaracoes:tabelaDeclaracoes:" + i + ":imprimirExtrato")).Click();
-                WaitForDownloadFinish(null);
-                Thread.Sleep(1000);
-            }
+            Thread.Sleep(200);
+            var waitableDriver = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var element = waitableDriver.Until(ExpectedConditions.InvisibilityOfElementLocated(By.Id("j_idt28_blocker")));
             
 
+            if (Util.IsElementPresent(driver, By.ClassName("ui-datatable-empty-message")))
+            {
+                //Se a procura não encontrou nenhuma declaração
+            }
+            else
+            {
+                //Se a procura encontrou alguma declaração
+                var numExtratos = driver.FindElements(By.XPath("//*[@id=\"formListaDeclaracoes:tabelaDeclaracoes_data\"]/*")).Count;
+                for (int i = 0; i<numExtratos; i++)
+                {
+                    ExpectDownload();
+                    driver.FindElement(By.Id("formListaDeclaracoes:tabelaDeclaracoes:" + i + ":menuAccoes_button")).Click();
+                    Thread.Sleep(500);
+                    driver.FindElement(By.Id("formListaDeclaracoes:tabelaDeclaracoes:" + i + ":imprimirExtrato")).Click();
+                    WaitForDownloadFinish(null);
+                    Thread.Sleep(1000);
+                }
+            }
         }
 
         internal static bool IsDialogPresent()

@@ -50,6 +50,8 @@
             this.btnBrowseDownloadFolder = new System.Windows.Forms.Button();
             this.downloadBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.lblVersao = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.btnDefinicoes = new System.Windows.Forms.Button();
             this.ctxMenuEmpresa.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,7 +62,7 @@
             this.listaEmpresas.FormattingEnabled = true;
             this.listaEmpresas.Location = new System.Drawing.Point(12, 25);
             this.listaEmpresas.Name = "listaEmpresas";
-            this.listaEmpresas.Size = new System.Drawing.Size(173, 379);
+            this.listaEmpresas.Size = new System.Drawing.Size(173, 424);
             this.listaEmpresas.TabIndex = 0;
             this.listaEmpresas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listaEmpresas_MouseDown);
             // 
@@ -89,7 +91,7 @@
             this.listaDeclaracoesMensais.FormattingEnabled = true;
             this.listaDeclaracoesMensais.Location = new System.Drawing.Point(234, 85);
             this.listaDeclaracoesMensais.Name = "listaDeclaracoesMensais";
-            this.listaDeclaracoesMensais.Size = new System.Drawing.Size(173, 319);
+            this.listaDeclaracoesMensais.Size = new System.Drawing.Size(173, 364);
             this.listaDeclaracoesMensais.TabIndex = 2;
             // 
             // comboAno
@@ -156,12 +158,13 @@
             this.listaDeclaracoesAnuais.FormattingEnabled = true;
             this.listaDeclaracoesAnuais.Location = new System.Drawing.Point(413, 85);
             this.listaDeclaracoesAnuais.Name = "listaDeclaracoesAnuais";
-            this.listaDeclaracoesAnuais.Size = new System.Drawing.Size(173, 319);
+            this.listaDeclaracoesAnuais.Size = new System.Drawing.Size(173, 364);
             this.listaDeclaracoesAnuais.TabIndex = 8;
             // 
             // btnExecutar
             // 
-            this.btnExecutar.Location = new System.Drawing.Point(511, 419);
+            this.btnExecutar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExecutar.Location = new System.Drawing.Point(511, 474);
             this.btnExecutar.Name = "btnExecutar";
             this.btnExecutar.Size = new System.Drawing.Size(75, 23);
             this.btnExecutar.TabIndex = 10;
@@ -209,8 +212,9 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 425);
+            this.label6.Location = new System.Drawing.Point(12, 480);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 13);
             this.label6.TabIndex = 11;
@@ -218,14 +222,16 @@
             // 
             // txtDownloadFolderPath
             // 
-            this.txtDownloadFolderPath.Location = new System.Drawing.Point(119, 422);
+            this.txtDownloadFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtDownloadFolderPath.Location = new System.Drawing.Point(119, 477);
             this.txtDownloadFolderPath.Name = "txtDownloadFolderPath";
             this.txtDownloadFolderPath.Size = new System.Drawing.Size(212, 20);
             this.txtDownloadFolderPath.TabIndex = 12;
             // 
             // btnBrowseDownloadFolder
             // 
-            this.btnBrowseDownloadFolder.Location = new System.Drawing.Point(337, 420);
+            this.btnBrowseDownloadFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnBrowseDownloadFolder.Location = new System.Drawing.Point(337, 475);
             this.btnBrowseDownloadFolder.Name = "btnBrowseDownloadFolder";
             this.btnBrowseDownloadFolder.Size = new System.Drawing.Size(75, 23);
             this.btnBrowseDownloadFolder.TabIndex = 13;
@@ -236,17 +242,38 @@
             // lblVersao
             // 
             this.lblVersao.AutoSize = true;
-            this.lblVersao.Location = new System.Drawing.Point(511, 9);
+            this.lblVersao.Location = new System.Drawing.Point(512, 30);
             this.lblVersao.Name = "lblVersao";
             this.lblVersao.Size = new System.Drawing.Size(75, 13);
             this.lblVersao.TabIndex = 14;
             this.lblVersao.Text = "Versão: x.x.x.x";
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(12, 457);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(313, 13);
+            this.linkLabel1.TabIndex = 16;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Conheça também o nosso importador do E-Fatura para Wintouch";
+            // 
+            // btnDefinicoes
+            // 
+            this.btnDefinicoes.Location = new System.Drawing.Point(512, 4);
+            this.btnDefinicoes.Name = "btnDefinicoes";
+            this.btnDefinicoes.Size = new System.Drawing.Size(75, 23);
+            this.btnDefinicoes.TabIndex = 17;
+            this.btnDefinicoes.Text = "Definições";
+            this.btnDefinicoes.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(596, 450);
+            this.ClientSize = new System.Drawing.Size(596, 505);
+            this.Controls.Add(this.btnDefinicoes);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.lblVersao);
             this.Controls.Add(this.btnBrowseDownloadFolder);
             this.Controls.Add(this.txtDownloadFolderPath);
@@ -294,6 +321,8 @@
         private System.Windows.Forms.Button btnBrowseDownloadFolder;
         private System.Windows.Forms.FolderBrowserDialog downloadBrowserDialog;
         private System.Windows.Forms.Label lblVersao;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Button btnDefinicoes;
     }
 }
 
