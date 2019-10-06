@@ -51,7 +51,9 @@ namespace Download_PDFs_AT_e_SS
                 //Cria a pasta, o driver e autentica essa empresa
                 try
                 {
-                    downloadFolderEmpresa = Path.Combine(downloadFolder, empresa.NIF + " " + ano + "-" + mes);
+                    //string nomePasta = empresa.NIF + " " + ano + "-" + mes;
+                    string nomePasta = SmartFormat.Smart.Format("{empresa.NIF} {ano}-{mes} banna", new { empresa = empresa, ano = ano, mes = mes });
+                    downloadFolderEmpresa = Path.Combine(downloadFolder, nomePasta);
                     Directory.CreateDirectory(downloadFolder);
                     Directory.CreateDirectory(downloadFolderEmpresa);
                     CriarDriver(downloadFolderEmpresa);

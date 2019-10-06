@@ -38,6 +38,9 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SmartFormat, Version=2.4.2.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
+      <HintPath>..\packages\SmartFormat.NET.2.4.2\lib\net45\SmartFormat.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,39 +60,40 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dados.cs" />
-    <Compile Include="DonwloaderAT.cs" />
+    <Compile Include="Definicoes.cs" />
+    <Compile Include="UI\Dados.cs" />
+    <Compile Include="DownloaderAT.cs" />
     <Compile Include="Empresa.cs" />
     <Compile Include="Declaracao.cs" />
     <Compile Include="Downloader.cs" />
-    <Compile Include="Forms\Definições.cs">
+    <Compile Include="UI\Definições.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Definições.Designer.cs">
+    <Compile Include="UI\Definições.Designer.cs">
       <DependentUpon>Definições.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Form1.cs">
+    <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="UI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormEditarEmpresa.cs">
+    <Compile Include="UI\FormEditarEmpresa.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormEditarEmpresa.Designer.cs">
+    <Compile Include="UI\FormEditarEmpresa.Designer.cs">
       <DependentUpon>FormEditarEmpresa.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util.cs" />
-    <EmbeddedResource Include="Forms\Definições.resx">
+    <EmbeddedResource Include="UI\Definições.resx">
       <DependentUpon>Definições.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="UI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEditarEmpresa.resx">
+    <EmbeddedResource Include="UI\FormEditarEmpresa.resx">
       <DependentUpon>FormEditarEmpresa.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

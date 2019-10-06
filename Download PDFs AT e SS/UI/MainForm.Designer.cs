@@ -253,10 +253,10 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(12, 457);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(313, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(339, 13);
             this.linkLabel1.TabIndex = 16;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Conheça também o nosso importador do E-Fatura para Wintouch";
+            this.linkLabel1.Text = "Conheça também o nosso importador do E-Fatura para a contabilidade";
             // 
             // btnDefinicoes
             // 

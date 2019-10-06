@@ -23,14 +23,13 @@ namespace Download_PDFs_AT_e_SS
         public static Declaracao AT_DMRDocPag = new Declaracao("DMR - Doc. Pagamento", true, Downloader.DownloadDMRDocPag, Autenticacao.AT);
         public static Declaracao AT_Retencoes = new Declaracao("Retenções", true, Downloader.DownloadRetencoes, Autenticacao.AT);
         public static Declaracao SS_ExtratoRemun = new Declaracao("Extrato de remunerações", true, Downloader.DownloadExtratoRemuneracoes, Autenticacao.SSDireta);
+        public static Declaracao SS_FundosComp_DocPag = new Declaracao("Fundos de comp. - Doc. Pagamento", true, Downloader.DownloadFundoCompDocPag, Autenticacao.SSFundosCompensacao);
 
         //Anuais
         public static Declaracao AT_Modelo22 = new Declaracao("Modelo 22", false, Downloader.DownloadModelo22, Autenticacao.AT);
         public static Declaracao AT_IES = new Declaracao("IES", false, Downloader.DownloadIES, Autenticacao.AT);
         public static Declaracao AT_IVA = new Declaracao("IVA", false, Downloader.DownloadIVA, Autenticacao.AT);
 
-        //vvv Não é bem anual nem mensal vvv
-        public static Declaracao SS_FundosComp_DocPag = new Declaracao("Fundos de comp. - Doc. Pagamento", false, Downloader.DownloadFundoCompDocPag, Autenticacao.SSFundosCompensacao);
 
         public string Nome { get; set; }
         public bool Mensal { get; set; } //true mensal, false anual
