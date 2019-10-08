@@ -176,7 +176,7 @@ namespace Download_PDFs_AT_e_SS
 
         private void linkGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/miguel71/DownloadPDFs-ATeSS");
+            Process.Start("https://github.com/miguelfazenda/DownloadPDFs-ATeSS");
         }
     }
 }
