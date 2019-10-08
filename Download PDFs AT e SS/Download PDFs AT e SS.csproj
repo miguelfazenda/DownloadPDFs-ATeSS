@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Definicoes.cs" />
+    <Compile Include="DownloaderSS.cs" />
     <Compile Include="UI\Dados.cs" />
     <Compile Include="DownloaderAT.cs" />
     <Compile Include="Empresa.cs" />
