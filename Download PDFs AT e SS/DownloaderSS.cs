@@ -26,10 +26,10 @@ namespace Download_PDFs_AT_e_SS
             /*((IJavaScriptExecutor)driver).ExecuteScript("PrimeFaces.ab({s:\"dadosPesquisaDeclaracoes:pesquisa\",p:\"dadosPesquisaDeclaracoes\",u:\"dadosPesquisaDeclaracoes listaDeclaracoes\",onst:function(cfg){PF('frawPageBlocker').show(); try{PF('varTabelaDeclaracoes').getPaginator().setPage(0)}catch(err){};},onco:function(xhr,status,args){PF('frawPageBlocker').hide();" +
                 "document.body.innerHTML += '<div id=\"PesquisaConcluida\"></div>';}});return false;");
                 */
+
+            ButtonRunOnClick(By.Id("dadosPesquisaDeclaracoes:pesquisa"));
+
             //Esperar que acabe de pesquisar (espera que apareça um elemento com id=PesquisaConcluida)
-
-
-            driver.FindElement(By.Id("dadosPesquisaDeclaracoes:pesquisa")).Click();
             Thread.Sleep(200);
             var waitableDriver = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             var element = waitableDriver.Until(ExpectedConditions.InvisibilityOfElementLocated(By.Id("j_idt28_blocker")));
@@ -47,8 +47,7 @@ namespace Download_PDFs_AT_e_SS
                 {
                     ExpectDownload();
                     //Obtem o codigo que o botão de imprimir tem e executa-o, transferindo assim o PDF
-                    string imprimirBtnOnClickCode = driver.FindElement(By.Id("formListaDeclaracoes:tabelaDeclaracoes:" + i + ":imprimirExtrato")).GetAttribute("onclick");
-                    ((IJavaScriptExecutor)driver).ExecuteScript(imprimirBtnOnClickCode);
+                    ButtonRunOnClick(By.Id("formListaDeclaracoes:tabelaDeclaracoes:" + i + ":imprimirExtrato"));
 
                     WaitForDownloadFinish(null);
                     Thread.Sleep(1000);

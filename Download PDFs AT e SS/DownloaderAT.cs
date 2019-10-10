@@ -1,8 +1,10 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Download_PDFs_AT_e_SS
@@ -68,5 +70,52 @@ namespace Download_PDFs_AT_e_SS
                 WaitForDownloadFinish(nomeFicheiro);
             }
         }
+
+        
+        internal static void DownloadDMRComprovativo(int ano, int mes)
+        {
+            DownloadDMR(ano, mes, "Obter comprovativo");
+        }
+
+        internal static void DownloadDMRDocPag(int ano, int mes)
+        {
+            DownloadDMR(ano, mes, "Obter documento de pagamento");
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ano"></param>
+        /// <param name="mes"></param>
+        /// <param name="linkAClicar">Trata-se do nome do link em que é para carregar, na lista de opções ("Obter comprovativo" ou "Obter documento de pagamento")</param>
+        internal static void DownloadDMR(int ano, int mes, string linkAClicar)
+        {
+            driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/external/oadmrsv/consultarDMR.action");
+
+            //Selecionar ano e mes
+            var selectMes = new SelectElement(driver.FindElement(By.Id("mes")));
+            selectMes.SelectByValue(mes.ToString());
+            var selectAno = new SelectElement(driver.FindElement(By.Id("ano")));
+            selectAno.SelectByValue(ano.ToString());
+
+            driver.FindElement(By.Id("pesquisar")).Click();
+            Thread.Sleep(500);
+            //Download
+            var elementosLista = driver.FindElements(By.XPath("//*[@id=\"tab1\"]/div[1]/div[3]/div/ul/*/a"));
+            foreach (var elemento in elementosLista)
+            {
+                if (elemento.GetAttribute("innerHTML").Contains(linkAClicar))
+                {
+                    ExpectDownload();
+                    driver.Navigate().GoToUrl(elemento.GetAttribute("href"));
+
+                    var obterBtn = driver.FindElements(By.Id("obter-btn"));
+                    if (obterBtn.Count > 0)
+                        obterBtn[0].Click();
+
+                    WaitForDownloadFinish(null);
+                }
+            }
+        }
+
     }
 }
