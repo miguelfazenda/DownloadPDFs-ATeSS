@@ -21,10 +21,17 @@ namespace Download_PDFs_AT_e_SS
             InitializeComponent();
             Dados.Load();
 
-            
-
-            listaDeclaracoesMensais.Items.AddRange(Declaracao.declaracoes.Where(dec => dec.Mensal).ToArray());
-            listaDeclaracoesAnuais.Items.AddRange(Declaracao.declaracoes.Where(dec => !dec.Mensal).ToArray());
+            foreach(Declaracao declacacao in Declaracao.declaracoes)
+            {
+                if (declacacao.Tipo == Declaracao.TipoDeclaracao.Mensal)
+                    listaDeclaracoesMensais.Items.Add(declacacao);
+                else if (declacacao.Tipo == Declaracao.TipoDeclaracao.Anual)
+                    listaDeclaracoesAnuais.Items.Add(declacacao);
+                else if (declacacao.Tipo == Declaracao.TipoDeclaracao.Pedido)
+                    listaDeclaracoesPedidosCertidao.Items.Add(declacacao);
+                else if (declacacao.Tipo == Declaracao.TipoDeclaracao.Lista)
+                    listaDeclaracoesListas.Items.Add(declacacao);
+            }
             listaEmpresas.Items.AddRange(Dados.empresas.ToArray());
 
             //Preenche comboboxes ano e mês
@@ -65,10 +72,17 @@ namespace Download_PDFs_AT_e_SS
             }
             int mes = comboMes.SelectedIndex + 1;
 
+
+
+            Declaracao[] declaracoes = Util.MergeArrays(
+                listaDeclaracoesAnuais.CheckedItems.Cast<Declaracao>().ToArray(),
+                listaDeclaracoesMensais.CheckedItems.Cast<Declaracao>().ToArray(),
+                listaDeclaracoesListas.CheckedItems.Cast<Declaracao>().ToArray(),
+                listaDeclaracoesPedidosCertidao.CheckedItems.Cast<Declaracao>().ToArray());
+
             //Envia lista de empresas e declarações selecionadas, ano e mes selecionados para o background worker
             bgWorker.RunWorkerAsync(new object[] { listaEmpresas.CheckedItems.Cast<Empresa>().ToArray(),
-                listaDeclaracoesMensais.CheckedItems.Cast<Declaracao>().ToArray(),
-                listaDeclaracoesAnuais.CheckedItems.Cast<Declaracao>().ToArray(),
+                declaracoes,
                 ano,
                 mes,
                 txtDownloadFolderPath.Text } );
@@ -89,13 +103,12 @@ namespace Download_PDFs_AT_e_SS
 
             //Lista de empresas e declarações selecionadas
             var empresas = (Empresa[])argumentos[0];
-            var declaracoesMensais = (Declaracao[])argumentos[1];
-            var declaracoesAnuais = (Declaracao[])argumentos[2];
-            int ano = (int)argumentos[3];
-            int mes = (int)argumentos[4];
-            string downloadFolder = (string)argumentos[5];
+            var declaracoes = (Declaracao[])argumentos[1];
+            int ano = (int)argumentos[2];
+            int mes = (int)argumentos[3];
+            string downloadFolder = (string)argumentos[4];
 
-            Downloader.Executar(empresas, declaracoesMensais, declaracoesAnuais, ano, mes, downloadFolder);
+            Downloader.Executar(empresas, declaracoes, ano, mes, downloadFolder);
         }
 
         private void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)

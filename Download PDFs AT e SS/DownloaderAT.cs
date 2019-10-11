@@ -17,15 +17,16 @@ namespace Download_PDFs_AT_e_SS
             driver.Navigate().GoToUrl("https://irc.portaldasfinancas.gov.pt/mod22/obter-comprovativo#!?ano=" + ano);
             //Por alguma razão só da segunda tentativa é que ele mete o ano certo....
             driver.Navigate().GoToUrl("https://irc.portaldasfinancas.gov.pt/mod22/obter-comprovativo#!?ano=" + ano);
-            if (Util.IsElementPresent(driver, By.XPath(XPATH_MODELO22_BOTAO_OBTER)))
+
+            ExpectDownload();
+            if(ClickButtonWaitForItToAppear(By.XPath(XPATH_MODELO22_BOTAO_OBTER)))
             {
-                //Se o botão de obter existir, carrega nele
-                ExpectDownload();
-                driver.FindElement(By.XPath(XPATH_MODELO22_BOTAO_OBTER)).Click();
-                WaitForDownloadFinish("Modelo 22.pdf");
+                //Se o botão de obter existir, expera que o ficheiro seja transferido
+                WaitForDownloadFinish("Modelo 22.pdf", Declaracao.AT_Modelo22, 0);
             }
             else
             {
+                //Se não existe botão, não faz nada
                 Log("Modelo 22", "Sem resultados");
             }
         }
@@ -39,7 +40,7 @@ namespace Download_PDFs_AT_e_SS
                 //Se o botão de obter existir, carrega nele
                 ExpectDownload();
                 driver.FindElement(By.XPath(XPATH_IES_BOTAO_OBTER)).Click();
-                WaitForDownloadFinish("IES.pdf");
+                WaitForDownloadFinish("IES.pdf", Declaracao.AT_IES, 0);
             }
             else
             {
@@ -67,19 +68,19 @@ namespace Download_PDFs_AT_e_SS
 
                 string nomeFicheiro = String.Format("IVA {0} {1} {2}", docAno, docPeriodo, docIdentif);
 
-                WaitForDownloadFinish(nomeFicheiro);
+                WaitForDownloadFinish(nomeFicheiro, Declaracao.AT_IVA, 0);
             }
         }
 
         
         internal static void DownloadDMRComprovativo(int ano, int mes)
         {
-            DownloadDMR(ano, mes, "Obter comprovativo");
+            DownloadDMR(ano, mes, "Obter comprovativo", Declaracao.AT_DMRComprov);
         }
 
         internal static void DownloadDMRDocPag(int ano, int mes)
         {
-            DownloadDMR(ano, mes, "Obter documento de pagamento");
+            DownloadDMR(ano, mes, "Obter documento de pagamento", Declaracao.AT_DMRDocPag);
         }
         /// <summary>
         /// 
@@ -87,7 +88,7 @@ namespace Download_PDFs_AT_e_SS
         /// <param name="ano"></param>
         /// <param name="mes"></param>
         /// <param name="linkAClicar">Trata-se do nome do link em que é para carregar, na lista de opções ("Obter comprovativo" ou "Obter documento de pagamento")</param>
-        internal static void DownloadDMR(int ano, int mes, string linkAClicar)
+        internal static void DownloadDMR(int ano, int mes, string linkAClicar, Declaracao declaracao)
         {
             driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/external/oadmrsv/consultarDMR.action");
 
@@ -108,14 +109,73 @@ namespace Download_PDFs_AT_e_SS
                     ExpectDownload();
                     driver.Navigate().GoToUrl(elemento.GetAttribute("href"));
 
-                    var obterBtn = driver.FindElements(By.Id("obter-btn"));
-                    if (obterBtn.Count > 0)
-                        obterBtn[0].Click();
+                    ClickButtonWaitForItToAppear(By.Id("obter-btn"));
 
-                    WaitForDownloadFinish(null);
+                    WaitForDownloadFinish(null, declaracao, mes);
                 }
             }
         }
 
+        internal static void DownloadRetencoes(int ano, int mes)
+        {
+            driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/main.jsp?body=/guias/consultarDeclsDividaByPeriodForm.jsp");
+            //Escolhe o mes e o ano
+            ((IJavaScriptExecutor)driver).ExecuteScript("queryDecls('" + ano + "','" + mes + "');");
+
+            if (IsDialogPresent())
+            {
+                //Se der erro, regista-o, e sai desta função
+                IAlert alert = GetAlert();
+                LogError(String.Format("Empresa: {0}  {1}", empresaAutenticada.ToString(), alert.Text));
+                alert.Dismiss();
+                return;
+            }
+
+
+            //Na tabela obtem os requests que tem de fazer para os ficheiros todos
+            var table = driver.FindElement(By.XPath("//*[@id=\"main_middle_body\"]/div/div[3]/table/tbody/tr/td/table"));
+            var rows = table.FindElements(By.TagName("tr"));
+
+            string[] requestsToDo = new string[rows.Count - 2];
+
+            for (int i = 1; i < rows.Count - 1; i++) //Ignora a 1a linha(cabeçalho) e ultima linha(vazia)
+            {
+                var row = rows[i];
+                var rowTds = row.FindElements(By.TagName("td"));
+
+                if (rowTds.Count < 3)
+                    continue;
+
+                var linkTd = rowTds[rowTds.Count - 2]; //O td que contem o link
+
+                var a = linkTd.FindElement(By.TagName("a"));
+                requestsToDo[i - 1] = a.GetAttribute("href").Substring("javascript:".Length); //Regista o link(codigo de js)
+            }
+
+            for (int i = 0; i < requestsToDo.Length; i++)
+            {
+                var req = requestsToDo[i];
+
+                //Obtem cada ficheiro
+                if (req == null)
+                    continue;
+
+                ExpectDownload();
+                ((IJavaScriptExecutor)driver).ExecuteScript(req);
+                driver.FindElement(By.XPath("//*[@id=\"main_middle_body\"]/div/div[3]/table/tbody/tr[3]/td/table/tbody/tr/td/input")).Click();
+
+                //Adiciona o novo nome do ficheiro
+                //filesToRename.Add("Retencao " + req.Substring("submitQuery('".Length, 11) + ".pdf");
+                WaitForDownloadFinish("Retencao " + req.Substring("submitQuery('".Length, 11) + ".pdf", Declaracao.AT_Retencoes, mes);
+
+                if (i < requestsToDo.Length - 1)
+                {
+                    //Volta à pagina com a tabela, se não for o utlimo ficheiro a transferir(porque se for não vale a pena voltar a trás)
+                    driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/main.jsp?body=/guias/consultarDeclsDividaByPeriodForm.jsp");
+                    //Escolhe o mes e o ano
+                    ((IJavaScriptExecutor)driver).ExecuteScript("queryDecls('" + ano + "','" + mes + "');");
+                }
+            }
+        }
     }
 }

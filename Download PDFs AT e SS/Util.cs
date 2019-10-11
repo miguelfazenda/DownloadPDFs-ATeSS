@@ -58,8 +58,28 @@ namespace Download_PDFs_AT_e_SS
                 }
             }
         }
-        
-        public static void RenameDownloadedFiles(string downloadFolderEmpresa, ICollection<string> filesToRename)
+
+        internal static Declaracao[] MergeArrays(params Declaracao[][] declaracoesArray)
+        {
+            int totalLen = 0;
+
+            //Aloca espaço para a array total
+            foreach (Declaracao[] declacacoes in declaracoesArray)
+                totalLen += declacacoes.Length;
+            Declaracao[] mergedArray = new Declaracao[totalLen];
+
+            int pos = 0;
+
+            foreach (Declaracao[] declacacoes in declaracoesArray)
+            {
+                Array.Copy(declacacoes, 0, mergedArray, pos, declacacoes.Length);
+                pos += declacacoes.Length;
+            }
+
+            return mergedArray;
+        }
+
+        /*public static void RenameDownloadedFiles(string downloadFolderEmpresa, ICollection<string> filesToRename)
         {
             var directory = new DirectoryInfo(downloadFolderEmpresa);
             var ficheiros = directory.GetFiles()
@@ -95,7 +115,7 @@ namespace Download_PDFs_AT_e_SS
                     }
                 }
             }
-        }
+        }*/
 
         internal static void WaitForFileCountToBeGreaterThan(string downloadFolderEmpresa, int fileCount)
         {
@@ -112,7 +132,7 @@ namespace Download_PDFs_AT_e_SS
             }
         }
 
-        internal static void RenameLastModifiedFileInFolder(string folder, string newName)
+        internal static void RenameLastModifiedFileInFolder(string folder, string newName, string diretorio)
         {
             var directory = new DirectoryInfo(folder);
             var ficheiro = directory.GetFiles()
@@ -120,18 +140,26 @@ namespace Download_PDFs_AT_e_SS
 
             //Muda o ficheiro de nome. Para isso verifica se um ficheiro com o mesmo nome já existe. Caso afirmativo, tenta acrescentar um (1) no nome do ficheiro
 
+            new System.IO.FileInfo("c:\\stuff\\a\\file.txt").Directory.Create();
+
+            if (newName == null)
+                newName = ficheiro.FullName;
+
             //Gera o nome (acrescenta um numero à frente se já existir)
             int newNameTries = 0;
             var fileName = newName;
-            while (File.Exists(Path.Combine(ficheiro.DirectoryName, fileName)))
+            while (File.Exists(Path.Combine(diretorio, fileName)))
             {
                 newNameTries++;
                 fileName = Path.GetFileNameWithoutExtension(newName)
                     + " (" + newNameTries + ")" + Path.GetExtension(newName);
             }
 
-            //Renomeia o ficheiro
-            File.Move(ficheiro.FullName, Path.Combine(ficheiro.DirectoryName, fileName));
+            var ficheiroNovoPath = Path.Combine(diretorio, fileName);
+
+            //Move(e renomeia) o ficheiro, criando primeiro a pasta caso nao exista
+            new System.IO.FileInfo(ficheiroNovoPath).Directory.Create();
+            File.Move(ficheiro.FullName, ficheiroNovoPath);
         }
 
         public static bool IsElementPresent(IWebDriver driver, By by)

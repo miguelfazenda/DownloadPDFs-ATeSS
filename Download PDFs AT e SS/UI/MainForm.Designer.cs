@@ -53,6 +53,10 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.btnDefinicoes = new System.Windows.Forms.Button();
             this.linkGithub = new System.Windows.Forms.LinkLabel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.listaDeclaracoesListas = new System.Windows.Forms.CheckedListBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.listaDeclaracoesPedidosCertidao = new System.Windows.Forms.CheckedListBox();
             this.ctxMenuEmpresa.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,7 +67,7 @@
             this.listaEmpresas.FormattingEnabled = true;
             this.listaEmpresas.Location = new System.Drawing.Point(12, 25);
             this.listaEmpresas.Name = "listaEmpresas";
-            this.listaEmpresas.Size = new System.Drawing.Size(173, 424);
+            this.listaEmpresas.Size = new System.Drawing.Size(173, 439);
             this.listaEmpresas.TabIndex = 0;
             this.listaEmpresas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listaEmpresas_MouseDown);
             // 
@@ -92,7 +96,7 @@
             this.listaDeclaracoesMensais.FormattingEnabled = true;
             this.listaDeclaracoesMensais.Location = new System.Drawing.Point(234, 85);
             this.listaDeclaracoesMensais.Name = "listaDeclaracoesMensais";
-            this.listaDeclaracoesMensais.Size = new System.Drawing.Size(173, 364);
+            this.listaDeclaracoesMensais.Size = new System.Drawing.Size(173, 379);
             this.listaDeclaracoesMensais.TabIndex = 2;
             // 
             // comboAno
@@ -154,18 +158,16 @@
             // 
             // listaDeclaracoesAnuais
             // 
-            this.listaDeclaracoesAnuais.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.listaDeclaracoesAnuais.FormattingEnabled = true;
             this.listaDeclaracoesAnuais.Location = new System.Drawing.Point(413, 85);
             this.listaDeclaracoesAnuais.Name = "listaDeclaracoesAnuais";
-            this.listaDeclaracoesAnuais.Size = new System.Drawing.Size(173, 364);
+            this.listaDeclaracoesAnuais.Size = new System.Drawing.Size(173, 109);
             this.listaDeclaracoesAnuais.TabIndex = 8;
             // 
             // btnExecutar
             // 
             this.btnExecutar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExecutar.Location = new System.Drawing.Point(511, 474);
+            this.btnExecutar.Location = new System.Drawing.Point(511, 490);
             this.btnExecutar.Name = "btnExecutar";
             this.btnExecutar.Size = new System.Drawing.Size(75, 23);
             this.btnExecutar.TabIndex = 10;
@@ -215,7 +217,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 480);
+            this.label6.Location = new System.Drawing.Point(12, 496);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 13);
             this.label6.TabIndex = 11;
@@ -223,16 +225,17 @@
             // 
             // txtDownloadFolderPath
             // 
-            this.txtDownloadFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtDownloadFolderPath.Location = new System.Drawing.Point(119, 477);
+            this.txtDownloadFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDownloadFolderPath.Location = new System.Drawing.Point(119, 493);
             this.txtDownloadFolderPath.Name = "txtDownloadFolderPath";
-            this.txtDownloadFolderPath.Size = new System.Drawing.Size(212, 20);
+            this.txtDownloadFolderPath.Size = new System.Drawing.Size(266, 20);
             this.txtDownloadFolderPath.TabIndex = 12;
             // 
             // btnBrowseDownloadFolder
             // 
-            this.btnBrowseDownloadFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnBrowseDownloadFolder.Location = new System.Drawing.Point(337, 475);
+            this.btnBrowseDownloadFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBrowseDownloadFolder.Location = new System.Drawing.Point(391, 490);
             this.btnBrowseDownloadFolder.Name = "btnBrowseDownloadFolder";
             this.btnBrowseDownloadFolder.Size = new System.Drawing.Size(75, 23);
             this.btnBrowseDownloadFolder.TabIndex = 13;
@@ -253,7 +256,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(12, 457);
+            this.linkLabel1.Location = new System.Drawing.Point(12, 473);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(339, 13);
             this.linkLabel1.TabIndex = 16;
@@ -273,7 +276,7 @@
             // 
             this.linkGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkGithub.AutoSize = true;
-            this.linkGithub.Location = new System.Drawing.Point(544, 457);
+            this.linkGithub.Location = new System.Drawing.Point(544, 473);
             this.linkGithub.Name = "linkGithub";
             this.linkGithub.Size = new System.Drawing.Size(40, 13);
             this.linkGithub.TabIndex = 18;
@@ -281,11 +284,49 @@
             this.linkGithub.Text = "GitHub";
             this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGithub_LinkClicked);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(410, 205);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(37, 13);
+            this.label7.TabIndex = 20;
+            this.label7.Text = "Listas:";
+            // 
+            // listaDeclaracoesListas
+            // 
+            this.listaDeclaracoesListas.FormattingEnabled = true;
+            this.listaDeclaracoesListas.Location = new System.Drawing.Point(413, 221);
+            this.listaDeclaracoesListas.Name = "listaDeclaracoesListas";
+            this.listaDeclaracoesListas.Size = new System.Drawing.Size(173, 109);
+            this.listaDeclaracoesListas.TabIndex = 19;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(411, 343);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(104, 13);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Pedidos de certidão:";
+            // 
+            // listaDeclaracoesPedidosCertidao
+            // 
+            this.listaDeclaracoesPedidosCertidao.FormattingEnabled = true;
+            this.listaDeclaracoesPedidosCertidao.Location = new System.Drawing.Point(414, 359);
+            this.listaDeclaracoesPedidosCertidao.Name = "listaDeclaracoesPedidosCertidao";
+            this.listaDeclaracoesPedidosCertidao.Size = new System.Drawing.Size(173, 94);
+            this.listaDeclaracoesPedidosCertidao.TabIndex = 21;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(596, 505);
+            this.ClientSize = new System.Drawing.Size(596, 521);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.listaDeclaracoesPedidosCertidao);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.listaDeclaracoesListas);
             this.Controls.Add(this.linkGithub);
             this.Controls.Add(this.btnDefinicoes);
             this.Controls.Add(this.linkLabel1);
@@ -339,6 +380,10 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button btnDefinicoes;
         private System.Windows.Forms.LinkLabel linkGithub;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckedListBox listaDeclaracoesListas;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckedListBox listaDeclaracoesPedidosCertidao;
     }
 }
 

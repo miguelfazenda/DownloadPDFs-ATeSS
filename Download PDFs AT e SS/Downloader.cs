@@ -17,7 +17,7 @@ namespace Download_PDFs_AT_e_SS
         static IWebDriver driver;
         static bool[] autenticadoEm; //Seviços em que está autenticado (Indices de Declaracao.Autenticacao)
         static Empresa empresaAutenticada;
-        static string downloadFolderEmpresa;
+        static string DownloadFolder { get; set; }
 
         static List<string> filesToRename; //Na ordem que foram transferidos
 
@@ -38,7 +38,7 @@ namespace Download_PDFs_AT_e_SS
         }
 
         internal static void Executar(Empresa[] empresas,
-            Declaracao[] declaracoesMensais, Declaracao[] declaracoesAnuais,
+            Declaracao[] declaracoes,
             int ano, int mes,
             string downloadFolder)
         {
@@ -51,13 +51,10 @@ namespace Download_PDFs_AT_e_SS
                 //Cria a pasta, o driver e autentica essa empresa
                 try
                 {
-                    //string nomePasta = empresa.NIF + " " + ano + "-" + mes;
-                    string nomePasta = SmartFormat.Smart.Format("{empresa.NIF} {ano}-{mes}", new { empresa, ano, mes });
-                    downloadFolderEmpresa = Path.Combine(downloadFolder, nomePasta);
-                    Directory.CreateDirectory(downloadFolder);
-                    Directory.CreateDirectory(downloadFolderEmpresa);
-                    CriarDriver(downloadFolderEmpresa);
-                    Autenticar(empresa, declaracoesMensais, declaracoesAnuais);
+                    DownloadFolder = Path.Combine(downloadFolder, ano.ToString());
+                    Directory.CreateDirectory(DownloadFolder);
+                    CriarDriver(DownloadFolder);
+                    Autenticar(empresa, declaracoes);
                 }
                 catch (Exception ex)
                 {
@@ -66,24 +63,7 @@ namespace Download_PDFs_AT_e_SS
                 }
 
                 //Para cada declaração executa o que tem a fazer
-                foreach (Declaracao declaracao in declaracoesMensais)
-                {
-                    try
-                    {
-                        if (declaracao.DownloadFunctionAnual != null)
-                            declaracao.DownloadFunctionAnual.Invoke(ano);
-                        else if (declaracao.DownloadFunctionMensal != null)
-                            declaracao.DownloadFunctionMensal.Invoke(ano, mes);
-                    }
-                    catch (Exception ex)
-                    {
-                        //Se der erro regista-o mas prossegue
-                        LogError(ex);
-                    }
-                }
-                //TODO retirar codigo repetido (declaracoesMensais e declaracoesAnuais)
-                //Para cada declaração executa o que tem a fazer
-                foreach (Declaracao declaracao in declaracoesAnuais)
+                foreach (Declaracao declaracao in declaracoes)
                 {
                     try
                     {
@@ -103,7 +83,7 @@ namespace Download_PDFs_AT_e_SS
                 try
                 {
                     Thread.Sleep(2000);
-                    Util.WaitForAllFilesToDownload(downloadFolderEmpresa);
+                    Util.WaitForAllFilesToDownload(DownloadFolder);
                     FecharDriver();
                 }
                 catch (Exception ex)
@@ -121,19 +101,32 @@ namespace Download_PDFs_AT_e_SS
         static int numFilesInDownloadsFolder;
         internal static void ExpectDownload()
         {
-            numFilesInDownloadsFolder = Directory.GetFiles(downloadFolderEmpresa).Length;
+            numFilesInDownloadsFolder = Directory.GetFiles(DownloadFolder).Length;
         }
-        internal static void WaitForDownloadFinish(string newName)
+        internal static void WaitForDownloadFinish(string newName, Declaracao declaracao, int mes)
         {
             //Espera que o download comece
-            Util.WaitForFileCountToBeGreaterThan(downloadFolderEmpresa, numFilesInDownloadsFolder);
+            Util.WaitForFileCountToBeGreaterThan(DownloadFolder, numFilesInDownloadsFolder);
             //Espera que ele acabe
-            Util.WaitForAllFilesToDownload(downloadFolderEmpresa);
+            Util.WaitForAllFilesToDownload(DownloadFolder);
             //Espera que o ficheiro final esteja pronto
-            Util.WaitForFileCountToBeGreaterThan(downloadFolderEmpresa, numFilesInDownloadsFolder);
+            Util.WaitForFileCountToBeGreaterThan(DownloadFolder, numFilesInDownloadsFolder);
+
+            string folderTipoDeclaracao = "";
+            if (declaracao.Tipo == Declaracao.TipoDeclaracao.Anual)
+                folderTipoDeclaracao = "Anuais";
+            else if (declaracao.Tipo == Declaracao.TipoDeclaracao.Mensal)
+                folderTipoDeclaracao = mes.ToString();
+            else if (declaracao.Tipo == Declaracao.TipoDeclaracao.Lista)
+                folderTipoDeclaracao = "Listas";
+            else if (declaracao.Tipo == Declaracao.TipoDeclaracao.Pedido)
+                folderTipoDeclaracao = "Pedidos";
+
+            var diretorio = Path.Combine(DownloadFolder, folderTipoDeclaracao,
+                empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
+
             //Muda o nome
-            if(newName != null)
-                Util.RenameLastModifiedFileInFolder(downloadFolderEmpresa, newName);
+            Util.RenameLastModifiedFileInFolder(DownloadFolder, newName, diretorio);
             numFilesInDownloadsFolder++;
         }
 
@@ -187,6 +180,36 @@ namespace Download_PDFs_AT_e_SS
             ((IJavaScriptExecutor) driver).ExecuteScript(imprimirBtnOnClickCode);
         }
 
+        /// <summary>
+        /// Carrega num botão, se ele não estiver presente espera que apareça (espera no max. 5*500 ms)
+        /// </summary>
+        /// <param name="by"></param>
+        /// <returns>Se conseguiu encontrar ou não o botão</returns>
+        internal static bool ClickButtonWaitForItToAppear(By by)
+        {
+            //Carrega no botão de transferir
+            IReadOnlyCollection<IWebElement> btn = null;
+            bool foundBtn = false;
+            int tries = 0;
+            while (!foundBtn && tries < 5)
+            {
+                btn = driver.FindElements(by);
+
+                if (btn.Count == 0)
+                    Thread.Sleep(500);
+                else
+                    foundBtn = true;
+
+                tries++;
+            }
+            if (foundBtn)
+            {
+                btn.First().Click();
+                return true;
+            }
+            return false;
+        }
+
         //Cria a instacia do driver(chrome)
         private static void CriarDriver(string downloadFolder)
         {
@@ -230,12 +253,10 @@ namespace Download_PDFs_AT_e_SS
             errors.Clear();
         }
 
-        private static void Autenticar(Empresa empresa, Declaracao[] declaracoesMensais, Declaracao[] declaracoesAnuais)
+        private static void Autenticar(Empresa empresa, Declaracao[] declaracoes)
         {
             //Vê em que serviços é necessário autenticar
-            foreach (Declaracao declaracao in declaracoesMensais)
-                autenticadoEm[(int)declaracao.AutenticacaoNecessaria] = true;
-            foreach (Declaracao declaracao in declaracoesAnuais)
+            foreach (Declaracao declaracao in declaracoes)
                 autenticadoEm[(int)declaracao.AutenticacaoNecessaria] = true;
 
             //Autenticar
@@ -264,69 +285,6 @@ namespace Download_PDFs_AT_e_SS
             }
 
             empresaAutenticada = empresa;
-        }
-        
-        
-        internal static void DownloadRetencoes(int ano, int mes)
-        {
-            driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/main.jsp?body=/guias/consultarDeclsDividaByPeriodForm.jsp");
-            //Escolhe o mes e o ano
-            ((IJavaScriptExecutor)driver).ExecuteScript("queryDecls('" + ano + "','" + mes + "');");
-
-            if (IsDialogPresent())
-            {
-                //Se der erro, regista-o, e sai desta função
-                IAlert alert = GetAlert();
-                LogError(String.Format("Empresa: {0}  {1}", empresaAutenticada.ToString(), alert.Text));
-                alert.Dismiss();
-                return;
-            }
-
-            
-            //Na tabela obtem os requests que tem de fazer para os ficheiros todos
-            var table = driver.FindElement(By.XPath("//*[@id=\"main_middle_body\"]/div/div[3]/table/tbody/tr/td/table"));
-            var rows = table.FindElements(By.TagName("tr"));
-
-            string[] requestsToDo = new string[rows.Count - 2];
-
-            for (int i = 1; i<rows.Count - 1; i++) //Ignora a 1a linha(cabeçalho) e ultima linha(vazia)
-            {
-                var row = rows[i];
-                var rowTds = row.FindElements(By.TagName("td"));
-
-                if (rowTds.Count < 3)
-                    continue;
-
-                var linkTd = rowTds[rowTds.Count - 2]; //O td que contem o link
-
-                var a = linkTd.FindElement(By.TagName("a"));
-                requestsToDo[i - 1] = a.GetAttribute("href").Substring("javascript:".Length); //Regista o link(codigo de js)
-            }
-
-            for (int i = 0; i<requestsToDo.Length; i++)
-            {
-                var req = requestsToDo[i];
-
-                //Obtem cada ficheiro
-                if (req == null)
-                    continue;
-
-                ExpectDownload();
-                ((IJavaScriptExecutor)driver).ExecuteScript(req);
-                driver.FindElement(By.XPath("//*[@id=\"main_middle_body\"]/div/div[3]/table/tbody/tr[3]/td/table/tbody/tr/td/input")).Click();
-
-                //Adiciona o novo nome do ficheiro
-                //filesToRename.Add("Retencao " + req.Substring("submitQuery('".Length, 11) + ".pdf");
-                WaitForDownloadFinish("Retencao " + req.Substring("submitQuery('".Length, 11) + ".pdf");
-                
-                if (i < requestsToDo.Length-1)
-                {
-                    //Volta à pagina com a tabela, se não for o utlimo ficheiro a transferir(porque se for não vale a pena voltar a trás)
-                    driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/main.jsp?body=/guias/consultarDeclsDividaByPeriodForm.jsp");
-                    //Escolhe o mes e o ano
-                    ((IJavaScriptExecutor)driver).ExecuteScript("queryDecls('" + ano + "','" + mes + "');");
-                }
-            }
         }
         
         internal static bool IsDialogPresent()

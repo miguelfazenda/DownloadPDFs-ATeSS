@@ -49,7 +49,7 @@ namespace Download_PDFs_AT_e_SS
                     //Obtem o codigo que o botão de imprimir tem e executa-o, transferindo assim o PDF
                     ButtonRunOnClick(By.Id("formListaDeclaracoes:tabelaDeclaracoes:" + i + ":imprimirExtrato"));
 
-                    WaitForDownloadFinish(null);
+                    WaitForDownloadFinish(null, Declaracao.SS_ExtratoRemun, 0);
                     Thread.Sleep(1000);
                 }
             }
