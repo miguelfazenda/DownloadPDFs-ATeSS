@@ -20,7 +20,7 @@ namespace Download_PDFs_AT_e_SS
             driver.Navigate().GoToUrl("https://irc.portaldasfinancas.gov.pt/mod22/obter-comprovativo#!?ano=" + ano);
 
             ExpectDownload();
-            if(ClickButtonWaitForItToAppear(By.XPath(XPATH_MODELO22_BOTAO_OBTER)))
+            if (ClickButtonWaitForItToAppear(By.XPath(XPATH_MODELO22_BOTAO_OBTER)))
             {
                 //Se o botão de obter existir, expera que o ficheiro seja transferido
                 WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_Modelo22), Declaracao.AT_Modelo22, 0);
@@ -29,6 +29,34 @@ namespace Download_PDFs_AT_e_SS
             {
                 //Se não existe botão, não faz nada
                 Log("Modelo 22", "Sem resultados");
+            }
+        }
+        internal static void DownloadIRS(int ano)
+        {
+            driver.Navigate().GoToUrl("https://irs.portaldasfinancas.gov.pt/consultarIRSCompList.action");
+
+            ExpectDownload();
+
+            var numDocumentos = driver.FindElements(By.XPath("/html/body/div/main/div/div[2]/div/section/div[4]/div/div/div[2]/div/table/tbody/*")).Count;
+
+            for (int i = 0; i < numDocumentos; i++)
+            {
+                string xpathRow = "/html/body/div/main/div/div[2]/div/section/div[4]/div/div/div[2]/div/table/tbody/tr[" + (i + 1) + "]";
+                string anoXPath = xpathRow + "/td[2]";
+
+                string anoStr = driver.FindElement(By.XPath(anoXPath)).Text;
+                int anoInt = 0;
+                if(Int32.TryParse(anoStr, out anoInt))
+                {
+                    if(anoInt == Ano)
+                    {
+                        //Se for não for 
+                        string anchorPath = xpathRow + "/td[4]/a";
+                        ExpectDownload();
+                        driver.FindElement(By.XPath(anchorPath)).Click();
+                        WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_IRS), Declaracao.AT_IRS, 0);
+                    }
+                }                
             }
         }
 

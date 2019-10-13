@@ -209,5 +209,15 @@ namespace Download_PDFs_AT_e_SS
         {
             Process.Start("https://github.com/miguelfazenda/DownloadPDFs-ATeSS");
         }
+
+        private void btnSelecionarTodasEmpresas_Click(object sender, EventArgs e)
+        {
+            bool check = listaEmpresas.CheckedItems.Count < listaEmpresas.Items.Count; //Se faz check ou uncheck
+
+            for (int i = 0; i < listaEmpresas.Items.Count; i++)
+            {
+                listaEmpresas.SetItemChecked(i, check);
+            }
+        }
     }
 }

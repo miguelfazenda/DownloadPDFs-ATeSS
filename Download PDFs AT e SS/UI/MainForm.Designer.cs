@@ -335,6 +335,7 @@
             this.btnSelecionarTodasEmpresas.TabIndex = 24;
             this.btnSelecionarTodasEmpresas.Text = "Sel. todas";
             this.btnSelecionarTodasEmpresas.UseVisualStyleBackColor = true;
+            this.btnSelecionarTodasEmpresas.Click += new System.EventHandler(this.btnSelecionarTodasEmpresas_Click);
             // 
             // Form1
             // 

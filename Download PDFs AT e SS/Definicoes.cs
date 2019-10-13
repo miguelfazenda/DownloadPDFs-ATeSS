@@ -26,9 +26,9 @@ namespace Download_PDFs_AT_e_SS
             else
             {
                 estruturaNomesFicheiros = new EstruturaNomesFicheiros();
-
-                File.WriteAllText(FICHEIRO_DEFINICOES, JsonConvert.SerializeObject(new Definicoes(), Formatting.Indented));
             }
+            estruturaNomesFicheiros.DefineValoresDefaultSeNaoDefinidos();
+            File.WriteAllText(FICHEIRO_DEFINICOES, JsonConvert.SerializeObject(new Definicoes(), Formatting.Indented));
         }
     }
 
@@ -39,21 +39,28 @@ namespace Download_PDFs_AT_e_SS
         public string AT_Retencoes { get; set; }
         public string SS_ExtratoRemun { get; set; }
         public string SS_FundosComp_DocPag { get; set; }
+        public string AT_IRS { get; set; }
         public string AT_Modelo22 { get; set; }
         public string AT_IES { get; set; }
         public string AT_IVA { get; set; }
-
+        
         public EstruturaNomesFicheiros()
         {
+        }
+
+        //O int a é para diferenciar do construtor JSON
+        public void DefineValoresDefaultSeNaoDefinidos()
+        {
             //Valores default
-            AT_DMRComprov = "{empresa.NIF}.{ano}.{mes}.DMRComprov.pdf";
-            AT_DMRDocPag = "{empresa.NIF}.{ano}.{mes}.DMRDocPag.pdf";
-            AT_Retencoes = "{empresa.NIF}.{ano}.{mes}.Retencoes.pdf";
-            SS_ExtratoRemun = "{empresa.NIF}.{ano}.{mes}.ExtratoRemun.pdf";
-            SS_FundosComp_DocPag = "{empresa.NIF}.{ano}.{mes}.FundosComp_DocPag.pdf";
-            AT_Modelo22 = "{empresa.NIF}.{ano}.{mes}.Modelo22.pdf";
-            AT_IES = "{empresa.NIF}.{ano}.{mes}.IES.pdf";
-            AT_IVA = "{empresa.NIF}.{ano}.{mes}.IVA.pdf";
+            AT_DMRComprov = AT_DMRComprov != null ? AT_DMRComprov : "{ano}.{mes}.{empresa.Codigo}.DMRComprov.{empresa.NIF}.pdf";
+            AT_DMRDocPag = AT_DMRDocPag != null ? AT_DMRDocPag : "{ano}.{mes}.{empresa.Codigo}.DMRDocPag.{empresa.NIF}.pdf";
+            AT_Retencoes = AT_Retencoes != null ? AT_Retencoes : "{ano}.{mes}.{empresa.Codigo}.Retencoes.{empresa.NIF}.pdf";
+            SS_ExtratoRemun = SS_ExtratoRemun != null ? SS_ExtratoRemun : "{ano}.{mes}.{empresa.Codigo}.ExtratoRemun.{empresa.NIF}.pdf";
+            SS_FundosComp_DocPag = SS_FundosComp_DocPag != null ? SS_FundosComp_DocPag : "{ano}.{mes}.{empresa.Codigo}.FundosComp_DocPag.{empresa.NIF}.pdf";
+            AT_IRS = AT_IRS != null ? AT_IRS : "{ano}.{mes}.{empresa.Codigo}.IRS.{empresa.NIF}.pdf";
+            AT_Modelo22 = AT_Modelo22 != null ? AT_Modelo22 : "{ano}.{mes}.{empresa.Codigo}.Modelo22.{empresa.NIF}.pdf";
+            AT_IES = AT_IES != null ? AT_IES : "{ano}.{mes}.{empresa.Codigo}.IES.{empresa.NIF}.pdf";
+            AT_IVA = AT_IVA != null ? AT_IVA : "{ano}.{mes}.{empresa.Codigo}.IVA.{empresa.NIF}.pdf";
         }
     }
 }

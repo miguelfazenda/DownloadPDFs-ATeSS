@@ -240,7 +240,7 @@ namespace Download_PDFs_AT_e_SS
             //tentar --headless para nao mostrar nada
 
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
-            //chromeDriverService.HideCommandPromptWindow = true;
+            chromeDriverService.HideCommandPromptWindow = true;
 
             driver = new ChromeDriver(chromeDriverService, chromeOptions);
             autenticadoEm = new bool[10];

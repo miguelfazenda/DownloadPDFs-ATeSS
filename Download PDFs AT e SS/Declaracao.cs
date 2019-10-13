@@ -34,6 +34,7 @@ namespace Download_PDFs_AT_e_SS
         public static Declaracao SS_FundosComp_DocPag = new Declaracao("Fundos de comp. - Doc. Pagamento", TipoDeclaracao.Mensal, Downloader.DownloadFundoCompDocPag, Autenticacao.SSFundosCompensacao);
 
         //Anuais
+        public static Declaracao AT_IRS = new Declaracao("IRS - Modelo 3", TipoDeclaracao.Anual, Downloader.DownloadIRS, Autenticacao.AT);
         public static Declaracao AT_Modelo22 = new Declaracao("Modelo 22", TipoDeclaracao.Anual, Downloader.DownloadModelo22, Autenticacao.AT);
         public static Declaracao AT_IES = new Declaracao("IES", TipoDeclaracao.Anual, Downloader.DownloadIES, Autenticacao.AT);
         public static Declaracao AT_IVA = new Declaracao("IVA", TipoDeclaracao.Anual, Downloader.DownloadIVA, Autenticacao.AT);
