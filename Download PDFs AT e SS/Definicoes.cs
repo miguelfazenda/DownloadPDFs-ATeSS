@@ -14,8 +14,31 @@ namespace Download_PDFs_AT_e_SS
 
         /*[JsonProperty("totals")]
         public static string totals { get; set; }*/
-        [JsonProperty("estruturaNomesFicheiros")]
-        public static EstruturaNomesFicheiros estruturaNomesFicheiros { get; set; }
+
+        //
+        //
+        //IMPORTANTE 
+        //TODO NOTA: isto não está a ler do ficheiro, vai sempre usar o default por agora, falta implementar
+        //
+        //
+        //[JsonProperty("estruturaNomesFicheiros")]
+        public static EstruturaNomesFicheiros nomesFicheiros;
+        public static EstruturaNomesFicheiros nomesFicheirosDefault = new EstruturaNomesFicheiros(true);
+
+        public static EstruturaNomesFicheiros estruturaNomesFicheiros
+        {
+            get
+            {
+                if (nomesFicheiros != null)
+                    return nomesFicheiros;
+                else
+                    return nomesFicheirosDefault;
+            }
+            set
+            {
+                nomesFicheiros = value;
+            }
+        }
 
         public static void Load()
         {
@@ -49,6 +72,12 @@ namespace Download_PDFs_AT_e_SS
         {
         }
 
+        public EstruturaNomesFicheiros(bool comValoresDefault)
+        {
+            if(comValoresDefault)
+                DefineValoresDefaultSeNaoDefinidos();
+        }
+
         //O int a é para diferenciar do construtor JSON
         public void DefineValoresDefaultSeNaoDefinidos()
         {
@@ -61,7 +90,7 @@ namespace Download_PDFs_AT_e_SS
             AT_IRS = AT_IRS != null ? AT_IRS : "{ano}.{mes}.{empresa.Codigo}.IRS.{empresa.NIF}.pdf";
             AT_Modelo22 = AT_Modelo22 != null ? AT_Modelo22 : "{ano}.{mes}.{empresa.Codigo}.Modelo22.{empresa.NIF}.pdf";
             AT_IES = AT_IES != null ? AT_IES : "{ano}.{mes}.{empresa.Codigo}.IES.{empresa.NIF}.pdf";
-            AT_IVA = AT_IVA != null ? AT_IVA : "{ano}.{mes}.{empresa.Codigo}.IVA.{empresa.NIF}.pdf";
+            AT_IVA = AT_IVA != null ? AT_IVA : "{ano}.{mes}.{empresa.Codigo}.IVA {parametros.docAno} {parametros.docPeriodo} {parametros.docIdentif}.{empresa.NIF}.pdf";
             AT_CerticaoDivida = AT_CerticaoDivida != null ? AT_CerticaoDivida : "{ano}.{mes}.{empresa.Codigo}.CertidaoAT.{empresa.NIF}.pdf";
         }
     }

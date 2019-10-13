@@ -192,8 +192,21 @@ namespace Download_PDFs_AT_e_SS
         /// <param name="by"></param>
         internal static void ButtonRunOnClick(By by)
         {
-            string imprimirBtnOnClickCode = driver.FindElement(by).GetAttribute("onclick");
-            ((IJavaScriptExecutor) driver).ExecuteScript(imprimirBtnOnClickCode);
+            var element = driver.FindElement(by);
+            ButtonRunOnClick(element);
+        }
+        internal static void ButtonRunOnClick(IWebElement element)
+        {
+            string onClickCode = element.GetAttribute("onclick");
+            if (onClickCode != null)
+            {
+                ((IJavaScriptExecutor)driver).ExecuteScript(onClickCode);
+            }
+            else
+            {
+                string href = element.GetAttribute("href");
+                driver.Navigate().GoToUrl(href);
+            }
         }
 
         /// <summary>
@@ -220,7 +233,16 @@ namespace Download_PDFs_AT_e_SS
             }
             if (foundBtn)
             {
-                btn.First().Click();
+                try
+                {
+                    //Tenta carregar no botão do modo normal
+                    btn.First().Click();
+                }
+                catch (Exception ex)
+                {
+                    //Se não conseguir tenta carregar pelo onclick ou href
+                    ButtonRunOnClick(btn.First());
+                }
                 return true;
             }
             return false;
@@ -258,6 +280,11 @@ namespace Download_PDFs_AT_e_SS
             autenticadoEm = null;
         }
 
+
+        private static string GenNovoNomeFicheiro(string estruturaNomesFicheiro, object parametros)
+        {
+            return Smart.Format(estruturaNomesFicheiro, new { mes = Mes, ano = Ano, empresa = empresaAutenticada, parametros = parametros });
+        }
         private static string GenNovoNomeFicheiro(string estruturaNomesFicheiro)
         {
             return Smart.Format(estruturaNomesFicheiro, new { mes = Mes, ano = Ano, empresa = empresaAutenticada });
