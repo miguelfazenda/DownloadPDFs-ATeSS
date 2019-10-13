@@ -14,6 +14,9 @@ namespace Download_PDFs_AT_e_SS
         [STAThread]
         static void Main()
         {
+            Definicoes.Load();
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

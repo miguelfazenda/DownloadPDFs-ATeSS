@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SmartFormat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Download_PDFs_AT_e_SS
             if(ClickButtonWaitForItToAppear(By.XPath(XPATH_MODELO22_BOTAO_OBTER)))
             {
                 //Se o botão de obter existir, expera que o ficheiro seja transferido
-                WaitForDownloadFinish("Modelo 22.pdf", Declaracao.AT_Modelo22, 0);
+                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_Modelo22), Declaracao.AT_Modelo22, 0);
             }
             else
             {
@@ -40,7 +41,7 @@ namespace Download_PDFs_AT_e_SS
                 //Se o botão de obter existir, carrega nele
                 ExpectDownload();
                 driver.FindElement(By.XPath(XPATH_IES_BOTAO_OBTER)).Click();
-                WaitForDownloadFinish("IES.pdf", Declaracao.AT_IES, 0);
+                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_IES), Declaracao.AT_IES, 0);
             }
             else
             {
@@ -61,26 +62,26 @@ namespace Download_PDFs_AT_e_SS
                 ExpectDownload();
                 driver.FindElement(By.XPath(xpathRow + "/td[4]/div/a/button")).Click();
 
-                string docIdentif = driver.FindElement(By.XPath(xpathRow + "/td[1]/p")).Text;
+                /*string docIdentif = driver.FindElement(By.XPath(xpathRow + "/td[1]/p")).Text;
                 string docPeriodo = driver.FindElement(By.XPath(xpathRow + "/td[2]/p")).Text;
                 string docDataRececao = driver.FindElement(By.XPath(xpathRow + "/td[3]")).Text;
-                string docAno = docDataRececao.Split('-')[0]; //Extrai o ano do campo data de receção
+                string docAno = docDataRececao.Split('-')[0];*/ //Extrai o ano do campo data de receção
 
-                string nomeFicheiro = String.Format("IVA {0} {1} {2}", docAno, docPeriodo, docIdentif);
+                //string nomeFicheiro = String.Format("IVA {0} {1} {2}", docAno, docPeriodo, docIdentif);
 
-                WaitForDownloadFinish(nomeFicheiro, Declaracao.AT_IVA, 0);
+                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_IVA), Declaracao.AT_IVA, 0);
             }
         }
 
         
         internal static void DownloadDMRComprovativo(int ano, int mes)
         {
-            DownloadDMR(ano, mes, "Obter comprovativo", Declaracao.AT_DMRComprov);
+            DownloadDMR(ano, mes, "Obter comprovativo", Declaracao.AT_DMRComprov, Definicoes.estruturaNomesFicheiros.AT_DMRComprov);
         }
 
         internal static void DownloadDMRDocPag(int ano, int mes)
         {
-            DownloadDMR(ano, mes, "Obter documento de pagamento", Declaracao.AT_DMRDocPag);
+            DownloadDMR(ano, mes, "Obter documento de pagamento", Declaracao.AT_DMRDocPag, Definicoes.estruturaNomesFicheiros.AT_DMRDocPag);
         }
         /// <summary>
         /// 
@@ -88,7 +89,7 @@ namespace Download_PDFs_AT_e_SS
         /// <param name="ano"></param>
         /// <param name="mes"></param>
         /// <param name="linkAClicar">Trata-se do nome do link em que é para carregar, na lista de opções ("Obter comprovativo" ou "Obter documento de pagamento")</param>
-        internal static void DownloadDMR(int ano, int mes, string linkAClicar, Declaracao declaracao)
+        internal static void DownloadDMR(int ano, int mes, string linkAClicar, Declaracao declaracao, string estruturaFicheiro)
         {
             driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/external/oadmrsv/consultarDMR.action");
 
@@ -111,7 +112,8 @@ namespace Download_PDFs_AT_e_SS
 
                     ClickButtonWaitForItToAppear(By.Id("obter-btn"));
 
-                    WaitForDownloadFinish(null, declaracao, mes);
+                    WaitForDownloadFinish(GenNovoNomeFicheiro(estruturaFicheiro),
+                        declaracao, mes);
                 }
             }
         }
@@ -166,7 +168,10 @@ namespace Download_PDFs_AT_e_SS
 
                 //Adiciona o novo nome do ficheiro
                 //filesToRename.Add("Retencao " + req.Substring("submitQuery('".Length, 11) + ".pdf");
-                WaitForDownloadFinish("Retencao " + req.Substring("submitQuery('".Length, 11) + ".pdf", Declaracao.AT_Retencoes, mes);
+                string codigoFicheiro = req.Substring("submitQuery('".Length, 11);
+
+                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_Retencoes),
+                        Declaracao.AT_Retencoes, mes);
 
                 if (i < requestsToDo.Length - 1)
                 {
@@ -177,5 +182,7 @@ namespace Download_PDFs_AT_e_SS
                 }
             }
         }
+
+        
     }
 }

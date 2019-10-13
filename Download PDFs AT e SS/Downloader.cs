@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using SmartFormat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace Download_PDFs_AT_e_SS
         static bool[] autenticadoEm; //Seviços em que está autenticado (Indices de Declaracao.Autenticacao)
         static Empresa empresaAutenticada;
         static string DownloadFolder { get; set; }
+        static int Ano { get; set; }
+        static int Mes { get; set; }
 
         static List<string> filesToRename; //Na ordem que foram transferidos
 
@@ -40,14 +43,19 @@ namespace Download_PDFs_AT_e_SS
         internal static void Executar(Empresa[] empresas,
             Declaracao[] declaracoes,
             int ano, int mes,
-            string downloadFolder)
+            string downloadFolder,
+            Action<int> reportProgress)
         {
             filesToRename = new List<string>();
             logMessage = new StringBuilder();
 
-            foreach (Empresa empresa in empresas)
+            Ano = ano;
+            Mes = mes;
+
+            //Para cada empresa
+            for (int iEmpresa = 0; iEmpresa < empresas.Length; iEmpresa++)
             {
-                
+                Empresa empresa = empresas[iEmpresa];
                 //Cria a pasta, o driver e autentica essa empresa
                 try
                 {
@@ -62,9 +70,12 @@ namespace Download_PDFs_AT_e_SS
                     break;
                 }
 
+
+                
                 //Para cada declaração executa o que tem a fazer
-                foreach (Declaracao declaracao in declaracoes)
+                for(int iDeclaracao = 0; iDeclaracao < declaracoes.Length; iDeclaracao++)
                 {
+                    Declaracao declaracao = declaracoes[iDeclaracao];
                     try
                     {
                         if (declaracao.DownloadFunctionAnual != null)
@@ -77,6 +88,9 @@ namespace Download_PDFs_AT_e_SS
                         //Se der erro regista-o mas prossegue
                         LogError(ex);
                     }
+
+                    int progresso = (int)(((double)iEmpresa / empresas.Length + (((double)iDeclaracao/declaracoes.Length) /empresas.Length))*100);
+                    reportProgress(progresso);
                 }
 
                 //Fecha o chrome quanto todas as transferências terminarem (já não existirem ficheiros ".crdownload")
@@ -134,7 +148,7 @@ namespace Download_PDFs_AT_e_SS
         {
             try
             {
-                /*driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/fc/gfct/home?windowId=c05");
+                driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/fc/gfct/home?windowId=c05");
                 driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/h3/a")).Click();
                 Thread.Sleep(500);
                 driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/div/ul/li/a")).Click();
@@ -145,12 +159,13 @@ namespace Download_PDFs_AT_e_SS
                 if (gerarBtn.GetAttribute("aria-disabled") == "false")
                 {
                     gerarBtn.Click();
+                    ClickButtonWaitForItToAppear(By.Id("form:yesGenReport"));
                 }
                 else
                 {
                     printBtn.Click();
                 }
-                WaitForDownloadFinish(null);*/
+                WaitForDownloadFinish(null, Declaracao.SS_FundosComp_DocPag, mes);
                 //Util.RenameDownloadedFile(downloadFolderEmpresa, "");
             } catch(Exception ex)
             {
@@ -219,10 +234,13 @@ namespace Download_PDFs_AT_e_SS
             chromeOptions.AddUserProfilePreference("profile.default_content_settings.popups", 0);
             chromeOptions.AddUserProfilePreference("download.default_directory", downloadFolder);
             chromeOptions.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
+            chromeOptions.AddUserProfilePreference("safebrowsing.disable_download_protection", 1);
+            chromeOptions.AddUserProfilePreference("credentials_enable_service", false);
+            chromeOptions.AddUserProfilePreference("profile.password_manager_enabled", false);
             //tentar --headless para nao mostrar nada
 
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
-            chromeDriverService.HideCommandPromptWindow = true;
+            //chromeDriverService.HideCommandPromptWindow = true;
 
             driver = new ChromeDriver(chromeDriverService, chromeOptions);
             autenticadoEm = new bool[10];
@@ -237,6 +255,11 @@ namespace Download_PDFs_AT_e_SS
             empresaAutenticada = null;
             driver = null;
             autenticadoEm = null;
+        }
+
+        private static string GenNovoNomeFicheiro(string estruturaNomesFicheiro)
+        {
+            return Smart.Format(estruturaNomesFicheiro, new { mes = Mes, ano = Ano, empresa = empresaAutenticada });
         }
 
         private static void LogError(string error)

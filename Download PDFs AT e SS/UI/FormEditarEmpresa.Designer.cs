@@ -47,6 +47,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.txtNomeDoResponsavel = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtCodigoCertidaoPermanente = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -218,6 +220,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Segurança Social";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 159);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(161, 13);
+            this.label9.TabIndex = 20;
+            this.label9.Text = "Código da certidão permanente: ";
+            // 
+            // txtCodigoCertidaoPermanente
+            // 
+            this.txtCodigoCertidaoPermanente.Location = new System.Drawing.Point(170, 156);
+            this.txtCodigoCertidaoPermanente.Name = "txtCodigoCertidaoPermanente";
+            this.txtCodigoCertidaoPermanente.Size = new System.Drawing.Size(142, 20);
+            this.txtCodigoCertidaoPermanente.TabIndex = 19;
+            // 
             // FormEditarEmpresa
             // 
             this.AcceptButton = this.btnOK;
@@ -225,6 +243,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(578, 228);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.txtCodigoCertidaoPermanente);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtPasswordAT);
@@ -270,5 +290,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtNomeDoResponsavel;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txtCodigoCertidaoPermanente;
     }
 }

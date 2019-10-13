@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AutoUpdaterDotNET;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,8 +20,13 @@ namespace Download_PDFs_AT_e_SS
         public Form1()
         {
             InitializeComponent();
+
+
+            AutoUpdater.Start("https://github.com/miguelfazenda/DownloadPDFs-ATeSS/releases/download/Latest/autoupdate.xml");
+
             Dados.Load();
 
+            //Preenche listas
             foreach(Declaracao declacacao in Declaracao.declaracoes)
             {
                 if (declacacao.Tipo == Declaracao.TipoDeclaracao.Mensal)
@@ -73,7 +79,7 @@ namespace Download_PDFs_AT_e_SS
             int mes = comboMes.SelectedIndex + 1;
 
 
-
+            //Justa as declarações selecionadas em cada lista
             Declaracao[] declaracoes = Util.MergeArrays(
                 listaDeclaracoesAnuais.CheckedItems.Cast<Declaracao>().ToArray(),
                 listaDeclaracoesMensais.CheckedItems.Cast<Declaracao>().ToArray(),
@@ -90,6 +96,10 @@ namespace Download_PDFs_AT_e_SS
             EnableDisableControlsDuringExecution(false);
         }
 
+        /// <summary>
+        /// Ativa ou inativa botões enquanto o downloader está a correr
+        /// </summary>
+        /// <param name="en"></param>
         private void EnableDisableControlsDuringExecution(bool en)
         {
             btnExecutar.Enabled = en;
@@ -97,6 +107,11 @@ namespace Download_PDFs_AT_e_SS
             txtDownloadFolderPath.Enabled = en;
         }
 
+        /// <summary>
+        /// Esta função corre noutra Thread. É chamada quando o se clica no botão executar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var argumentos = (object[])e.Argument;
@@ -108,12 +123,13 @@ namespace Download_PDFs_AT_e_SS
             int mes = (int)argumentos[3];
             string downloadFolder = (string)argumentos[4];
 
-            Downloader.Executar(empresas, declaracoes, ano, mes, downloadFolder);
+
+            Downloader.Executar(empresas, declaracoes, ano, mes, downloadFolder, bgWorker.ReportProgress);
         }
 
         private void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-
+            progressBar.Value = e.ProgressPercentage;
         }
 
         private void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -124,6 +140,8 @@ namespace Download_PDFs_AT_e_SS
                 MessageBox.Show(String.Join("\n", Downloader.errors), "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Downloader.ClearErrorLogs();
             }
+
+            progressBar.Value = 0;
         }
 
         Empresa empresaRightClicked;

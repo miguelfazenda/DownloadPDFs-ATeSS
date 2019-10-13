@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SmartFormat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,8 @@ namespace Download_PDFs_AT_e_SS
                     //Obtem o codigo que o botão de imprimir tem e executa-o, transferindo assim o PDF
                     ButtonRunOnClick(By.Id("formListaDeclaracoes:tabelaDeclaracoes:" + i + ":imprimirExtrato"));
 
-                    WaitForDownloadFinish(null, Declaracao.SS_ExtratoRemun, 0);
+                    WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.SS_ExtratoRemun),
+                        Declaracao.SS_ExtratoRemun, mes);
                     Thread.Sleep(1000);
                 }
             }

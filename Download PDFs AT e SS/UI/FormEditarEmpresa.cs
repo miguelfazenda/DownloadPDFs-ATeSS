@@ -49,6 +49,8 @@ namespace Download_PDFs_AT_e_SS
 
             txtNomeDoResponsavel.DataBindings.Add("Text", empresaAEditarClone, "NomeDoResponsavel");
             txtTelefoneDoResponsavel.DataBindings.Add("Text", empresaAEditarClone, "TelefoneDoResponsavel");
+
+            txtCodigoCertidaoPermanente.DataBindings.Add("Text", empresaAEditarClone, "CodigoCertidaoPermanente");
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

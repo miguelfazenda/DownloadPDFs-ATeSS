@@ -16,6 +16,8 @@ namespace Download_PDFs_AT_e_SS
         public string NomeDoResponsavel { get; set; }
         public string TelefoneDoResponsavel { get; set; }
 
+        public string CodigoCertidaoPermanente { get; set; }
+
         public Empresa(string nome, string codigo, string nif)
         {
             this.Nome = nome;
