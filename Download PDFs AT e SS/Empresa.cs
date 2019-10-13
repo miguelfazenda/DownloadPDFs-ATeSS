@@ -15,6 +15,7 @@ namespace Download_PDFs_AT_e_SS
 
         public string NomeDoResponsavel { get; set; }
         public string TelefoneDoResponsavel { get; set; }
+        public string EmailDoResponsavel { get; set; }
 
         public string CodigoCertidaoPermanente { get; set; }
 
@@ -40,6 +41,10 @@ namespace Download_PDFs_AT_e_SS
 
             empresa.NomeDoResponsavel = this.NomeDoResponsavel;
             empresa.TelefoneDoResponsavel = this.TelefoneDoResponsavel;
+            empresa.EmailDoResponsavel = this.EmailDoResponsavel;
+            
+
+            empresa.CodigoCertidaoPermanente = this.CodigoCertidaoPermanente;
 
             return empresa;
         }

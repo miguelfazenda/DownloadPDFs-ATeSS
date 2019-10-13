@@ -45,13 +45,13 @@
             this.menuItemEditarEmpresa = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemRemoverEmpresa = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemNovaEmpresa = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirCertidaoPermanenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label6 = new System.Windows.Forms.Label();
             this.txtDownloadFolderPath = new System.Windows.Forms.TextBox();
             this.btnBrowseDownloadFolder = new System.Windows.Forms.Button();
             this.downloadBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.lblVersao = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.btnDefinicoes = new System.Windows.Forms.Button();
             this.linkGithub = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
             this.listaDeclaracoesListas = new System.Windows.Forms.CheckedListBox();
@@ -190,30 +190,37 @@
             this.ctxMenuEmpresa.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemEditarEmpresa,
             this.menuItemRemoverEmpresa,
-            this.menuItemNovaEmpresa});
+            this.menuItemNovaEmpresa,
+            this.abrirCertidaoPermanenteToolStripMenuItem});
             this.ctxMenuEmpresa.Name = "ctxMenuEmpresa";
-            this.ctxMenuEmpresa.Size = new System.Drawing.Size(151, 70);
+            this.ctxMenuEmpresa.Size = new System.Drawing.Size(214, 92);
             // 
             // menuItemEditarEmpresa
             // 
             this.menuItemEditarEmpresa.Name = "menuItemEditarEmpresa";
-            this.menuItemEditarEmpresa.Size = new System.Drawing.Size(150, 22);
+            this.menuItemEditarEmpresa.Size = new System.Drawing.Size(213, 22);
             this.menuItemEditarEmpresa.Text = "Editar";
             this.menuItemEditarEmpresa.Click += new System.EventHandler(this.menuItemEditarEmpresa_Click);
             // 
             // menuItemRemoverEmpresa
             // 
             this.menuItemRemoverEmpresa.Name = "menuItemRemoverEmpresa";
-            this.menuItemRemoverEmpresa.Size = new System.Drawing.Size(150, 22);
+            this.menuItemRemoverEmpresa.Size = new System.Drawing.Size(213, 22);
             this.menuItemRemoverEmpresa.Text = "Remover";
             this.menuItemRemoverEmpresa.Click += new System.EventHandler(this.menuItemRemoverEmpresa_Click);
             // 
             // menuItemNovaEmpresa
             // 
             this.menuItemNovaEmpresa.Name = "menuItemNovaEmpresa";
-            this.menuItemNovaEmpresa.Size = new System.Drawing.Size(150, 22);
+            this.menuItemNovaEmpresa.Size = new System.Drawing.Size(213, 22);
             this.menuItemNovaEmpresa.Text = "Nova Empresa";
             this.menuItemNovaEmpresa.Click += new System.EventHandler(this.menuItemNovaEmpresa_Click);
+            // 
+            // abrirCertidaoPermanenteToolStripMenuItem
+            // 
+            this.abrirCertidaoPermanenteToolStripMenuItem.Name = "abrirCertidaoPermanenteToolStripMenuItem";
+            this.abrirCertidaoPermanenteToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.abrirCertidaoPermanenteToolStripMenuItem.Text = "Abrir certidão permanente";
             // 
             // label6
             // 
@@ -265,15 +272,6 @@
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Conheça também o nosso importador do E-Fatura para a contabilidade";
             // 
-            // btnDefinicoes
-            // 
-            this.btnDefinicoes.Location = new System.Drawing.Point(512, 4);
-            this.btnDefinicoes.Name = "btnDefinicoes";
-            this.btnDefinicoes.Size = new System.Drawing.Size(75, 23);
-            this.btnDefinicoes.TabIndex = 17;
-            this.btnDefinicoes.Text = "Definições";
-            this.btnDefinicoes.UseVisualStyleBackColor = true;
-            // 
             // linkGithub
             // 
             this.linkGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -322,6 +320,8 @@
             // 
             // progressBar
             // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(119, 519);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(266, 20);
@@ -349,7 +349,6 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.listaDeclaracoesListas);
             this.Controls.Add(this.linkGithub);
-            this.Controls.Add(this.btnDefinicoes);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.lblVersao);
             this.Controls.Add(this.btnBrowseDownloadFolder);
@@ -366,8 +365,10 @@
             this.Controls.Add(this.listaDeclaracoesMensais);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listaEmpresas);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Download PDFs AT e SS";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.ctxMenuEmpresa.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -399,7 +400,6 @@
         private System.Windows.Forms.FolderBrowserDialog downloadBrowserDialog;
         private System.Windows.Forms.Label lblVersao;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Button btnDefinicoes;
         private System.Windows.Forms.LinkLabel linkGithub;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckedListBox listaDeclaracoesListas;
@@ -407,6 +407,7 @@
         private System.Windows.Forms.CheckedListBox listaDeclaracoesPedidosCertidao;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button btnSelecionarTodasEmpresas;
+        private System.Windows.Forms.ToolStripMenuItem abrirCertidaoPermanenteToolStripMenuItem;
     }
 }
 

@@ -64,7 +64,15 @@ namespace Download_PDFs_AT_e_SS
                 MessageBox.Show("Não selecionou empresas", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            if (listaDeclaracoesMensais.CheckedIndices.Count == 0 && listaDeclaracoesAnuais.CheckedIndices.Count == 0)
+
+            //Justa as declarações selecionadas em cada lista
+            Declaracao[] declaracoes = Util.MergeArrays(
+                listaDeclaracoesAnuais.CheckedItems.Cast<Declaracao>().ToArray(),
+                listaDeclaracoesMensais.CheckedItems.Cast<Declaracao>().ToArray(),
+                listaDeclaracoesListas.CheckedItems.Cast<Declaracao>().ToArray(),
+                listaDeclaracoesPedidosCertidao.CheckedItems.Cast<Declaracao>().ToArray());
+
+            if (declaracoes.Length == 0)
             {
                 MessageBox.Show("Não selecionou nenhuma declaração", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -79,12 +87,6 @@ namespace Download_PDFs_AT_e_SS
             int mes = comboMes.SelectedIndex + 1;
 
 
-            //Justa as declarações selecionadas em cada lista
-            Declaracao[] declaracoes = Util.MergeArrays(
-                listaDeclaracoesAnuais.CheckedItems.Cast<Declaracao>().ToArray(),
-                listaDeclaracoesMensais.CheckedItems.Cast<Declaracao>().ToArray(),
-                listaDeclaracoesListas.CheckedItems.Cast<Declaracao>().ToArray(),
-                listaDeclaracoesPedidosCertidao.CheckedItems.Cast<Declaracao>().ToArray());
 
             //Envia lista de empresas e declarações selecionadas, ano e mes selecionados para o background worker
             bgWorker.RunWorkerAsync(new object[] { listaEmpresas.CheckedItems.Cast<Empresa>().ToArray(),

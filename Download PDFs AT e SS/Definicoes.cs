@@ -43,7 +43,8 @@ namespace Download_PDFs_AT_e_SS
         public string AT_Modelo22 { get; set; }
         public string AT_IES { get; set; }
         public string AT_IVA { get; set; }
-        
+        public string AT_CerticaoDivida { get; set; }
+
         public EstruturaNomesFicheiros()
         {
         }
@@ -61,6 +62,7 @@ namespace Download_PDFs_AT_e_SS
             AT_Modelo22 = AT_Modelo22 != null ? AT_Modelo22 : "{ano}.{mes}.{empresa.Codigo}.Modelo22.{empresa.NIF}.pdf";
             AT_IES = AT_IES != null ? AT_IES : "{ano}.{mes}.{empresa.Codigo}.IES.{empresa.NIF}.pdf";
             AT_IVA = AT_IVA != null ? AT_IVA : "{ano}.{mes}.{empresa.Codigo}.IVA.{empresa.NIF}.pdf";
+            AT_CerticaoDivida = AT_CerticaoDivida != null ? AT_CerticaoDivida : "{ano}.{mes}.{empresa.Codigo}.CertidaoAT.{empresa.NIF}.pdf";
         }
     }
 }

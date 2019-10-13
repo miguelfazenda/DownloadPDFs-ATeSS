@@ -39,6 +39,10 @@ namespace Download_PDFs_AT_e_SS
         public static Declaracao AT_IES = new Declaracao("IES", TipoDeclaracao.Anual, Downloader.DownloadIES, Autenticacao.AT);
         public static Declaracao AT_IVA = new Declaracao("IVA", TipoDeclaracao.Anual, Downloader.DownloadIVA, Autenticacao.AT);
 
+        //Pedidos
+        public static Declaracao AT_CerticaoDivida = new Declaracao("Certidão AT", TipoDeclaracao.Pedido, Downloader.DownloadCerticaoDivida, Autenticacao.AT);
+        public static Declaracao SS_CerticaoDivida = new Declaracao("Pedir certidão SS", TipoDeclaracao.Pedido, Downloader.DownloadPedirCerticaoSS, Autenticacao.SSDireta);
+
 
         public string Nome { get; set; }
         public TipoDeclaracao Tipo { get; set; } //Se é mensal, anual, pedido, etc.

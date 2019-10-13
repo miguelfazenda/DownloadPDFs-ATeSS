@@ -139,6 +139,7 @@ namespace Download_PDFs_AT_e_SS
             var diretorio = Path.Combine(DownloadFolder, folderTipoDeclaracao,
                 empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
 
+            Thread.Sleep(1000);
             //Muda o nome
             Util.RenameLastModifiedFileInFolder(DownloadFolder, newName, diretorio);
             numFilesInDownloadsFolder++;

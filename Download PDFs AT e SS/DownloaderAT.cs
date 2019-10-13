@@ -80,6 +80,8 @@ namespace Download_PDFs_AT_e_SS
         internal static void DownloadIVA(int ano)
         {
             driver.Navigate().GoToUrl("https://iva.portaldasfinancas.gov.pt/dpiva/portal/obter-comprovativo#!?ano=" + ano);
+            //Por alguma razão só da segunda tentativa é que ele mete o ano certo....
+            driver.Navigate().GoToUrl("https://iva.portaldasfinancas.gov.pt/dpiva/portal/obter-comprovativo#!?ano=" + ano);
 
             var numDocumentos = driver.FindElements(By.XPath("/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/*")).Count;
             
@@ -145,6 +147,17 @@ namespace Download_PDFs_AT_e_SS
                 }
             }
         }
+
+        internal static void DownloadCerticaoDivida(int ano)
+        {
+            driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/emissaoCertidao.action?tipoCertidao=N");
+            driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/emissaoCertidao.action?tipoCertidao=N");
+
+            ExpectDownload();
+            ClickButtonWaitForItToAppear(By.Id("certidaoBtn"));
+            WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_CerticaoDivida), Declaracao.AT_CerticaoDivida, 0);
+        }
+
 
         internal static void DownloadRetencoes(int ano, int mes)
         {

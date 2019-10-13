@@ -49,6 +49,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtCodigoCertidaoPermanente = new System.Windows.Forms.TextBox();
+            this.txtEmailDoResponsavel = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -205,6 +207,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtEmailDoResponsavel);
+            this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.txtNomeDoResponsavel);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label8);
@@ -215,7 +219,7 @@
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Location = new System.Drawing.Point(237, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(329, 138);
+            this.groupBox1.Size = new System.Drawing.Size(329, 156);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Segurança Social";
@@ -223,7 +227,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 159);
+            this.label9.Location = new System.Drawing.Point(3, 177);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(161, 13);
             this.label9.TabIndex = 20;
@@ -231,10 +235,26 @@
             // 
             // txtCodigoCertidaoPermanente
             // 
-            this.txtCodigoCertidaoPermanente.Location = new System.Drawing.Point(170, 156);
+            this.txtCodigoCertidaoPermanente.Location = new System.Drawing.Point(170, 174);
             this.txtCodigoCertidaoPermanente.Name = "txtCodigoCertidaoPermanente";
             this.txtCodigoCertidaoPermanente.Size = new System.Drawing.Size(142, 20);
             this.txtCodigoCertidaoPermanente.TabIndex = 19;
+            // 
+            // txtEmailDoResponsavel
+            // 
+            this.txtEmailDoResponsavel.Location = new System.Drawing.Point(142, 119);
+            this.txtEmailDoResponsavel.Name = "txtEmailDoResponsavel";
+            this.txtEmailDoResponsavel.Size = new System.Drawing.Size(181, 20);
+            this.txtEmailDoResponsavel.TabIndex = 18;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(23, 122);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(113, 13);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "Email do responsável: ";
             // 
             // FormEditarEmpresa
             // 
@@ -292,5 +312,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtCodigoCertidaoPermanente;
+        private System.Windows.Forms.TextBox txtEmailDoResponsavel;
+        private System.Windows.Forms.Label label10;
     }
 }
