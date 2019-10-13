@@ -47,7 +47,7 @@ namespace Download_PDFs_AT_e_SS
             comboAno.SelectedIndex = 0;
 
             //Preenche o caminho da pasta de download
-            if (Properties.Settings.Default.PastaDownload != null && Properties.Settings.Default.PastaDownload.Trim().Length > 0)
+            if (Properties.Settings.Default.PastaDownload == null || Properties.Settings.Default.PastaDownload.Trim().Length == 0)
             {
                 Properties.Settings.Default.PastaDownload = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             }
