@@ -140,8 +140,6 @@ namespace Download_PDFs_AT_e_SS
 
             //Muda o ficheiro de nome. Para isso verifica se um ficheiro com o mesmo nome já existe. Caso afirmativo, tenta acrescentar um (1) no nome do ficheiro
 
-            new System.IO.FileInfo("c:\\stuff\\a\\file.txt").Directory.Create();
-
             if (newName == null)
                 newName = ficheiro.FullName;
 

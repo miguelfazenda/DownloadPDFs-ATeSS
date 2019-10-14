@@ -121,8 +121,12 @@ namespace Download_PDFs_AT_e_SS
         {
             //Espera que o download comece
             Util.WaitForFileCountToBeGreaterThan(DownloadFolder, numFilesInDownloadsFolder);
+
             //Espera que ele acabe
             Util.WaitForAllFilesToDownload(DownloadFolder);
+
+            Thread.Sleep(500);
+
             //Espera que o ficheiro final esteja pronto
             Util.WaitForFileCountToBeGreaterThan(DownloadFolder, numFilesInDownloadsFolder);
 
@@ -150,9 +154,9 @@ namespace Download_PDFs_AT_e_SS
             try
             {
                 driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/fc/gfct/home?windowId=c05");
-                driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/h3/a")).Click();
+                ClickButtonWaitForItToAppear(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/h3/a"));
                 Thread.Sleep(500);
-                driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/div/ul/li/a")).Click();
+                ClickButtonWaitForItToAppear(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[1]/div/form/div/div[4]/div/ul/li/a"));
 
                 var printBtn = driver.FindElement(By.Id("form:btnPrintReport"));
                 var gerarBtn = driver.FindElement(By.Id("form:btnGenReport"));
@@ -181,9 +185,7 @@ namespace Download_PDFs_AT_e_SS
             driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[2]/div/div[3]/form/div[3]/div/div/div[3]"));
             driver.FindElement(By.XPath("/html/body/div[5]/div/ul/li[4]")).Click();
             driver.FindElement(By.XPath("/html/body/div[1]/div[2]/span/div/div/div/div[2]/div/div[3]/form/span/div[2]/div[1]/table/tbody/tr/td[2]/a")).Click();
-              */  
-
-            
+            */
         }
 
         /// <summary>
