@@ -221,5 +221,11 @@ namespace Download_PDFs_AT_e_SS
                 listaEmpresas.SetItemChecked(i, check);
             }
         }
+
+        private void abrirCertidaoPermanenteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.CriarDriver();
+            Browser.AbrePedidoCertidao(empresaRightClicked.CodigoCertidaoPermanente);
+        }
     }
 }

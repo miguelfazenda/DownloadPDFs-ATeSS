@@ -15,6 +15,8 @@ namespace Download_PDFs_AT_e_SS
 {
     partial class Downloader
     {
+        static ChromeOptions chromeOptions;
+
         static IWebDriver driver;
         static bool[] autenticadoEm; //Seviços em que está autenticado (Indices de Declaracao.Autenticacao)
         static Empresa empresaAutenticada;
@@ -66,7 +68,7 @@ namespace Download_PDFs_AT_e_SS
                 }
                 catch (Exception ex)
                 {
-                    LogError(ex);
+                    LogError(ex, empresa, null);
                     break;
                 }
 
@@ -86,7 +88,7 @@ namespace Download_PDFs_AT_e_SS
                     catch (Exception ex)
                     {
                         //Se der erro regista-o mas prossegue
-                        LogError(ex);
+                        LogError(ex, empresa, declaracao);
                     }
 
                     int progresso = (int)(((double)iEmpresa / empresas.Length + (((double)iDeclaracao/declaracoes.Length) /empresas.Length))*100);
@@ -102,7 +104,7 @@ namespace Download_PDFs_AT_e_SS
                 }
                 catch (Exception ex)
                 {
-                    LogError(ex);
+                    LogError(ex, empresa, null);
                     break;
                 }
                 
@@ -170,7 +172,7 @@ namespace Download_PDFs_AT_e_SS
                 {
                     printBtn.Click();
                 }
-                WaitForDownloadFinish(null, Declaracao.SS_FundosComp_DocPag, mes);
+                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.SS_FundosComp_DocPag), Declaracao.SS_FundosComp_DocPag, mes);
                 //Util.RenameDownloadedFile(downloadFolderEmpresa, "");
             } catch(Exception ex)
             {
@@ -253,16 +255,19 @@ namespace Download_PDFs_AT_e_SS
         //Cria a instacia do driver(chrome)
         private static void CriarDriver(string downloadFolder)
         {
-            // this will make automatically download to the default folder.
-            ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.AddUserProfilePreference("plugins.always_open_pdf_externally", true);
-            chromeOptions.AddUserProfilePreference("profile.default_content_settings.popups", 0);
-            chromeOptions.AddUserProfilePreference("download.default_directory", downloadFolder);
-            chromeOptions.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
-            chromeOptions.AddUserProfilePreference("safebrowsing.disable_download_protection", 1);
-            chromeOptions.AddUserProfilePreference("credentials_enable_service", false);
-            chromeOptions.AddUserProfilePreference("profile.password_manager_enabled", false);
-            //tentar --headless para nao mostrar nada
+            if(chromeOptions == null)
+            {
+                // this will make automatically download to the default folder.
+                chromeOptions = new ChromeOptions();
+                chromeOptions.AddUserProfilePreference("plugins.always_open_pdf_externally", true);
+                chromeOptions.AddUserProfilePreference("profile.default_content_settings.popups", 0);
+                chromeOptions.AddUserProfilePreference("download.default_directory", downloadFolder);
+                chromeOptions.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
+                chromeOptions.AddUserProfilePreference("safebrowsing.disable_download_protection", 1);
+                chromeOptions.AddUserProfilePreference("credentials_enable_service", false);
+                chromeOptions.AddUserProfilePreference("profile.password_manager_enabled", false);
+                //tentar --headless para nao mostrar nada
+            }
 
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
@@ -285,20 +290,27 @@ namespace Download_PDFs_AT_e_SS
 
         private static string GenNovoNomeFicheiro(string estruturaNomesFicheiro, object parametros)
         {
-            return Smart.Format(estruturaNomesFicheiro, new { mes = Mes, ano = Ano, empresa = empresaAutenticada, parametros = parametros });
+            object dataMesAnteior = new { ano = (Mes == 1 ? Ano - 1 : Ano), mes = (Mes == 1 ? 12 : Mes - 1) };
+
+            object dataHoje = new { ano = DateTime.Now.Year, mes = DateTime.Now.Month, dia = DateTime.Now.Day };
+            
+            return Smart.Format(estruturaNomesFicheiro, new { mes = Mes, ano = Ano, dataMesAnteior, dataHoje, empresa = empresaAutenticada, parametros = parametros });
         }
         private static string GenNovoNomeFicheiro(string estruturaNomesFicheiro)
         {
-            return Smart.Format(estruturaNomesFicheiro, new { mes = Mes, ano = Ano, empresa = empresaAutenticada });
+            return GenNovoNomeFicheiro(estruturaNomesFicheiro, null);
         }
 
         private static void LogError(string error)
         {
             errors.Add(error);
         }
-        private static void LogError(Exception ex)
+        private static void LogError(Exception ex, Empresa empresa, Declaracao declaracao)
         {
-            errors.Add(ex.Message);
+            if(declaracao == null)
+                errors.Add(empresa.NIF + " erro: " + ex.Message);
+            else
+                errors.Add(empresa.NIF + " erro em " + declaracao.Nome + ": " + ex.Message);
         }
 
         internal static void ClearErrorLogs()
@@ -316,24 +328,30 @@ namespace Download_PDFs_AT_e_SS
             if (autenticadoEm[(int)Declaracao.Autenticacao.AT])
             {
                 driver.Navigate().GoToUrl("https://www.acesso.gov.pt/v2/loginForm?partID=PFAP&path=/geral/dashboard");
+                Thread.Sleep(500);
                 driver.FindElement(By.Id("username")).SendKeys(empresa.NIF);
                 driver.FindElement(By.Id("password-nif")).SendKeys(empresa.PasswordAT);
+                Thread.Sleep(500);
                 driver.FindElement(By.Id("sbmtLogin")).Click();
             }
 
             if (autenticadoEm[(int)Declaracao.Autenticacao.SSFundosCompensacao])
             {
                 driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/sso/login");
+                Thread.Sleep(500);
                 driver.FindElement(By.Id("username")).SendKeys(empresa.NISS);
                 driver.FindElement(By.Id("password")).SendKeys(empresa.PasswordSS);
+                Thread.Sleep(500);
                 driver.FindElement(By.XPath("//*[@id=\"credentials\"]/div[5]/input")).Click();
             }
 
             if (autenticadoEm[(int)Declaracao.Autenticacao.SSDireta])
             {
                 driver.Navigate().GoToUrl("https://app.seg-social.pt/sso/login");
+                Thread.Sleep(500);
                 driver.FindElement(By.Id("username")).SendKeys(empresa.NISS);
                 driver.FindElement(By.Id("password")).SendKeys(empresa.PasswordSS);
+                Thread.Sleep(500);
                 driver.FindElement(By.XPath("//*[@id=\"credentials\"]/div[5]/input")).Click();
             }
 

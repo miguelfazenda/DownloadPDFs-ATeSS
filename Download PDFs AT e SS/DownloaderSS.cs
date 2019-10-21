@@ -56,10 +56,5 @@ namespace Download_PDFs_AT_e_SS
                 }
             }
         }
-
-        internal static void DownloadPedirCerticaoSS(int ano)
-        {
-            driver.Navigate().GoToUrl("https://app.seg-social.pt/ptss/external/GUSSD-O080");
-        }
     }
 }

@@ -86,12 +86,14 @@ namespace Download_PDFs_AT_e_SS
             AT_DMRDocPag = AT_DMRDocPag != null ? AT_DMRDocPag : "{ano}.{mes}.{empresa.Codigo}.DMRDocPag.{empresa.NIF}.pdf";
             AT_Retencoes = AT_Retencoes != null ? AT_Retencoes : "{ano}.{mes}.{empresa.Codigo}.Retencoes.{empresa.NIF}.pdf";
             SS_ExtratoRemun = SS_ExtratoRemun != null ? SS_ExtratoRemun : "{ano}.{mes}.{empresa.Codigo}.ExtratoRemun.{empresa.NIF}.pdf";
-            SS_FundosComp_DocPag = SS_FundosComp_DocPag != null ? SS_FundosComp_DocPag : "{ano}.{mes}.{empresa.Codigo}.FundosComp_DocPag.{empresa.NIF}.pdf";
-            AT_IRS = AT_IRS != null ? AT_IRS : "{ano}.{mes}.{empresa.Codigo}.IRS.{empresa.NIF}.pdf";
-            AT_Modelo22 = AT_Modelo22 != null ? AT_Modelo22 : "{ano}.{mes}.{empresa.Codigo}.Modelo22.{empresa.NIF}.pdf";
-            AT_IES = AT_IES != null ? AT_IES : "{ano}.{mes}.{empresa.Codigo}.IES.{empresa.NIF}.pdf";
-            AT_IVA = AT_IVA != null ? AT_IVA : "{ano}.{mes}.{empresa.Codigo}.IVA {parametros.docAno} {parametros.docPeriodo} {parametros.docIdentif}.{empresa.NIF}.pdf";
-            AT_CerticaoDivida = AT_CerticaoDivida != null ? AT_CerticaoDivida : "{ano}.{mes}.{empresa.Codigo}.CertidaoAT.{empresa.NIF}.pdf";
+            SS_FundosComp_DocPag = SS_FundosComp_DocPag != null ? SS_FundosComp_DocPag : "{dataMesAnteior.ano}.{dataMesAnteior.mes}.{empresa.Codigo}.FundosComp_DocPag.{empresa.NIF}.pdf";
+
+            AT_IRS = AT_IRS != null ? AT_IRS : "{ano}.{empresa.Codigo}.IRS.{empresa.NIF}.pdf";
+            AT_Modelo22 = AT_Modelo22 != null ? AT_Modelo22 : "{ano}.{empresa.Codigo}.Modelo22.{empresa.NIF}.pdf";
+            AT_IES = AT_IES != null ? AT_IES : "{ano}.{empresa.Codigo}.IES.{empresa.NIF}.pdf";
+            AT_IVA = AT_IVA != null ? AT_IVA : "{ano}.{empresa.Codigo}.IVA {parametros.docAno} {parametros.docPeriodo} {parametros.docIdentif}.{empresa.NIF}.pdf";
+
+            AT_CerticaoDivida = AT_CerticaoDivida != null ? AT_CerticaoDivida : "{empresa.Codigo}.CertidaoAT.{empresa.NIF}.{dataHoje.ano}.{dataHoje.mes}.{dataHoje.dia}.pdf";
         }
     }
 }

@@ -83,9 +83,27 @@ namespace Download_PDFs_AT_e_SS
             //Por alguma razão só da segunda tentativa é que ele mete o ano certo....
             driver.Navigate().GoToUrl("https://iva.portaldasfinancas.gov.pt/dpiva/portal/obter-comprovativo#!?ano=" + ano);
 
+            Thread.Sleep(1000);
+
             var numDocumentos = driver.FindElements(By.XPath("/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/*")).Count;
-            
-            for(int i = 0; i<numDocumentos; i++)
+
+            Dictionary<string, int> indicesDeCasaPeriodo = new Dictionary<string, int>();
+
+            //Coloca no dicionario indicesDeCasaPeriodo os documentos a transferir (indice na tabela de onde transferir)
+            for (int i = 0; i < numDocumentos; i++)
+            {
+                string xpathRow = "/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/tr[" + (i + 1) + "]";
+                string docPeriodo = driver.FindElement(By.XPath(xpathRow + "/td[2]/p")).Text;
+
+                if (indicesDeCasaPeriodo.ContainsKey(docPeriodo))
+                    //Se encontrar outra vez um documento do mesmo periodo substitui o indice de onde tranferir
+                    indicesDeCasaPeriodo[docPeriodo] = i;
+                else
+                    indicesDeCasaPeriodo.Add(docPeriodo, i);
+            }
+
+            //Transfere os indices guardados para tal
+            foreach (int i in indicesDeCasaPeriodo.Values)
             {
                 string xpathRow = "/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/tr[" + (i+1) + "]";
 
@@ -224,6 +242,67 @@ namespace Download_PDFs_AT_e_SS
             }
         }
 
-        
+        public static string TableToText(string tableBodyXPath)
+        {
+            int numRows = driver.FindElements(By.XPath(tableBodyXPath + "/*")).Count;
+            int numColumns = -1;
+
+            //string[,] tableText = null;
+            string tableText = "";
+
+            //Obtem os valores da tabela
+            for (int i = 0; i < numRows; i++)
+            {
+                string rowXPath = tableBodyXPath + "/tr[" + (i + 1) + "]";
+                if(numColumns == -1)
+                {
+                    //Se for a primeira linha conta o numero de colunas e aloca a matriz
+                    numColumns = driver.FindElements(By.XPath(tableBodyXPath + "/*")).Count;
+                    //tableText = new string[numRows, numColumns];
+                }
+
+                for(int j = 0; j < numColumns; j++)
+                {
+                    string cellXPath;
+                    if (i == 0)
+                        cellXPath = rowXPath + "/th[" + (j + 1) + "]";
+                    else
+                        cellXPath = rowXPath + "/td[" + (j + 1) + "]";
+
+                    //tableText[i, j] = driver.FindElement(By.XPath(cellXPath)).Text;
+                    string cellText = driver.FindElement(By.XPath(cellXPath)).Text;
+                    tableText += cellText + new String(' ', 17-cellText.Length);
+                }
+                tableText += "\n";
+            }
+
+            return tableText;
+        }
+
+        public static void DownloadIMINotasCobranca(int ano)
+        {
+            driver.Navigate().GoToUrl("https://www.portaldasfinancas.gov.pt/pt/main.jsp?body=/ca/notasCobrancaForm.jsp");
+            ((IJavaScriptExecutor)driver).ExecuteScript("submitNotasCobrancaIMI('" + ano + "');");
+
+            string tableText = (string) ((IJavaScriptExecutor)driver).ExecuteScript("" +
+                "  opt_cellValueGetter = opt_cellValueGetter || function(td) { return td.textContent || td.innerText; };\n" +
+                "  var tableText = '';\n" +
+                "  var rowCount = tbl.rows.length\n" +
+                "  for (var rowIndex = 0, tr; rowIndex < rowCount; rowIndex++) {\n" +
+                "    var tr = tbl.rows[rowIndex];\n" +
+                "    for (var colIndex = 0, colCount = tr.cells.length, offset = 0; colIndex < colCount; colIndex++) {\n" +
+                "      var td = tr.cells[colIndex], text = opt_cellValueGetter(td, colIndex, rowIndex, tbl);\n" +
+                "      for (var i = 0, colSpan = parseInt(td.colSpan, 10) || 1; i < colSpan; i++) {\n" +
+                "        for (var j = 0, rowSpan = parseInt(td.rowSpan, 10) || 1; j < rowSpan; j++) {\n" +
+                "          tableText += text + ' '.repeat(18 - text.length);\n" +
+                "        }\n" +
+                "      }\n" +
+                "    }\n" +
+                "    tableText += '\n';\n" +
+                "  }\n" +
+                "  return tableText;\n");
+
+            Log("", tableText);
+        }
     }
 }

@@ -59,6 +59,7 @@
             this.listaDeclaracoesPedidosCertidao = new System.Windows.Forms.CheckedListBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.btnSelecionarTodasEmpresas = new System.Windows.Forms.Button();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ctxMenuEmpresa.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -191,9 +192,10 @@
             this.menuItemEditarEmpresa,
             this.menuItemRemoverEmpresa,
             this.menuItemNovaEmpresa,
+            this.toolStripSeparator1,
             this.abrirCertidaoPermanenteToolStripMenuItem});
             this.ctxMenuEmpresa.Name = "ctxMenuEmpresa";
-            this.ctxMenuEmpresa.Size = new System.Drawing.Size(214, 92);
+            this.ctxMenuEmpresa.Size = new System.Drawing.Size(214, 98);
             // 
             // menuItemEditarEmpresa
             // 
@@ -221,6 +223,7 @@
             this.abrirCertidaoPermanenteToolStripMenuItem.Name = "abrirCertidaoPermanenteToolStripMenuItem";
             this.abrirCertidaoPermanenteToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.abrirCertidaoPermanenteToolStripMenuItem.Text = "Abrir certidão permanente";
+            this.abrirCertidaoPermanenteToolStripMenuItem.Click += new System.EventHandler(this.abrirCertidaoPermanenteToolStripMenuItem_Click);
             // 
             // label6
             // 
@@ -337,8 +340,14 @@
             this.btnSelecionarTodasEmpresas.UseVisualStyleBackColor = true;
             this.btnSelecionarTodasEmpresas.Click += new System.EventHandler(this.btnSelecionarTodasEmpresas_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(210, 6);
+            // 
             // Form1
             // 
+            this.AcceptButton = this.btnExecutar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(596, 552);
@@ -408,6 +417,7 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button btnSelecionarTodasEmpresas;
         private System.Windows.Forms.ToolStripMenuItem abrirCertidaoPermanenteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

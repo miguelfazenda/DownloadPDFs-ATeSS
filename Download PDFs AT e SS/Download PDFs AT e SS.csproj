@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Browser.cs" />
     <Compile Include="Definicoes.cs" />
     <Compile Include="DownloaderSS.cs" />
     <Compile Include="UI\Dados.cs" />
