@@ -160,6 +160,9 @@ namespace Download_PDFs_AT_e_SS
             File.Move(ficheiro.FullName, ficheiroNovoPath);
         }
 
+        /**
+         * Devolve se um elemento está presente ou não
+         */
         public static bool IsElementPresent(IWebDriver driver, By by)
         {
             try
@@ -171,6 +174,29 @@ namespace Download_PDFs_AT_e_SS
             {
                 return false;
             }
+        }
+        /**
+         * Devolve se um elemento está presente ou não
+         */
+        public static bool IsElementPresentWaitAWhile(IWebDriver driver, By by)
+        {
+            int NUM_TRIES = 4;
+            for (int i = 0; i < NUM_TRIES; i++)
+            {
+                //Tenta encontrar o elemento, se não encontrar repete, e espera um segundo
+                if(i > 0)
+                    Thread.Sleep(1000);
+
+                try
+                {
+                    driver.FindElement(by);
+                    return true;
+                }
+                catch (NoSuchElementException)
+                {
+                }
+            }
+            return false;
         }
     }
 }

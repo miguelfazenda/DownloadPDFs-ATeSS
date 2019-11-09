@@ -59,12 +59,12 @@ namespace Download_PDFs_AT_e_SS
                 }                
             }
         }
-
+        
         const string XPATH_IES_BOTAO_OBTER = "/html/body/div/main/div/div[2]/div/section/div[3]/div[2]/div/div[3]/div/div/table/tbody/tr/td[3]/div/button";
         internal static void DownloadIES(int ano)
         {
             driver.Navigate().GoToUrl("https://oa.portaldasfinancas.gov.pt/ies/consultarIES.action?anoDeclaracoes=" + ano);
-            if (Util.IsElementPresent(driver, By.XPath(XPATH_IES_BOTAO_OBTER)))
+            if (Util.IsElementPresentWaitAWhile(driver, By.XPath(XPATH_IES_BOTAO_OBTER)))
             {
                 //Se o botão de obter existir, carrega nele
                 ExpectDownload();
@@ -85,27 +85,51 @@ namespace Download_PDFs_AT_e_SS
 
             Thread.Sleep(1000);
 
-            var numDocumentos = driver.FindElements(By.XPath("/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/*")).Count;
+            int NUM_DOC_POR_PAGINA = 10;
+            var numTotalDocumentos = Int32.Parse(driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/div/div[1]/p")).Text);
+            int numPaginas = (numTotalDocumentos - 1) / NUM_DOC_POR_PAGINA + 1;
 
-            Dictionary<string, int> indicesDeCasaPeriodo = new Dictionary<string, int>();
+            //Guarda o numero na lista do ficheiro que deve ser transferido para cada periodo (docPeriodo, {#na lista, página})
+            Dictionary<string, int[]> indicesDeCadaPeriodo = new Dictionary<string, int[]>();
 
-            //Coloca no dicionario indicesDeCasaPeriodo os documentos a transferir (indice na tabela de onde transferir)
-            for (int i = 0; i < numDocumentos; i++)
+            for(int pagina = 0; pagina<numPaginas; pagina++)
             {
-                string xpathRow = "/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/tr[" + (i + 1) + "]";
-                string docPeriodo = driver.FindElement(By.XPath(xpathRow + "/td[2]/p")).Text;
+                //Carrega no botão para selecionar a página certa
+                string pageButton = "/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/div/div[3]/ul/li[" + (2 + pagina) + "]/a";
+                driver.FindElement(By.XPath(pageButton)).Click();
 
-                if (indicesDeCasaPeriodo.ContainsKey(docPeriodo))
-                    //Se encontrar outra vez um documento do mesmo periodo substitui o indice de onde tranferir
-                    indicesDeCasaPeriodo[docPeriodo] = i;
-                else
-                    indicesDeCasaPeriodo.Add(docPeriodo, i);
+                //Para cada página
+                var numDocumentos = driver.FindElements(By.XPath("/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/*")).Count;
+
+                //Coloca no dicionario indicesDeCasaPeriodo os documentos a transferir (indice na tabela de onde transferir)
+                for (int i = 0; i < numDocumentos; i++)
+                {
+                    string xpathRow = "/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/tr[" + (i + 1) + "]";
+                    string docPeriodo = driver.FindElement(By.XPath(xpathRow + "/td[2]/p")).Text;
+
+                    if (indicesDeCadaPeriodo.ContainsKey(docPeriodo))
+                        //Se encontrar outra vez um documento do mesmo periodo substitui o indice de onde tranferir
+                        indicesDeCadaPeriodo[docPeriodo] = new int[] { i, pagina };
+                    else
+                        indicesDeCadaPeriodo.Add(docPeriodo, new int[] { i, pagina });
+                }
             }
 
             //Transfere os indices guardados para tal
-            foreach (int i in indicesDeCasaPeriodo.Values)
+            foreach (int[] idxEPagina in indicesDeCadaPeriodo.Values)
             {
+                int i = idxEPagina[0];
+
+                if(numPaginas > 1)
+                {
+                    int pagina = idxEPagina[1];
+                    //Carrega no botão para selecionar a página certa
+                    string pageButton = "/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/div/div[3]/ul/li[" + (2 + pagina) + "]/a";
+                    driver.FindElement(By.XPath(pageButton)).Click();
+                }
+
                 string xpathRow = "/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/tr[" + (i+1) + "]";
+
 
                 ExpectDownload();
                 ClickButtonWaitForItToAppear(By.XPath(xpathRow + "/td[4]/div/a"));
