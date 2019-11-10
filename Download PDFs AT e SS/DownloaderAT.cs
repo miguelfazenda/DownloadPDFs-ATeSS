@@ -92,11 +92,14 @@ namespace Download_PDFs_AT_e_SS
             //Guarda o numero na lista do ficheiro que deve ser transferido para cada periodo (docPeriodo, {#na lista, página})
             Dictionary<string, int[]> indicesDeCadaPeriodo = new Dictionary<string, int[]>();
 
-            for(int pagina = 0; pagina<numPaginas; pagina++)
+            for(int pagina = 0; pagina< numPaginas; pagina++)
             {
-                //Carrega no botão para selecionar a página certa
-                string pageButton = "/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/div/div[3]/ul/li[" + (2 + pagina) + "]/a";
-                driver.FindElement(By.XPath(pageButton)).Click();
+                if(numPaginas > 1)
+                {
+                    //Carrega no botão para selecionar a página certa
+                    string pageButton = "/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/div/div[3]/ul/li[" + (2 + pagina) + "]/a";
+                    driver.FindElement(By.XPath(pageButton)).Click();
+                }
 
                 //Para cada página
                 var numDocumentos = driver.FindElements(By.XPath("/html/body/div/main/div/div[2]/div/section/div/obter-comprovativo-e-doc-pagamento-app/div[3]/obter-comprovativo-e-doc-pagamento-tabela/div/div/div/div/table/tbody/*")).Count;
