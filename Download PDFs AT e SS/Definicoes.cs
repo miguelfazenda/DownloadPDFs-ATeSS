@@ -86,7 +86,7 @@ namespace Download_PDFs_AT_e_SS
             AT_DMRDocPag = AT_DMRDocPag != null ? AT_DMRDocPag : "{ano}.{mes}.{empresa.Codigo}.DMRDocPag.{empresa.NIF}.pdf";
             AT_Retencoes = AT_Retencoes != null ? AT_Retencoes : "{ano}.{mes}.{empresa.Codigo}.Retencoes.{empresa.NIF}.pdf";
             SS_ExtratoRemun = SS_ExtratoRemun != null ? SS_ExtratoRemun : "{ano}.{mes}.{empresa.Codigo}.ExtratoRemun.{empresa.NIF}.pdf";
-            SS_FundosComp_DocPag = SS_FundosComp_DocPag != null ? SS_FundosComp_DocPag : "{dataMesAnteior.ano}.{dataMesAnteior.mes}.{empresa.Codigo}.FundosComp_DocPag.{empresa.NIF}.pdf";
+            SS_FundosComp_DocPag = SS_FundosComp_DocPag != null ? SS_FundosComp_DocPag : "{parametros.anoDeReferencia}.{parametros.mesDeReferencia}.{empresa.Codigo}.FundosComp_DocPag.{empresa.NIF}.pdf";
 
             AT_IRS = AT_IRS != null ? AT_IRS : "{ano}.{empresa.Codigo}.IRS.{empresa.NIF}.pdf";
             AT_Modelo22 = AT_Modelo22 != null ? AT_Modelo22 : "{ano}.{empresa.Codigo}.Modelo22.{empresa.NIF}.pdf";

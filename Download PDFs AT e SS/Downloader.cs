@@ -172,7 +172,14 @@ namespace Download_PDFs_AT_e_SS
                 {
                     printBtn.Click();
                 }
-                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.SS_FundosComp_DocPag), Declaracao.SS_FundosComp_DocPag, mes);
+
+                //Obtem o ano e mes a que isto se refere
+                string[] anoMesDeRef = driver.FindElement(By.Id("form:anomesref2")).Text.Trim().Split('-');
+                int anoDeReferencia = Int32.Parse(anoMesDeRef[0]);
+                int mesDeReferencia = Int32.Parse(anoMesDeRef[1]);
+
+                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.SS_FundosComp_DocPag, new { anoDeReferencia, mesDeReferencia }),
+                    Declaracao.SS_FundosComp_DocPag, mesDeReferencia);
                 //Util.RenameDownloadedFile(downloadFolderEmpresa, "");
             } catch(Exception ex)
             {
@@ -255,19 +262,18 @@ namespace Download_PDFs_AT_e_SS
         //Cria a instacia do driver(chrome)
         private static void CriarDriver(string downloadFolder)
         {
-            if(chromeOptions == null)
-            {
-                // this will make automatically download to the default folder.
-                chromeOptions = new ChromeOptions();
-                chromeOptions.AddUserProfilePreference("plugins.always_open_pdf_externally", true);
-                chromeOptions.AddUserProfilePreference("profile.default_content_settings.popups", 0);
-                chromeOptions.AddUserProfilePreference("download.default_directory", downloadFolder);
-                chromeOptions.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
-                chromeOptions.AddUserProfilePreference("safebrowsing.disable_download_protection", 1);
-                chromeOptions.AddUserProfilePreference("credentials_enable_service", false);
-                chromeOptions.AddUserProfilePreference("profile.password_manager_enabled", false);
-                //tentar --headless para nao mostrar nada
-            }
+            // this will make automatically download to the default folder.
+            chromeOptions = new ChromeOptions();
+            chromeOptions.AddUserProfilePreference("plugins.always_open_pdf_externally", true);
+            chromeOptions.AddUserProfilePreference("profile.default_content_settings.popups", 0);
+            chromeOptions.AddUserProfilePreference("directory_upgrade", true);
+            chromeOptions.AddUserProfilePreference("download.default_directory", downloadFolder);
+            chromeOptions.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
+            chromeOptions.AddUserProfilePreference("safebrowsing.disable_download_protection", 1);
+            chromeOptions.AddUserProfilePreference("credentials_enable_service", false);
+            chromeOptions.AddUserProfilePreference("profile.password_manager_enabled", false);
+            
+            //tentar --headless para nao mostrar nada
 
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
@@ -290,11 +296,11 @@ namespace Download_PDFs_AT_e_SS
 
         private static string GenNovoNomeFicheiro(string estruturaNomesFicheiro, object parametros)
         {
-            object dataMesAnteior = new { ano = (Mes == 1 ? Ano - 1 : Ano), mes = (Mes == 1 ? 12 : Mes - 1) };
+            //object dataMesAnteior = new { ano = (Mes == 1 ? Ano - 1 : Ano), mes = (Mes == 1 ? 12 : Mes - 1) };
 
             object dataHoje = new { ano = DateTime.Now.Year, mes = DateTime.Now.Month, dia = DateTime.Now.Day };
             
-            return Smart.Format(estruturaNomesFicheiro, new { mes = Mes, ano = Ano, dataMesAnteior, dataHoje, empresa = empresaAutenticada, parametros = parametros });
+            return Smart.Format(estruturaNomesFicheiro, new { mes = Mes, ano = Ano/*, dataMesAnteior*/, dataHoje, empresa = empresaAutenticada, parametros = parametros });
         }
         private static string GenNovoNomeFicheiro(string estruturaNomesFicheiro)
         {
