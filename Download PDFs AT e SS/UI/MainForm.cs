@@ -211,6 +211,10 @@ namespace Download_PDFs_AT_e_SS
         {
             Process.Start("https://github.com/miguelfazenda/DownloadPDFs-ATeSS");
         }
+        private void linkiefatura_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://iefatura.tws.pt/");
+        }
 
         private void btnSelecionarTodasEmpresas_Click(object sender, EventArgs e)
         {

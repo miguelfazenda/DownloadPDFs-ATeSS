@@ -45,13 +45,14 @@
             this.menuItemEditarEmpresa = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemRemoverEmpresa = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemNovaEmpresa = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.abrirCertidaoPermanenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label6 = new System.Windows.Forms.Label();
             this.txtDownloadFolderPath = new System.Windows.Forms.TextBox();
             this.btnBrowseDownloadFolder = new System.Windows.Forms.Button();
             this.downloadBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.lblVersao = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.linkiefatura = new System.Windows.Forms.LinkLabel();
             this.linkGithub = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
             this.listaDeclaracoesListas = new System.Windows.Forms.CheckedListBox();
@@ -59,7 +60,6 @@
             this.listaDeclaracoesPedidosCertidao = new System.Windows.Forms.CheckedListBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.btnSelecionarTodasEmpresas = new System.Windows.Forms.Button();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ctxMenuEmpresa.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -218,6 +218,11 @@
             this.menuItemNovaEmpresa.Text = "Nova Empresa";
             this.menuItemNovaEmpresa.Click += new System.EventHandler(this.menuItemNovaEmpresa_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(210, 6);
+            // 
             // abrirCertidaoPermanenteToolStripMenuItem
             // 
             this.abrirCertidaoPermanenteToolStripMenuItem.Name = "abrirCertidaoPermanenteToolStripMenuItem";
@@ -264,16 +269,17 @@
             this.lblVersao.TabIndex = 14;
             this.lblVersao.Text = "Versão: x.x.x.x";
             // 
-            // linkLabel1
+            // linkiefatura
             // 
-            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(12, 463);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(339, 13);
-            this.linkLabel1.TabIndex = 16;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Conheça também o nosso importador do E-Fatura para a contabilidade";
+            this.linkiefatura.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkiefatura.AutoSize = true;
+            this.linkiefatura.Location = new System.Drawing.Point(12, 463);
+            this.linkiefatura.Name = "linkiefatura";
+            this.linkiefatura.Size = new System.Drawing.Size(339, 13);
+            this.linkiefatura.TabIndex = 16;
+            this.linkiefatura.TabStop = true;
+            this.linkiefatura.Text = "Conheça também o nosso importador do E-Fatura para a contabilidade";
+            this.linkiefatura.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkiefatura_LinkClicked);
             // 
             // linkGithub
             // 
@@ -340,11 +346,6 @@
             this.btnSelecionarTodasEmpresas.UseVisualStyleBackColor = true;
             this.btnSelecionarTodasEmpresas.Click += new System.EventHandler(this.btnSelecionarTodasEmpresas_Click);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(210, 6);
-            // 
             // Form1
             // 
             this.AcceptButton = this.btnExecutar;
@@ -358,7 +359,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.listaDeclaracoesListas);
             this.Controls.Add(this.linkGithub);
-            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.linkiefatura);
             this.Controls.Add(this.lblVersao);
             this.Controls.Add(this.btnBrowseDownloadFolder);
             this.Controls.Add(this.txtDownloadFolderPath);
@@ -408,7 +409,7 @@
         private System.Windows.Forms.Button btnBrowseDownloadFolder;
         private System.Windows.Forms.FolderBrowserDialog downloadBrowserDialog;
         private System.Windows.Forms.Label lblVersao;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel linkiefatura;
         private System.Windows.Forms.LinkLabel linkGithub;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckedListBox listaDeclaracoesListas;
