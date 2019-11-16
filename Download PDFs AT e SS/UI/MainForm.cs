@@ -54,7 +54,7 @@ namespace Download_PDFs_AT_e_SS
             txtDownloadFolderPath.Text = Properties.Settings.Default.PastaDownload;
 
             //Mostra a versão
-            lblVersao.Text = Util.GetVersion();
+            lblVersao.Text = "Versão: " + Util.GetVersion();
         }
 
         private void btnExecutar_Click(object sender, EventArgs e)

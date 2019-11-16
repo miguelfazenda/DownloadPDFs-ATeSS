@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.listaEmpresas = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -60,6 +61,7 @@
             this.listaDeclaracoesPedidosCertidao = new System.Windows.Forms.CheckedListBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.btnSelecionarTodasEmpresas = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
             this.ctxMenuEmpresa.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,9 +70,9 @@
             this.listaEmpresas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.listaEmpresas.FormattingEnabled = true;
-            this.listaEmpresas.Location = new System.Drawing.Point(12, 25);
+            this.listaEmpresas.Location = new System.Drawing.Point(12, 31);
             this.listaEmpresas.Name = "listaEmpresas";
-            this.listaEmpresas.Size = new System.Drawing.Size(173, 424);
+            this.listaEmpresas.Size = new System.Drawing.Size(173, 379);
             this.listaEmpresas.TabIndex = 0;
             this.listaEmpresas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listaEmpresas_MouseDown);
             // 
@@ -313,7 +315,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(411, 343);
+            this.label8.Location = new System.Drawing.Point(411, 339);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(104, 13);
             this.label8.TabIndex = 22;
@@ -322,7 +324,7 @@
             // listaDeclaracoesPedidosCertidao
             // 
             this.listaDeclaracoesPedidosCertidao.FormattingEnabled = true;
-            this.listaDeclaracoesPedidosCertidao.Location = new System.Drawing.Point(414, 359);
+            this.listaDeclaracoesPedidosCertidao.Location = new System.Drawing.Point(414, 355);
             this.listaDeclaracoesPedidosCertidao.Name = "listaDeclaracoesPedidosCertidao";
             this.listaDeclaracoesPedidosCertidao.Size = new System.Drawing.Size(173, 94);
             this.listaDeclaracoesPedidosCertidao.TabIndex = 21;
@@ -346,12 +348,21 @@
             this.btnSelecionarTodasEmpresas.UseVisualStyleBackColor = true;
             this.btnSelecionarTodasEmpresas.Click += new System.EventHandler(this.btnSelecionarTodasEmpresas_Click);
             // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(12, 413);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(173, 27);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "Carregue com o botão do lado direito para adicionar empresas";
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnExecutar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(596, 552);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.btnSelecionarTodasEmpresas);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.label8);
@@ -376,9 +387,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listaEmpresas);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Download PDFs AT e SS";
+            this.Text = "TWS Importador de Guias";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.ctxMenuEmpresa.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -419,6 +431,7 @@
         private System.Windows.Forms.Button btnSelecionarTodasEmpresas;
         private System.Windows.Forms.ToolStripMenuItem abrirCertidaoPermanenteToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.Label label9;
     }
 }
 
