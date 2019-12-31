@@ -59,7 +59,71 @@ namespace Download_PDFs_AT_e_SS
                 }                
             }
         }
-        
+
+        internal static void DownloadRecibosVerdesEmitidos(int ano, int mes)
+        {
+            string url = String.Format("https://irs.portaldasfinancas.gov.pt/recibos/portal/consultar#?modoConsulta=Prestador&nifPrestadorServicos={0}&isAutoSearchOn=on&dataEmissaoInicio={1}-12-30&dataEmissaoFim={1}-12-31",
+                empresaAutenticada.NIF, ano);
+
+            driver.Navigate().GoToUrl(url);
+
+            //Escolhe mostrar 50 items por pagina
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[2]/div/div/div/div/div/pf-table-size-picker/div/button")).Click();
+            driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[2]/div/div/div/div/div/pf-table-size-picker/div/ul/li[4]/a")).Click();
+            const int NUM_RESULTADOS_POR_PAG = 50;
+            Thread.Sleep(500);
+
+
+            int totalResultados = Int32.Parse(driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[1]/p")).Text);
+            int numeroPaginas = Int32.Parse(driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[3]/st-pagination/ul/li[last()-1]/a")).Text);
+
+            for(int pag = 0; pag<numeroPaginas; pag++)
+            {
+                //Se é a ultima página
+                bool ultimaPagina = pag == numeroPaginas - 1;
+
+                //Calcula o numero de resultados que devem estar nesta pagina
+                int numResultadosNestaPagina;
+                if (ultimaPagina)
+                {
+                    numResultadosNestaPagina = totalResultados % NUM_RESULTADOS_POR_PAG;
+                    if (numResultadosNestaPagina == 0)
+                        numResultadosNestaPagina = NUM_RESULTADOS_POR_PAG;
+                }
+                else
+                {
+                    numResultadosNestaPagina = NUM_RESULTADOS_POR_PAG;
+                }
+
+
+
+                for (int i = 0; i < numResultadosNestaPagina; i++)
+                {
+                    string xPathConjuntoBotoes = "/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tbody/tr[" + (i + 1) + "]/td[5]/div";
+
+                    //Obtem nr recibo
+                    string numRecibo = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tbody/tr[" + (i + 1) + "]/td[1]/p[1]")).Text;
+                    numRecibo = numRecibo.Split('º')[1].Trim();
+
+                    string nomeCliente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tbody/tr[" + (i + 1) + "]/td[1]/p[2]")).Text;
+
+                    object newNameParams = new { numRecibo, nomeClienteClipped = nomeCliente.Substring(0, 10) };
+                    
+                    //Transfere
+                    ExpectDownload();
+                    string dowloadURL = driver.FindElement(By.XPath(xPathConjuntoBotoes + "/ul/li[2]/a")).GetAttribute("href");
+                    ((IJavaScriptExecutor)driver).ExecuteScript("window.open(\"" + dowloadURL + "\")");
+                    WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES, newNameParams), Declaracao.AT_LISTA_RECIBOS_VERDES, 0);
+                }
+                
+                if (ultimaPagina)
+                    continue; //Não anda uma página para a frente se for a ultima
+                //Anda uma pagina para a frente
+                driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[3]/st-pagination/ul/li[last()]/a")).Click();
+            }
+
+        }
+
         const string XPATH_IES_BOTAO_OBTER = "/html/body/div/main/div/div[2]/div/section/div[3]/div[2]/div/div[3]/div/div/table/tbody/tr/td[3]/div/button";
         internal static void DownloadIES(int ano)
         {
