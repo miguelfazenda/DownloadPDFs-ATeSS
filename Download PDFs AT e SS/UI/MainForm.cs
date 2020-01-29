@@ -53,6 +53,8 @@ namespace Download_PDFs_AT_e_SS
             }
             txtDownloadFolderPath.Text = Properties.Settings.Default.PastaDownload;
 
+            chkHeadless.Checked = Properties.Settings.Default.BrowserHeadless;
+
             //Mostra a versão
             lblVersao.Text = "Versão: " + Util.GetVersion();
         }
@@ -86,14 +88,15 @@ namespace Download_PDFs_AT_e_SS
             }
             int mes = comboMes.SelectedIndex + 1;
 
-
+            bool headless = chkHeadless.Checked;
 
             //Envia lista de empresas e declarações selecionadas, ano e mes selecionados para o background worker
             bgWorker.RunWorkerAsync(new object[] { listaEmpresas.CheckedItems.Cast<Empresa>().ToArray(),
                 declaracoes,
                 ano,
                 mes,
-                txtDownloadFolderPath.Text } );
+                txtDownloadFolderPath.Text,
+                headless } );
 
             EnableDisableControlsDuringExecution(false);
         }
@@ -124,9 +127,10 @@ namespace Download_PDFs_AT_e_SS
             int ano = (int)argumentos[2];
             int mes = (int)argumentos[3];
             string downloadFolder = (string)argumentos[4];
+            bool headless = (bool)argumentos[5];
 
 
-            Downloader.Executar(empresas, declaracoes, ano, mes, downloadFolder, bgWorker.ReportProgress);
+            Downloader.Executar(empresas, declaracoes, ano, mes, downloadFolder, bgWorker.ReportProgress, headless);
         }
 
         private void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -204,6 +208,7 @@ namespace Download_PDFs_AT_e_SS
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.PastaDownload = txtDownloadFolderPath.Text;
+            Properties.Settings.Default.BrowserHeadless = chkHeadless.Checked;
             Properties.Settings.Default.Save();
         }
 

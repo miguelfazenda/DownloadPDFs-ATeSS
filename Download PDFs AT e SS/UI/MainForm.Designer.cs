@@ -62,6 +62,7 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.btnSelecionarTodasEmpresas = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
+            this.chkHeadless = new System.Windows.Forms.CheckBox();
             this.ctxMenuEmpresa.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -356,12 +357,22 @@
             this.label9.TabIndex = 25;
             this.label9.Text = "Carregue com o botão do lado direito para adicionar empresas";
             // 
+            // chkHeadless
+            // 
+            this.chkHeadless.Location = new System.Drawing.Point(472, 513);
+            this.chkHeadless.Name = "chkHeadless";
+            this.chkHeadless.Size = new System.Drawing.Size(112, 32);
+            this.chkHeadless.TabIndex = 26;
+            this.chkHeadless.Text = "Ocultar janela do browser";
+            this.chkHeadless.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnExecutar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(596, 552);
+            this.Controls.Add(this.chkHeadless);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.btnSelecionarTodasEmpresas);
             this.Controls.Add(this.progressBar);
@@ -432,6 +443,7 @@
         private System.Windows.Forms.ToolStripMenuItem abrirCertidaoPermanenteToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckBox chkHeadless;
     }
 }
 

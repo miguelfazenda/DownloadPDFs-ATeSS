@@ -46,7 +46,8 @@ namespace Download_PDFs_AT_e_SS
             Declaracao[] declaracoes,
             int ano, int mes,
             string downloadFolder,
-            Action<int> reportProgress)
+            Action<int> reportProgress,
+            bool headless)
         {
             filesToRename = new List<string>();
             logMessage = new StringBuilder();
@@ -63,7 +64,7 @@ namespace Download_PDFs_AT_e_SS
                 {
                     DownloadFolder = Path.Combine(downloadFolder, ano.ToString());
                     Directory.CreateDirectory(DownloadFolder);
-                    CriarDriver(DownloadFolder);
+                    CriarDriver(DownloadFolder, headless);
                     Autenticar(empresa, declaracoes);
                 }
                 catch (Exception ex)
@@ -260,7 +261,7 @@ namespace Download_PDFs_AT_e_SS
         }
 
         //Cria a instacia do driver(chrome)
-        private static void CriarDriver(string downloadFolder)
+        private static void CriarDriver(string downloadFolder, bool headless)
         {
             // this will make automatically download to the default folder.
             chromeOptions = new ChromeOptions();
@@ -272,7 +273,10 @@ namespace Download_PDFs_AT_e_SS
             chromeOptions.AddUserProfilePreference("safebrowsing.disable_download_protection", 1);
             chromeOptions.AddUserProfilePreference("credentials_enable_service", false);
             chromeOptions.AddUserProfilePreference("profile.password_manager_enabled", false);
-            
+            if(headless)
+                chromeOptions.AddArgument("--headless");
+
+
             //tentar --headless para nao mostrar nada
 
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();

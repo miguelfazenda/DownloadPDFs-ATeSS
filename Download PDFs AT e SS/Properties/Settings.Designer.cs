@@ -34,5 +34,17 @@ namespace Download_PDFs_AT_e_SS.Properties {
                 this["PastaDownload"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BrowserHeadless {
+            get {
+                return ((bool)(this["BrowserHeadless"]));
+            }
+            set {
+                this["BrowserHeadless"] = value;
+            }
+        }
     }
 }
