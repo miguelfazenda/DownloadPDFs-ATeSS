@@ -40,7 +40,8 @@ namespace Download_PDFs_AT_e_SS
         public static Declaracao AT_IVA = new Declaracao("IVA", TipoDeclaracao.Anual, Downloader.DownloadIVA, Autenticacao.AT);
 
         //public static Declaracao AT_LISTA_IMI_NotasCobranca = new Declaracao("IMI - Notas de cobrança", TipoDeclaracao.Lista, Downloader.DownloadIMINotasCobranca, Autenticacao.AT);
-        public static Declaracao AT_LISTA_RECIBOS_VERDES = new Declaracao("R. Verdes Emitidos", TipoDeclaracao.Lista, Downloader.DownloadRecibosVerdesEmitidos, Autenticacao.AT);
+        public static Declaracao AT_LISTA_RECIBOS_VERDES = new Declaracao("R. Verdes Emitidos - PDFs", TipoDeclaracao.Lista, Downloader.DownloadRecibosVerdesEmitidos, Autenticacao.AT);
+        public static Declaracao AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH = new Declaracao("R. Verdes Emitidos - Wintouch", TipoDeclaracao.Lista, Downloader.DownloadRecibosVerdesEmitidosWintouch, Autenticacao.AT);
 
         //Pedidos
         public static Declaracao AT_CerticaoDivida = new Declaracao("Certidão AT", TipoDeclaracao.Pedido, Downloader.DownloadCerticaoDivida, Autenticacao.AT);

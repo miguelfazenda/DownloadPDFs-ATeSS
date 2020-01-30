@@ -60,7 +60,10 @@ namespace Download_PDFs_AT_e_SS
             }
         }
 
-        internal static void DownloadRecibosVerdesEmitidos(int ano, int mes)
+        /**
+         * Esta função vai a cada recibo verde, navegando todas as páginas, e corre a action, dizendo qual o URL para transferir o PDF
+         */
+        internal static void RecibosVerdesEmitidosNavegarPorCadaRecibo(int ano, Action<string, string, string> action)
         {
             string url = String.Format("https://irs.portaldasfinancas.gov.pt/recibos/portal/consultar#?modoConsulta=Prestador&nifPrestadorServicos={0}&isAutoSearchOn=on&dataEmissaoInicio={1}-12-30&dataEmissaoFim={1}-12-31",
                 empresaAutenticada.NIF, ano);
@@ -68,6 +71,7 @@ namespace Download_PDFs_AT_e_SS
             driver.Navigate().GoToUrl(url);
 
             //Escolhe mostrar 50 items por pagina
+            Thread.Sleep(500);
             driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[2]/div/div/div/div/div/pf-table-size-picker/div/button")).Click();
             driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[2]/div/div/div/div/div/pf-table-size-picker/div/ul/li[4]/a")).Click();
             const int NUM_RESULTADOS_POR_PAG = 50;
@@ -77,7 +81,7 @@ namespace Download_PDFs_AT_e_SS
             int totalResultados = Int32.Parse(driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[1]/p")).Text);
             int numeroPaginas = Int32.Parse(driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[3]/st-pagination/ul/li[last()-1]/a")).Text);
 
-            for(int pag = 0; pag<numeroPaginas; pag++)
+            for (int pag = 0; pag < numeroPaginas; pag++)
             {
                 //Se é a ultima página
                 bool ultimaPagina = pag == numeroPaginas - 1;
@@ -107,21 +111,36 @@ namespace Download_PDFs_AT_e_SS
 
                     string nomeCliente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tbody/tr[" + (i + 1) + "]/td[1]/p[2]")).Text;
 
-                    object newNameParams = new { numRecibo, nomeClienteClipped = nomeCliente.Substring(0, 10) };
-                    
-                    //Transfere
-                    ExpectDownload();
-                    string dowloadURL = driver.FindElement(By.XPath(xPathConjuntoBotoes + "/ul/li[2]/a")).GetAttribute("href");
-                    ((IJavaScriptExecutor)driver).ExecuteScript("window.open(\"" + dowloadURL + "\")");
-                    WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES, newNameParams), Declaracao.AT_LISTA_RECIBOS_VERDES, 0);
+                    string downloadURL = driver.FindElement(By.XPath(xPathConjuntoBotoes + "/ul/li[2]/a")).GetAttribute("href");
+
+                    //Invoca a action
+                    action.Invoke(downloadURL, numRecibo, nomeCliente);
                 }
-                
+
                 if (ultimaPagina)
                     continue; //Não anda uma página para a frente se for a ultima
                 //Anda uma pagina para a frente
                 driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[3]/st-pagination/ul/li[last()]/a")).Click();
             }
+        }
 
+        public const int NOME_CLIENTE_CLIP_LENGTH = 10;
+
+        internal static void DownloadRecibosVerdesEmitidos(int ano, int mes)
+        {
+            RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, (string downloadURL, string numRecibo, string nomeCliente) =>
+            {
+                //Para cada recibo, transfere-o
+
+                //Os parametros que vao ser usados para criar o nome do PDF
+                string nomeClienteClipped = nomeCliente.Length > NOME_CLIENTE_CLIP_LENGTH ? nomeCliente.Substring(0, NOME_CLIENTE_CLIP_LENGTH) : nomeCliente;
+                object newNameParams = new { numRecibo, nomeClienteClipped };
+
+                //Transfere
+                ExpectDownload();
+                ((IJavaScriptExecutor)driver).ExecuteScript("window.open(\"" + downloadURL + "\")");
+                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES, newNameParams), Declaracao.AT_LISTA_RECIBOS_VERDES, 0);
+            });
         }
 
         const string XPATH_IES_BOTAO_OBTER = "/html/body/div/main/div/div[2]/div/section/div[3]/div[2]/div/div[3]/div/div/table/tbody/tr/td[3]/div/button";

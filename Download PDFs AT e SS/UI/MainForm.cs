@@ -1,4 +1,5 @@
 ﻿using AutoUpdaterDotNET;
+using Download_PDFs_AT_e_SS.Forms;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -110,6 +111,7 @@ namespace Download_PDFs_AT_e_SS
             btnExecutar.Enabled = en;
             btnBrowseDownloadFolder.Enabled = en;
             txtDownloadFolderPath.Enabled = en;
+            chkHeadless.Enabled = en;
         }
 
         /// <summary>
@@ -235,6 +237,12 @@ namespace Download_PDFs_AT_e_SS
         {
             Browser.CriarDriver();
             Browser.AbrePedidoCertidao(empresaRightClicked.CodigoCertidaoPermanente);
+        }
+
+        private void btnDefinicoes_Click(object sender, EventArgs e)
+        {
+            DefinicoesForm definicoesForm = new DefinicoesForm();
+            definicoesForm.ShowDialog();
         }
     }
 }

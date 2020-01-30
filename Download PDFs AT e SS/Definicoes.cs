@@ -24,7 +24,6 @@ namespace Download_PDFs_AT_e_SS
         //[JsonProperty("estruturaNomesFicheiros")]
         public static EstruturaNomesFicheiros nomesFicheiros;
         public static EstruturaNomesFicheiros nomesFicheirosDefault = new EstruturaNomesFicheiros(true);
-
         public static EstruturaNomesFicheiros estruturaNomesFicheiros
         {
             get
@@ -40,19 +39,102 @@ namespace Download_PDFs_AT_e_SS
             }
         }
 
+        [JsonProperty]
+        public static DefinicoesExportacao definicoesExportacao;
+
         public static void Load()
         {
             if (File.Exists(FICHEIRO_DEFINICOES))
             {
                 JsonConvert.DeserializeObject<Definicoes>(File.ReadAllText(FICHEIRO_DEFINICOES));
             }
-            else
-            {
+
+            if (estruturaNomesFicheiros == null)
                 estruturaNomesFicheiros = new EstruturaNomesFicheiros();
-            }
+            if (definicoesExportacao == null)
+                definicoesExportacao = new DefinicoesExportacao();
+
             estruturaNomesFicheiros.DefineValoresDefaultSeNaoDefinidos();
+        }
+
+        public static void Save()
+        {
             File.WriteAllText(FICHEIRO_DEFINICOES, JsonConvert.SerializeObject(new Definicoes(), Formatting.Indented));
         }
+    }
+
+    // Tipo documento(fatura-recibo, etc.) -> tipo Recibo Verde (Pagamento, Adiantamento, etc.)
+
+    class DefinicoesExportacao
+    {
+        [JsonProperty]
+        public DefinicoesExportTipoDoc defExportFaturaRecibo;
+        [JsonProperty]
+        public DefinicoesExportTipoDoc defExportFatura;
+        [JsonProperty]
+        public DefinicoesExportTipoDoc defExportRecibo;
+        
+        public DefinicoesExportacao()
+        {
+            defExportFaturaRecibo = new DefinicoesExportTipoDoc();
+            defExportFatura = new DefinicoesExportTipoDoc();
+            defExportRecibo = new DefinicoesExportTipoDoc();
+
+            defExportFaturaRecibo.defExportTipoPagamento.TipoDocumento = "Fatura-Recibo";
+            defExportFaturaRecibo.defExportTipoPagamento.TipoReciboVerde = "Pagamento";
+            defExportFaturaRecibo.defExportTipoAdiantamento.TipoDocumento = "Fatura-Recibo";
+            defExportFaturaRecibo.defExportTipoAdiantamento.TipoReciboVerde = "Adiantamento";
+            defExportFaturaRecibo.defExportTipoAdiantamentoPagamento.TipoDocumento = "Fatura-Recibo";
+            defExportFaturaRecibo.defExportTipoAdiantamentoPagamento.TipoReciboVerde = "Adiant. para despesas";
+
+            defExportFatura.defExportTipoPagamento.TipoDocumento = "Fatura";
+            defExportFatura.defExportTipoPagamento.TipoReciboVerde = "Pagamento";
+            defExportFatura.defExportTipoAdiantamento.TipoDocumento = "Fatura";
+            defExportFatura.defExportTipoAdiantamento.TipoReciboVerde = "Adiantamento";
+            defExportFatura.defExportTipoAdiantamentoPagamento.TipoDocumento = "Fatura";
+            defExportFatura.defExportTipoAdiantamentoPagamento.TipoReciboVerde = "Adiant. para despesas";
+
+            defExportRecibo.defExportTipoPagamento.TipoDocumento = "Recibo";
+            defExportRecibo.defExportTipoPagamento.TipoReciboVerde = "Pagamento";
+            defExportRecibo.defExportTipoAdiantamento.TipoDocumento = "Recibo";
+            defExportRecibo.defExportTipoAdiantamento.TipoReciboVerde = "Adiantamento";
+            defExportRecibo.defExportTipoAdiantamentoPagamento.TipoDocumento = "Recibo";
+            defExportRecibo.defExportTipoAdiantamentoPagamento.TipoReciboVerde = "Adiant. para despesas";
+        }
+    }
+
+    class DefinicoesExportTipoDoc
+    {
+        [JsonProperty]
+        public DefinicoesExportTipoReciboVerde defExportTipoPagamento;
+        [JsonProperty]
+        public DefinicoesExportTipoReciboVerde defExportTipoAdiantamento;
+        [JsonProperty]
+        public DefinicoesExportTipoReciboVerde defExportTipoAdiantamentoPagamento;
+
+        public DefinicoesExportTipoDoc()
+        {
+            defExportTipoPagamento = new DefinicoesExportTipoReciboVerde();
+            defExportTipoAdiantamento = new DefinicoesExportTipoReciboVerde();
+            defExportTipoAdiantamentoPagamento = new DefinicoesExportTipoReciboVerde();
+        }
+    }
+
+    class DefinicoesExportTipoReciboVerde
+    {
+        [JsonProperty]
+        public string TipoDocumento { get; set; }
+        public string TipoReciboVerde { get; set; } //Para apresentar na tabela das definicoes
+
+        [JsonProperty]
+        public string diario { get; set; }
+        public string tipoDoc { get; set; }
+        [JsonProperty]
+        public string contaValBase { get; set; }
+        public string contaIVA { get; set; }
+        public string contaSelo { get; set; }
+        public string contaIRS { get; set; }
+        public string contaValRecebida { get; set; }
     }
 
     class EstruturaNomesFicheiros

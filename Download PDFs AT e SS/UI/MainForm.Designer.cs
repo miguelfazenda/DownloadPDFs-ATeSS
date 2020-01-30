@@ -63,7 +63,10 @@
             this.btnSelecionarTodasEmpresas = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.chkHeadless = new System.Windows.Forms.CheckBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.btnDefinicoes = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuEmpresa.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // listaEmpresas
@@ -71,16 +74,16 @@
             this.listaEmpresas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.listaEmpresas.FormattingEnabled = true;
-            this.listaEmpresas.Location = new System.Drawing.Point(12, 31);
+            this.listaEmpresas.Location = new System.Drawing.Point(12, 58);
             this.listaEmpresas.Name = "listaEmpresas";
-            this.listaEmpresas.Size = new System.Drawing.Size(173, 379);
+            this.listaEmpresas.Size = new System.Drawing.Size(173, 409);
             this.listaEmpresas.TabIndex = 0;
             this.listaEmpresas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listaEmpresas_MouseDown);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(12, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 1;
@@ -89,7 +92,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(231, 69);
+            this.label2.Location = new System.Drawing.Point(231, 96);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 13);
             this.label2.TabIndex = 3;
@@ -100,15 +103,15 @@
             this.listaDeclaracoesMensais.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.listaDeclaracoesMensais.FormattingEnabled = true;
-            this.listaDeclaracoesMensais.Location = new System.Drawing.Point(234, 85);
+            this.listaDeclaracoesMensais.Location = new System.Drawing.Point(234, 112);
             this.listaDeclaracoesMensais.Name = "listaDeclaracoesMensais";
-            this.listaDeclaracoesMensais.Size = new System.Drawing.Size(173, 364);
+            this.listaDeclaracoesMensais.Size = new System.Drawing.Size(173, 394);
             this.listaDeclaracoesMensais.TabIndex = 2;
             // 
             // comboAno
             // 
             this.comboAno.FormattingEnabled = true;
-            this.comboAno.Location = new System.Drawing.Point(286, 12);
+            this.comboAno.Location = new System.Drawing.Point(286, 39);
             this.comboAno.Name = "comboAno";
             this.comboAno.Size = new System.Drawing.Size(121, 21);
             this.comboAno.TabIndex = 4;
@@ -116,7 +119,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(231, 15);
+            this.label3.Location = new System.Drawing.Point(231, 42);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 13);
             this.label3.TabIndex = 5;
@@ -125,7 +128,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(231, 42);
+            this.label4.Location = new System.Drawing.Point(231, 69);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(30, 13);
             this.label4.TabIndex = 7;
@@ -148,7 +151,7 @@
             "Outubro",
             "Novembro",
             "Dezembro"});
-            this.comboMes.Location = new System.Drawing.Point(286, 39);
+            this.comboMes.Location = new System.Drawing.Point(286, 66);
             this.comboMes.Name = "comboMes";
             this.comboMes.Size = new System.Drawing.Size(121, 21);
             this.comboMes.TabIndex = 6;
@@ -156,7 +159,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(410, 69);
+            this.label5.Location = new System.Drawing.Point(410, 96);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(104, 13);
             this.label5.TabIndex = 9;
@@ -165,7 +168,7 @@
             // listaDeclaracoesAnuais
             // 
             this.listaDeclaracoesAnuais.FormattingEnabled = true;
-            this.listaDeclaracoesAnuais.Location = new System.Drawing.Point(413, 85);
+            this.listaDeclaracoesAnuais.Location = new System.Drawing.Point(413, 112);
             this.listaDeclaracoesAnuais.Name = "listaDeclaracoesAnuais";
             this.listaDeclaracoesAnuais.Size = new System.Drawing.Size(173, 109);
             this.listaDeclaracoesAnuais.TabIndex = 8;
@@ -173,7 +176,7 @@
             // btnExecutar
             // 
             this.btnExecutar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExecutar.Location = new System.Drawing.Point(391, 517);
+            this.btnExecutar.Location = new System.Drawing.Point(391, 554);
             this.btnExecutar.Name = "btnExecutar";
             this.btnExecutar.Size = new System.Drawing.Size(75, 23);
             this.btnExecutar.TabIndex = 10;
@@ -237,7 +240,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 494);
+            this.label6.Location = new System.Drawing.Point(12, 531);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 13);
             this.label6.TabIndex = 11;
@@ -247,7 +250,7 @@
             // 
             this.txtDownloadFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDownloadFolderPath.Location = new System.Drawing.Point(119, 491);
+            this.txtDownloadFolderPath.Location = new System.Drawing.Point(119, 528);
             this.txtDownloadFolderPath.Name = "txtDownloadFolderPath";
             this.txtDownloadFolderPath.Size = new System.Drawing.Size(266, 20);
             this.txtDownloadFolderPath.TabIndex = 12;
@@ -255,7 +258,7 @@
             // btnBrowseDownloadFolder
             // 
             this.btnBrowseDownloadFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseDownloadFolder.Location = new System.Drawing.Point(391, 491);
+            this.btnBrowseDownloadFolder.Location = new System.Drawing.Point(391, 528);
             this.btnBrowseDownloadFolder.Name = "btnBrowseDownloadFolder";
             this.btnBrowseDownloadFolder.Size = new System.Drawing.Size(29, 20);
             this.btnBrowseDownloadFolder.TabIndex = 13;
@@ -266,7 +269,7 @@
             // lblVersao
             // 
             this.lblVersao.AutoSize = true;
-            this.lblVersao.Location = new System.Drawing.Point(512, 30);
+            this.lblVersao.Location = new System.Drawing.Point(512, 57);
             this.lblVersao.Name = "lblVersao";
             this.lblVersao.Size = new System.Drawing.Size(75, 13);
             this.lblVersao.TabIndex = 14;
@@ -276,7 +279,7 @@
             // 
             this.linkiefatura.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkiefatura.AutoSize = true;
-            this.linkiefatura.Location = new System.Drawing.Point(12, 463);
+            this.linkiefatura.Location = new System.Drawing.Point(12, 512);
             this.linkiefatura.Name = "linkiefatura";
             this.linkiefatura.Size = new System.Drawing.Size(339, 13);
             this.linkiefatura.TabIndex = 16;
@@ -288,7 +291,7 @@
             // 
             this.linkGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkGithub.AutoSize = true;
-            this.linkGithub.Location = new System.Drawing.Point(544, 488);
+            this.linkGithub.Location = new System.Drawing.Point(547, 500);
             this.linkGithub.Name = "linkGithub";
             this.linkGithub.Size = new System.Drawing.Size(40, 13);
             this.linkGithub.TabIndex = 18;
@@ -299,7 +302,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(410, 205);
+            this.label7.Location = new System.Drawing.Point(410, 232);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(37, 13);
             this.label7.TabIndex = 20;
@@ -308,7 +311,7 @@
             // listaDeclaracoesListas
             // 
             this.listaDeclaracoesListas.FormattingEnabled = true;
-            this.listaDeclaracoesListas.Location = new System.Drawing.Point(413, 221);
+            this.listaDeclaracoesListas.Location = new System.Drawing.Point(413, 248);
             this.listaDeclaracoesListas.Name = "listaDeclaracoesListas";
             this.listaDeclaracoesListas.Size = new System.Drawing.Size(173, 109);
             this.listaDeclaracoesListas.TabIndex = 19;
@@ -316,7 +319,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(411, 339);
+            this.label8.Location = new System.Drawing.Point(411, 366);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(104, 13);
             this.label8.TabIndex = 22;
@@ -325,7 +328,7 @@
             // listaDeclaracoesPedidosCertidao
             // 
             this.listaDeclaracoesPedidosCertidao.FormattingEnabled = true;
-            this.listaDeclaracoesPedidosCertidao.Location = new System.Drawing.Point(414, 355);
+            this.listaDeclaracoesPedidosCertidao.Location = new System.Drawing.Point(414, 382);
             this.listaDeclaracoesPedidosCertidao.Name = "listaDeclaracoesPedidosCertidao";
             this.listaDeclaracoesPedidosCertidao.Size = new System.Drawing.Size(173, 94);
             this.listaDeclaracoesPedidosCertidao.TabIndex = 21;
@@ -334,14 +337,14 @@
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(119, 519);
+            this.progressBar.Location = new System.Drawing.Point(119, 556);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(266, 20);
             this.progressBar.TabIndex = 23;
             // 
             // btnSelecionarTodasEmpresas
             // 
-            this.btnSelecionarTodasEmpresas.Location = new System.Drawing.Point(110, 4);
+            this.btnSelecionarTodasEmpresas.Location = new System.Drawing.Point(110, 31);
             this.btnSelecionarTodasEmpresas.Name = "btnSelecionarTodasEmpresas";
             this.btnSelecionarTodasEmpresas.Size = new System.Drawing.Size(75, 21);
             this.btnSelecionarTodasEmpresas.TabIndex = 24;
@@ -351,7 +354,7 @@
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(12, 413);
+            this.label9.Location = new System.Drawing.Point(12, 470);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(173, 27);
             this.label9.TabIndex = 25;
@@ -359,19 +362,37 @@
             // 
             // chkHeadless
             // 
-            this.chkHeadless.Location = new System.Drawing.Point(472, 513);
+            this.chkHeadless.Location = new System.Drawing.Point(472, 541);
             this.chkHeadless.Name = "chkHeadless";
             this.chkHeadless.Size = new System.Drawing.Size(112, 32);
             this.chkHeadless.TabIndex = 26;
             this.chkHeadless.Text = "Ocultar janela do browser";
             this.chkHeadless.UseVisualStyleBackColor = true;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnDefinicoes});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(596, 24);
+            this.menuStrip1.TabIndex = 27;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // btnDefinicoes
+            // 
+            this.btnDefinicoes.Name = "btnDefinicoes";
+            this.btnDefinicoes.Size = new System.Drawing.Size(74, 20);
+            this.btnDefinicoes.Text = "Definições";
+            this.btnDefinicoes.Click += new System.EventHandler(this.btnDefinicoes_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnExecutar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(596, 552);
+            this.ClientSize = new System.Drawing.Size(596, 589);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.chkHeadless);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.btnSelecionarTodasEmpresas);
@@ -399,11 +420,14 @@
             this.Controls.Add(this.listaEmpresas);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "TWS Importador de Guias";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.ctxMenuEmpresa.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -444,6 +468,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox chkHeadless;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem btnDefinicoes;
     }
 }
 
