@@ -152,6 +152,7 @@ namespace Download_PDFs_AT_e_SS
             string nomeFicheiro = Path.Combine(diretorio, GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES_WINTOUCH));
             using (StreamWriter fileStream = new StreamWriter(nomeFicheiro))
             {
+                fileStream.WriteLine("WCONTAB5.60");
                 foreach (ReciboVerde reciboVerde in recibosVerdes)
                 {
 
