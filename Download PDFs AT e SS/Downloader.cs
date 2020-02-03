@@ -28,6 +28,10 @@ namespace Download_PDFs_AT_e_SS
 
         internal static List<string> errors = new List<string>();
 
+        private static int numEmpresaAProcessar, totalEmpresas; //Para calcular o progresso
+        private static int numDeclaracaoAProcessar, totalDeclaracoes; //Para calcular o progresso
+        private static Action<int> reportProgress; //Funcao para reportar o progresso
+
         internal static StringBuilder logMessage;
         internal static void Log(string tipoDeclaracao, string message)
         {
@@ -49,15 +53,18 @@ namespace Download_PDFs_AT_e_SS
             Action<int> reportProgress,
             bool headless)
         {
+            Downloader.reportProgress = reportProgress;
             filesToRename = new List<string>();
             logMessage = new StringBuilder();
 
             Ano = ano;
             Mes = mes;
-
+            
+            totalEmpresas = empresas.Length;
             //Para cada empresa
-            for (int iEmpresa = 0; iEmpresa < empresas.Length; iEmpresa++)
+            for (int iEmpresa = 0; iEmpresa < totalEmpresas; iEmpresa++)
             {
+                iEmpresa = numEmpresaAProcessar;
                 Empresa empresa = empresas[iEmpresa];
                 //Cria a pasta, o driver e autentica essa empresa
                 try
@@ -74,10 +81,11 @@ namespace Download_PDFs_AT_e_SS
                 }
 
 
-                
+                totalDeclaracoes = declaracoes.Length;
                 //Para cada declaração executa o que tem a fazer
-                for(int iDeclaracao = 0; iDeclaracao < declaracoes.Length; iDeclaracao++)
+                for (int iDeclaracao = 0; iDeclaracao < declaracoes.Length; iDeclaracao++)
                 {
+                    numDeclaracaoAProcessar = iDeclaracao;
                     Declaracao declaracao = declaracoes[iDeclaracao];
                     try
                     {
@@ -92,8 +100,7 @@ namespace Download_PDFs_AT_e_SS
                         LogError(ex, empresa, declaracao);
                     }
 
-                    int progresso = (int)(((double)iEmpresa / empresas.Length + (((double)iDeclaracao/declaracoes.Length) /empresas.Length))*100);
-                    reportProgress(progresso);
+                    CalcularProgresso();
                 }
 
                 //Fecha o chrome quanto todas as transferências terminarem (já não existirem ficheiros ".crdownload")
@@ -115,6 +122,13 @@ namespace Download_PDFs_AT_e_SS
             FecharDriver();
         }
 
+        public static void CalcularProgresso()
+        {
+            int progresso = (int)
+                (((double)numEmpresaAProcessar / totalEmpresas + (((double)numDeclaracaoAProcessar / totalDeclaracoes) / totalEmpresas)) * 100);
+            reportProgress(progresso);
+        }
+
         static int numFilesInDownloadsFolder;
         internal static void ExpectDownload()
         {
@@ -133,15 +147,7 @@ namespace Download_PDFs_AT_e_SS
             //Espera que o ficheiro final esteja pronto
             Util.WaitForFileCountToBeGreaterThan(DownloadFolder, numFilesInDownloadsFolder);
 
-            string folderTipoDeclaracao = "";
-            if (declaracao.Tipo == Declaracao.TipoDeclaracao.Anual)
-                folderTipoDeclaracao = "Anuais";
-            else if (declaracao.Tipo == Declaracao.TipoDeclaracao.Mensal)
-                folderTipoDeclaracao = mes.ToString();
-            else if (declaracao.Tipo == Declaracao.TipoDeclaracao.Lista)
-                folderTipoDeclaracao = "Listas";
-            else if (declaracao.Tipo == Declaracao.TipoDeclaracao.Pedido)
-                folderTipoDeclaracao = "Pedidos";
+            string folderTipoDeclaracao = GetFolderTipoDeclaracao(declaracao, mes);
 
             var diretorio = Path.Combine(DownloadFolder, folderTipoDeclaracao,
                 empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
@@ -150,6 +156,20 @@ namespace Download_PDFs_AT_e_SS
             //Muda o nome
             Util.RenameLastModifiedFileInFolder(DownloadFolder, newName, diretorio);
             numFilesInDownloadsFolder++;
+        }
+
+        public static string GetFolderTipoDeclaracao(Declaracao declaracao, int mes)
+        {
+            if (declaracao.Tipo == Declaracao.TipoDeclaracao.Anual)
+                return "Anuais";
+            else if (declaracao.Tipo == Declaracao.TipoDeclaracao.Mensal)
+                return mes.ToString();
+            else if (declaracao.Tipo == Declaracao.TipoDeclaracao.Lista)
+                return "Listas";
+            else if (declaracao.Tipo == Declaracao.TipoDeclaracao.Pedido)
+                return "Pedidos";
+
+            return "A";
         }
 
         internal static void DownloadFundoCompDocPag(int ano, int mes)
@@ -273,7 +293,8 @@ namespace Download_PDFs_AT_e_SS
             chromeOptions.AddUserProfilePreference("safebrowsing.disable_download_protection", 1);
             chromeOptions.AddUserProfilePreference("credentials_enable_service", false);
             chromeOptions.AddUserProfilePreference("profile.password_manager_enabled", false);
-            if(headless)
+            chromeOptions.AddUserProfilePreference("profile.default_content_setting_values.images", 2);
+            if (headless)
                 chromeOptions.AddArgument("--headless");
 
 

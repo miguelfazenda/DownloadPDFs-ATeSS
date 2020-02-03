@@ -28,8 +28,8 @@ namespace Download_PDFs_AT_e_SS.Forms
             listaDefExport.Add(Definicoes.definicoesExportacao.defExportRecibo.defExportTipoAdiantamentoPagamento);
 
 
-            dataGridView1.DataSource = listaDefExport;
-            dataGridView1.CellEnter += (sender, e) => ((DataGridView)sender).BeginEdit(true);
+            dataGridViewDefExportacaoRecVerdes.DataSource = listaDefExport;
+            dataGridViewDefExportacaoRecVerdes.CellEnter += (sender, e) => ((DataGridView)sender).BeginEdit(true);
         }
 
         bool saveDefinicoes = false;

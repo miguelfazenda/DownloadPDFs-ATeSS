@@ -39,6 +39,7 @@ namespace Download_PDFs_AT_e_SS
                 else if (declacacao.Tipo == Declaracao.TipoDeclaracao.Lista)
                     listaDeclaracoesListas.Items.Add(declacacao);
             }
+            
             listaEmpresas.Items.AddRange(Dados.empresas.ToArray());
 
             //Preenche comboboxes ano e mês
@@ -150,6 +151,8 @@ namespace Download_PDFs_AT_e_SS
             }
 
             progressBar.Value = 0;
+
+            MessageBox.Show("Concluído!", "Concluído", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         Empresa empresaRightClicked;

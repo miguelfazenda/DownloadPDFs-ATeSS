@@ -130,7 +130,8 @@ namespace Download_PDFs_AT_e_SS
         public string diario { get; set; }
         public string tipoDoc { get; set; }
         [JsonProperty]
-        public string contaValBase { get; set; }
+        public string contaValBase { get; set; } // Usa esta conta caso o valor do IVA não seja 0
+        public string contaValBaseIsento { get; set; } // Usa esta conta caso o valor do IVA seja 0
         public string contaIVA { get; set; }
         public string contaSelo { get; set; }
         public string contaIRS { get; set; }
@@ -150,7 +151,8 @@ namespace Download_PDFs_AT_e_SS
         public string AT_IVA { get; set; }
         public string AT_CerticaoDivida { get; set; }
         public string AT_LISTA_RECIBOS_VERDES { get; set; }
-        
+        public string AT_LISTA_RECIBOS_VERDES_WINTOUCH { get; set; }
+
 
         public EstruturaNomesFicheiros()
         {
@@ -177,7 +179,9 @@ namespace Download_PDFs_AT_e_SS
             AT_IES = AT_IES != null ? AT_IES : "{ano}.{empresa.Codigo}.IES.{empresa.NIF}.pdf";
             AT_IVA = AT_IVA != null ? AT_IVA : "{ano}.{empresa.Codigo}.IVA {parametros.docAno} {parametros.docPeriodo} {parametros.docIdentif}.{empresa.NIF}.pdf";
 
-            AT_LISTA_RECIBOS_VERDES = AT_LISTA_RECIBOS_VERDES != null ? AT_LISTA_RECIBOS_VERDES : "{ano}.{empresa.Codigo}.Recibo Verde {parametros.numRecibo}.{parametros.nomeClienteClipped}.pdf";
+            AT_LISTA_RECIBOS_VERDES = AT_LISTA_RECIBOS_VERDES != null ? AT_LISTA_RECIBOS_VERDES : "{ano}.{mes}.{empresa.Codigo}.Recibo Verde {parametros.numRecibo}.{parametros.nomeClienteClipped}.pdf";
+            AT_LISTA_RECIBOS_VERDES_WINTOUCH = AT_LISTA_RECIBOS_VERDES_WINTOUCH != null ? AT_LISTA_RECIBOS_VERDES_WINTOUCH : "{ano}.{mes}.{empresa.Codigo}.Recibos Verdes.txt";
+            
 
             AT_CerticaoDivida = AT_CerticaoDivida != null ? AT_CerticaoDivida : "{empresa.Codigo}.CertidaoAT.{empresa.NIF}.{dataHoje.ano}.{dataHoje.mes}.{dataHoje.dia}.pdf";
         }

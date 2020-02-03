@@ -63,23 +63,44 @@ namespace Download_PDFs_AT_e_SS
         /**
          * Esta função vai a cada recibo verde, navegando todas as páginas, e corre a action, dizendo qual o URL para transferir o PDF
          */
-        internal static void RecibosVerdesEmitidosNavegarPorCadaRecibo(int ano, Action<string, string, string> action)
+        internal static void RecibosVerdesEmitidosNavegarPorCadaRecibo(int ano, int mes, Action<string, string, string> action)
         {
-            string url = String.Format("https://irs.portaldasfinancas.gov.pt/recibos/portal/consultar#?modoConsulta=Prestador&nifPrestadorServicos={0}&isAutoSearchOn=on&dataEmissaoInicio={1}-12-30&dataEmissaoFim={1}-12-31",
-                empresaAutenticada.NIF, ano);
+            int numDiasNoMes = DateTime.DaysInMonth(ano, mes);
+            string url = String.Format("https://irs.portaldasfinancas.gov.pt/recibos/portal/consultar#?modoConsulta=Prestador&nifPrestadorServicos={0}&isAutoSearchOn=on&dataEmissaoInicio={1}-{2}-01&dataEmissaoFim={1}-{2}-{3}",
+                empresaAutenticada.NIF, ano, mes, numDiasNoMes);
 
             driver.Navigate().GoToUrl(url);
+            driver.Navigate().GoToUrl(url);
+
+            Thread.Sleep(500);
+
+            var xPathTotalRecibos = By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[1]/p");
+            
+            //Se não encontrar o numero de recibos, é porque há um erro. Faz log desse erro
+            if (!Util.IsElementPresent(driver, xPathTotalRecibos))
+            {
+                LogError(driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[2]")).Text);
+                return;
+            }
+
+            int totalResultados = Int32.Parse(driver.FindElement(xPathTotalRecibos).Text);
+            if (totalResultados == 0)
+                return;
 
             //Escolhe mostrar 50 items por pagina
-            Thread.Sleep(500);
             driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[2]/div/div/div/div/div/pf-table-size-picker/div/button")).Click();
             driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[2]/div/div/div/div/div/pf-table-size-picker/div/ul/li[4]/a")).Click();
             const int NUM_RESULTADOS_POR_PAG = 50;
             Thread.Sleep(500);
 
-
-            int totalResultados = Int32.Parse(driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[1]/p")).Text);
-            int numeroPaginas = Int32.Parse(driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[3]/st-pagination/ul/li[last()-1]/a")).Text);
+            //Obtem o numero de paginas
+            var xPathNumeroPaginas = By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[3]/st-pagination/ul/li[last()-1]/a");
+            int numeroPaginas = 1;
+            if (Util.IsElementPresent(driver, xPathNumeroPaginas))
+                numeroPaginas = Int32.Parse(driver.FindElement(xPathNumeroPaginas).Text);
+            else
+                numeroPaginas = 1; //Se não houver nada a dizer o numero de paginas é porque é a única
+            
 
             for (int pag = 0; pag < numeroPaginas; pag++)
             {
@@ -128,7 +149,7 @@ namespace Download_PDFs_AT_e_SS
 
         internal static void DownloadRecibosVerdesEmitidos(int ano, int mes)
         {
-            RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, (string downloadURL, string numRecibo, string nomeCliente) =>
+            RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, mes, (string downloadURL, string numRecibo, string nomeCliente) =>
             {
                 //Para cada recibo, transfere-o
 
@@ -139,7 +160,7 @@ namespace Download_PDFs_AT_e_SS
                 //Transfere
                 ExpectDownload();
                 ((IJavaScriptExecutor)driver).ExecuteScript("window.open(\"" + downloadURL + "\")");
-                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES, newNameParams), Declaracao.AT_LISTA_RECIBOS_VERDES, 0);
+                WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES, newNameParams), Declaracao.AT_LISTA_RECIBOS_VERDES, mes);
             });
         }
 

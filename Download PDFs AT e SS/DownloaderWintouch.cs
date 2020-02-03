@@ -28,69 +28,56 @@ namespace Download_PDFs_AT_e_SS
             culture.NumberFormat.NumberGroupSeparator = ".";
         }
 
-
-
         internal static void DownloadRecibosVerdesEmitidosWintouch(int ano, int mes)
         {
-            try
-            {
-                List<string> detailsURLs = new List<string>();
+            List<string> detailsURLs = new List<string>();
 
-                //Vai à lista de recibos verdes, para obter o URL de detalhes de cada um
-                RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, (string downloadURL, string numRecibo, string nomeCliente) =>
+            //Vai à lista de recibos verdes, para obter o URL de detalhes de cada um
+            RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, mes, (string downloadURL, string numRecibo, string nomeCliente) =>
+            {
+                //Para cada recibo, regista o URL para obter os detalhes
+                string detailsUrl = downloadURL.Replace("/imprimir/", "/detalhe/").Replace("/normal", "");
+                detailsURLs.Add(detailsUrl);
+            });
+
+            //Para contar os totais por tipo de recibo
+            RecibosVerdesValores totaisTipoPagamento = new RecibosVerdesValores();
+            RecibosVerdesValores totaisTipoAdiantamento = new RecibosVerdesValores();
+            RecibosVerdesValores totaisTipoAdiantamentoPagamento = new RecibosVerdesValores();
+            RecibosVerdesValores totaisAnulados = new RecibosVerdesValores();
+
+            List<ReciboVerde> recibosVerdes = new List<ReciboVerde>(detailsURLs.Count);
+                
+            //List<ReciboVerde> recibosVerdes = (List<ReciboVerde>)new BinaryFormatter().Deserialize(new FileStream(@"C:\users\miguel\desktop\a.txt", FileMode.Open, FileAccess.Read));//TEMP
+
+            //Depois de obtidos os URLs, navegar até à pagina de detalhes de cada um
+            foreach (string detailsUrl in detailsURLs)
                 {
-                    //Para cada recibo, regista o URL para obter os detalhes
-                    string detailsUrl = downloadURL.Replace("/imprimir/", "/detalhe/").Replace("/normal", "");
-                    detailsURLs.Add(detailsUrl);
-                });
+                    //Obtem os dados do recibo verde, navegado até à página de detalhes
+                    ReciboVerde reciboVerde = ObterDadosReciboVerde(detailsUrl);
+                    recibosVerdes.Add(reciboVerde);
+            /*foreach (ReciboVerde reciboVerde in recibosVerdes)  //TEMP
+            {*///TEMP
 
-                //Para contar os totais por tipo de recibo
-                RecibosVerdesValores totaisTipoPagamento = new RecibosVerdesValores();
-                RecibosVerdesValores totaisTipoAdiantamento = new RecibosVerdesValores();
-                RecibosVerdesValores totaisTipoAdiantamentoPagamento = new RecibosVerdesValores();
-                RecibosVerdesValores totaisAnulados = new RecibosVerdesValores();
-
-                List<ReciboVerde> recibosVerdes = new List<ReciboVerde>(detailsURLs.Count);
-
-                /*IFormatter formatter = new BinaryFormatter();//TEMP
-                Stream stream = new FileStream(@"C:\users\miguel\desktop\a.txt", FileMode.Open, FileAccess.Read);//TEMP
-                List<ReciboVerde> recibosVerdes = (List<ReciboVerde>)formatter.Deserialize(stream);//TEMP*/
-
-                //Depois de obtidos os URLs, navegar até à pagina de detalhes de cada um
-                 foreach (string detailsUrl in detailsURLs)
-                 {
-                     //Obtem os dados do recibo verde, navegado até à página de detalhes
-                     ReciboVerde reciboVerde = ObterDadosReciboVerde(detailsUrl);
-                     recibosVerdes.Add(reciboVerde);
-                /*foreach (ReciboVerde reciboVerde in recibosVerdes)  //TEMP
-                {*///TEMP
-
-                    
-
-                    //Soma os valores para obter um total por tipo de recibo verde
-                    if (!reciboVerde.anulado)
-                    {
-                        if (reciboVerde.tipoReciboVerde == TipoReciboVerde.Pagamento)
-                            totaisTipoPagamento += reciboVerde.valores;
-                        if (reciboVerde.tipoReciboVerde == TipoReciboVerde.Adiantamento)
-                            totaisTipoAdiantamento += reciboVerde.valores;
-                        if (reciboVerde.tipoReciboVerde == TipoReciboVerde.AdiantamentoPagamento)
-                            totaisTipoAdiantamentoPagamento += reciboVerde.valores;
-                    }
-                    else
-                    {
-                        totaisAnulados += reciboVerde.valores;
-                    }
+                //Soma os valores para obter um total por tipo de recibo verde
+                if (!reciboVerde.anulado)
+                {
+                    if (reciboVerde.tipoReciboVerde == TipoReciboVerde.Pagamento)
+                        totaisTipoPagamento += reciboVerde.valores;
+                    if (reciboVerde.tipoReciboVerde == TipoReciboVerde.Adiantamento)
+                        totaisTipoAdiantamento += reciboVerde.valores;
+                    if (reciboVerde.tipoReciboVerde == TipoReciboVerde.AdiantamentoPagamento)
+                        totaisTipoAdiantamentoPagamento += reciboVerde.valores;
                 }
+                else
+                {
+                    totaisAnulados += reciboVerde.valores;
+                }
+            }
 
-                new BinaryFormatter().Serialize(new FileStream(@"c:\users\miguel\desktop\b.txt", FileMode.Create), recibosVerdes);
-                //GeraTabelaTxtTotais(totaisTipoPagamento, totaisTipoAdiantamento, totaisTipoAdiantamentoPagamento, totaisAnulados);
-                ExportarFicheiroWintouch(recibosVerdes);
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            //new BinaryFormatter().Serialize(new FileStream(@"c:\users\miguel\desktop\b.txt", FileMode.Create), recibosVerdes);
+            GeraTabelaTxtTotais(totaisTipoPagamento, totaisTipoAdiantamento, totaisTipoAdiantamentoPagamento, totaisAnulados, mes);
+            ExportarFicheiroWintouch(recibosVerdes, mes);
         }
 
         /**
@@ -156,9 +143,14 @@ namespace Download_PDFs_AT_e_SS
         /// <summary>
         /// Esta função exporta os recibos para o ficheiro do wintouch
         /// </summary>
-        private static void ExportarFicheiroWintouch(List<ReciboVerde> recibosVerdes)
+        private static void ExportarFicheiroWintouch(List<ReciboVerde> recibosVerdes, int mes)
         {
-            using(StreamWriter fileStream = new StreamWriter(@"C:\users\miguel\desktop\w.txt"))
+            var diretorio = Path.Combine(DownloadFolder, GetFolderTipoDeclaracao(Declaracao.AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH, mes),
+               empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
+            Directory.CreateDirectory(diretorio);
+
+            string nomeFicheiro = Path.Combine(diretorio, GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES_WINTOUCH));
+            using (StreamWriter fileStream = new StreamWriter(nomeFicheiro))
             {
                 foreach (ReciboVerde reciboVerde in recibosVerdes)
                 {
@@ -183,8 +175,18 @@ namespace Download_PDFs_AT_e_SS
             int numLinha = 1;
 
             //Exporta uma linha para cada valor (valor base, iva, etc.)
-            WintouchExportarLinha(fileStream, reciboVerde, definicoesExportTipoReciboVerde, 
-                reciboVerde.valores.valorBase, definicoesExportTipoReciboVerde.contaValBase, 'C', ref numLinha);
+
+            //A conta para qual o valor base vai depende se o valor de IVA é 0 ou não
+            if(reciboVerde.valores.valorIvaContinente > 0)
+            {
+                WintouchExportarLinha(fileStream, reciboVerde, definicoesExportTipoReciboVerde,
+                    reciboVerde.valores.valorBase, definicoesExportTipoReciboVerde.contaValBase, 'C', ref numLinha);
+            }
+            else
+            {
+                WintouchExportarLinha(fileStream, reciboVerde, definicoesExportTipoReciboVerde,
+                    reciboVerde.valores.valorBase, definicoesExportTipoReciboVerde.contaValBaseIsento, 'C', ref numLinha);
+            }
 
             WintouchExportarLinha(fileStream, reciboVerde, definicoesExportTipoReciboVerde, 
                 reciboVerde.valores.valorIvaContinente, definicoesExportTipoReciboVerde.contaIVA, 'C', ref numLinha);
@@ -293,7 +295,8 @@ namespace Download_PDFs_AT_e_SS
         /// <param name="totaisAnulados"></param>
         private static void GeraTabelaTxtTotais(RecibosVerdesValores totaisTipoPagamento,
             RecibosVerdesValores totaisTipoAdiantamento, RecibosVerdesValores totaisTipoAdiantamentoPagamento,
-            RecibosVerdesValores totaisAnulados)
+            RecibosVerdesValores totaisAnulados,
+            int mes)
         {
             //Gera a tabela para txt
 
@@ -328,10 +331,10 @@ namespace Download_PDFs_AT_e_SS
 
             var text = ConsoleTableBuilder.From(table).Export().ToString();
 
-            var diretorio = Path.Combine(DownloadFolder, "Listas",
+            var diretorio = Path.Combine(DownloadFolder, GetFolderTipoDeclaracao(Declaracao.AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH, mes),
                empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
             Directory.CreateDirectory(diretorio);
-            File.WriteAllText(Path.Combine(diretorio, "recibos verdes.txt"), text);
+            File.WriteAllText(Path.Combine(diretorio, "totais.txt"), text);
         }
     }
 
