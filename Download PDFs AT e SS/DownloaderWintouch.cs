@@ -25,6 +25,7 @@ namespace Download_PDFs_AT_e_SS
         public readonly static CultureInfo culture = new CultureInfo("pt-PT");
         static Downloader()
         {
+            culture.NumberFormat.NumberDecimalSeparator = ",";
             culture.NumberFormat.NumberGroupSeparator = ".";
         }
 
@@ -263,7 +264,7 @@ namespace Download_PDFs_AT_e_SS
             int serie = 1;
 
             string descricao = reciboVerde.descricao.Length > 50 ? reciboVerde.descricao.Substring(0, 50) : reciboVerde.descricao;
-            
+
             int dia = reciboVerde.dataEmissao.Day;
             int mes = reciboVerde.dataEmissao.Month;
             string contibuinte = reciboVerde.nifAdquirente;
@@ -272,7 +273,7 @@ namespace Download_PDFs_AT_e_SS
             nomeEntidade = nomeEntidade.Length > 50 ? nomeEntidade.Substring(0, 50) : nomeEntidade;
 
             int anulado = reciboVerde.anulado ? 1 : 0;
-            
+
             string valorStr = String.Format("{0,18:F2}", valor).Replace(",", ".");
             //                            diario            serie             descric       nat  dia     mes      contrib       numLinha     nomeenti anulado
             string linha = String.Format("{0,10}{1,20}{2,20}{3,4}{4,10}{5,-20}{6,-50}{7,18}{8,1}{9,2:D2}{10,2:D2}{11,-20}F{12,20}{13,1}{14,5}{15,20}{16,-50}{17,1}",

@@ -64,7 +64,6 @@ namespace Download_PDFs_AT_e_SS
             //Para cada empresa
             for (int iEmpresa = 0; iEmpresa < totalEmpresas; iEmpresa++)
             {
-                iEmpresa = numEmpresaAProcessar;
                 Empresa empresa = empresas[iEmpresa];
                 //Cria a pasta, o driver e autentica essa empresa
                 try
