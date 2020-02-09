@@ -62,14 +62,22 @@ namespace Download_PDFs_AT_e_SS
 
         /**
          * Esta função vai a cada recibo verde, navegando todas as páginas, e corre a action, dizendo qual o URL para transferir o PDF
+         * ModoConsulta: Prestador ou Adquirente
          */
-        internal static void RecibosVerdesEmitidosNavegarPorCadaRecibo(int ano, int mes, Action<string, string, string> action)
+        internal static void RecibosVerdesEmitidosNavegarPorCadaRecibo(int ano, int mes, TipoReciboVerdePrestOUAdquir modoConsulta, Action<string, string, string> action)
         {
             int numDiasNoMes = DateTime.DaysInMonth(ano, mes);
-            string url = String.Format("https://irs.portaldasfinancas.gov.pt/recibos/portal/consultar#?modoConsulta=Prestador&nifPrestadorServicos={0}&isAutoSearchOn=on&dataEmissaoInicio={1}-{2}-01&dataEmissaoFim={1}-{2}-{3}",
-                empresaAutenticada.NIF, ano, mes, numDiasNoMes);
+
+            string url = String.Format("https://irs.portaldasfinancas.gov.pt/recibos/portal/consultar#?isAutoSearchOn=on&dataEmissaoInicio={0}-{1}-01&dataEmissaoFim={0}-{1}-{2}",
+                ano, mes, numDiasNoMes);
+
+            if(modoConsulta == TipoReciboVerdePrestOUAdquir.Prestador)
+                url += String.Format("&modoConsulta=Prestador&nifPrestadorServicos={0}", empresaAutenticada.NIF);
+            else
+                url += String.Format("&modoConsulta=Adquirente&nifAdquirente={0}", empresaAutenticada.NIF);
 
             driver.Navigate().GoToUrl(url);
+            Thread.Sleep(500);
             driver.Navigate().GoToUrl(url);
 
             Thread.Sleep(500);
@@ -149,7 +157,7 @@ namespace Download_PDFs_AT_e_SS
 
         internal static void DownloadRecibosVerdesEmitidos(int ano, int mes)
         {
-            RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, mes, (string downloadURL, string numRecibo, string nomeCliente) =>
+            RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, mes, TipoReciboVerdePrestOUAdquir.Prestador, (string downloadURL, string numRecibo, string nomeCliente) =>
             {
                 //Para cada recibo, transfere-o
 

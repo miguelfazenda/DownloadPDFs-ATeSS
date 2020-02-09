@@ -40,7 +40,9 @@ namespace Download_PDFs_AT_e_SS
         }
 
         [JsonProperty]
-        public static DefinicoesExportacao definicoesExportacao;
+        public static DefinicoesExportacao definicoesExportacaoPrestador;
+        [JsonProperty]
+        public static DefinicoesExportacao definicoesExportacaoAdquirente;
 
         public static void Load()
         {
@@ -51,8 +53,10 @@ namespace Download_PDFs_AT_e_SS
 
             if (estruturaNomesFicheiros == null)
                 estruturaNomesFicheiros = new EstruturaNomesFicheiros();
-            if (definicoesExportacao == null)
-                definicoesExportacao = new DefinicoesExportacao();
+            if (definicoesExportacaoPrestador == null)
+                definicoesExportacaoPrestador = new DefinicoesExportacao();
+            if (definicoesExportacaoAdquirente == null)
+                definicoesExportacaoAdquirente = new DefinicoesExportacao();
 
             estruturaNomesFicheiros.DefineValoresDefaultSeNaoDefinidos();
         }
@@ -151,7 +155,8 @@ namespace Download_PDFs_AT_e_SS
         public string AT_IVA { get; set; }
         public string AT_CerticaoDivida { get; set; }
         public string AT_LISTA_RECIBOS_VERDES { get; set; }
-        public string AT_LISTA_RECIBOS_VERDES_WINTOUCH { get; set; }
+        public string AT_LISTA_RECIBOS_VERDES_WINTOUCH_PRESTADOS { get; set; }
+        public string AT_LISTA_RECIBOS_VERDES_WINTOUCH_ADQUIRIDOS { get; set; }
 
 
         public EstruturaNomesFicheiros()
@@ -180,8 +185,9 @@ namespace Download_PDFs_AT_e_SS
             AT_IVA = AT_IVA != null ? AT_IVA : "{ano}.{empresa.Codigo}.IVA {parametros.docAno} {parametros.docPeriodo} {parametros.docIdentif}.{empresa.NIF}.pdf";
 
             AT_LISTA_RECIBOS_VERDES = AT_LISTA_RECIBOS_VERDES != null ? AT_LISTA_RECIBOS_VERDES : "{ano}.{mes}.{empresa.Codigo}.Recibo Verde {parametros.numRecibo}.{parametros.nomeClienteClipped}.pdf";
-            AT_LISTA_RECIBOS_VERDES_WINTOUCH = AT_LISTA_RECIBOS_VERDES_WINTOUCH != null ? AT_LISTA_RECIBOS_VERDES_WINTOUCH : "{ano}.{mes}.{empresa.Codigo}.Recibos Verdes.txt";
-            
+            AT_LISTA_RECIBOS_VERDES_WINTOUCH_PRESTADOS = AT_LISTA_RECIBOS_VERDES_WINTOUCH_PRESTADOS != null ? AT_LISTA_RECIBOS_VERDES_WINTOUCH_PRESTADOS : "{ano}.{mes}.{empresa.Codigo}.Recibos Verdes Emitidos.txt";
+            AT_LISTA_RECIBOS_VERDES_WINTOUCH_ADQUIRIDOS = AT_LISTA_RECIBOS_VERDES_WINTOUCH_ADQUIRIDOS != null ? AT_LISTA_RECIBOS_VERDES_WINTOUCH_ADQUIRIDOS : "{ano}.{mes}.{empresa.Codigo}.Recibos Verdes Adquiridos.txt";
+
 
             AT_CerticaoDivida = AT_CerticaoDivida != null ? AT_CerticaoDivida : "{empresa.Codigo}.CertidaoAT.{empresa.NIF}.{dataHoje.ano}.{dataHoje.mes}.{dataHoje.dia}.pdf";
         }

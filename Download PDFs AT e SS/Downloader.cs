@@ -311,6 +311,7 @@ namespace Download_PDFs_AT_e_SS
             if (driver == null)
                 return;
 
+            driver.Close();
             driver.Quit();
             empresaAutenticada = null;
             driver = null;

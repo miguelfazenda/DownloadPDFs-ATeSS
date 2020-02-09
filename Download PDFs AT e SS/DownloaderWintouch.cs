@@ -29,12 +29,18 @@ namespace Download_PDFs_AT_e_SS
             culture.NumberFormat.NumberGroupSeparator = ".";
         }
 
-        internal static void DownloadRecibosVerdesEmitidosWintouch(int ano, int mes)
+        internal static void DownloadRecibosVerdesEmitidosWintouchPrestados(int ano, int mes) =>
+            DownloadRecibosVerdesEmitidosWintouch(ano, mes, TipoReciboVerdePrestOUAdquir.Prestador);
+        internal static void DownloadRecibosVerdesEmitidosWintouchAdquiridos(int ano, int mes) =>
+            DownloadRecibosVerdesEmitidosWintouch(ano, mes, TipoReciboVerdePrestOUAdquir.Adquirente);
+
+        //Tipo: Prestador e Adquirente
+        internal static void DownloadRecibosVerdesEmitidosWintouch(int ano, int mes, TipoReciboVerdePrestOUAdquir tipo)
         {
             List<string> detailsURLs = new List<string>();
 
             //Vai à lista de recibos verdes, para obter o URL de detalhes de cada um
-            RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, mes, (string downloadURL, string numRecibo, string nomeCliente) =>
+            RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, mes, tipo, (string downloadURL, string numRecibo, string nomeCliente) =>
             {
                 //Para cada recibo, regista o URL para obter os detalhes
                 string detailsUrl = downloadURL.Replace("/imprimir/", "/detalhe/").Replace("/normal", "");
@@ -48,17 +54,15 @@ namespace Download_PDFs_AT_e_SS
             RecibosVerdesValores totaisAnulados = new RecibosVerdesValores();
 
             List<ReciboVerde> recibosVerdes = new List<ReciboVerde>(detailsURLs.Count);
-                
+
             //List<ReciboVerde> recibosVerdes = (List<ReciboVerde>)new BinaryFormatter().Deserialize(new FileStream(@"C:\users\miguel\desktop\a.txt", FileMode.Open, FileAccess.Read));//TEMP
 
             //Depois de obtidos os URLs, navegar até à pagina de detalhes de cada um
             foreach (string detailsUrl in detailsURLs)
-                {
-                    //Obtem os dados do recibo verde, navegado até à página de detalhes
-                    ReciboVerde reciboVerde = ObterDadosReciboVerde(detailsUrl);
-                    recibosVerdes.Add(reciboVerde);
-            /*foreach (ReciboVerde reciboVerde in recibosVerdes)  //TEMP
-            {*///TEMP
+            {
+                //Obtem os dados do recibo verde, navegado até à página de detalhes
+                ReciboVerde reciboVerde = ObterDadosReciboVerde(detailsUrl, tipo);
+                recibosVerdes.Add(reciboVerde);
 
                 //Soma os valores para obter um total por tipo de recibo verde
                 if (!reciboVerde.anulado)
@@ -77,19 +81,21 @@ namespace Download_PDFs_AT_e_SS
             }
 
             //new BinaryFormatter().Serialize(new FileStream(@"c:\users\miguel\desktop\b.txt", FileMode.Create), recibosVerdes);
-            GeraTabelaTxtTotais(totaisTipoPagamento, totaisTipoAdiantamento, totaisTipoAdiantamentoPagamento, totaisAnulados, mes);
-            ExportarFicheiroWintouch(recibosVerdes, mes);
+            GeraTabelaTxtTotais(totaisTipoPagamento, totaisTipoAdiantamento, totaisTipoAdiantamentoPagamento, totaisAnulados, mes, tipo);
+            ExportarFicheiroWintouch(recibosVerdes, mes, tipo);
         }
 
         /**
          * Esta função navega até à pagina de detalhes, e obtem os dados do recibo, 
+         * tipo: Prestador ou Adquirente
          **/
-        private static ReciboVerde ObterDadosReciboVerde(string detailsUrl)
+        private static ReciboVerde ObterDadosReciboVerde(string detailsUrl, TipoReciboVerdePrestOUAdquir tipo)
         {
             driver.Navigate().GoToUrl(detailsUrl);
 
             ReciboVerde reciboVerde = new ReciboVerde();
             reciboVerde.detailsUrl = detailsUrl;
+            reciboVerde.tipo = tipo; // Prestador ou Adquirente
 
             //Obter dados
             string[] doc = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[1]/div[1]/h1")).Text.Split(' ');
@@ -109,6 +115,7 @@ namespace Download_PDFs_AT_e_SS
             reciboVerde.nifAdquirente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[4]/div[2]/div[1]/div[1]/dl/dd")).Text;
             reciboVerde.descricao = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[3]/dl/dd")).Text;
             reciboVerde.nomeAdquirente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[4]/div[2]/div[1]/div[2]/dl/dd")).Text;
+            reciboVerde.nomeTrasmitente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[3]/div[2]/div/div[2]/dl/dd")).Text;
 
             //Obtem as string que têm os valores
             string valorBaseStr = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[4]/dl/div[2]/dd")).Text;
@@ -144,13 +151,19 @@ namespace Download_PDFs_AT_e_SS
         /// <summary>
         /// Esta função exporta os recibos para o ficheiro do wintouch
         /// </summary>
-        private static void ExportarFicheiroWintouch(List<ReciboVerde> recibosVerdes, int mes)
+        private static void ExportarFicheiroWintouch(List<ReciboVerde> recibosVerdes, int mes, TipoReciboVerdePrestOUAdquir tipo)
         {
-            var diretorio = Path.Combine(DownloadFolder, GetFolderTipoDeclaracao(Declaracao.AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH, mes),
+
+            var diretorio = Path.Combine(DownloadFolder, GetFolderTipoDeclaracao(Declaracao.AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH_PRESTADOS, mes),
                empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
             Directory.CreateDirectory(diretorio);
 
-            string nomeFicheiro = Path.Combine(diretorio, GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES_WINTOUCH));
+            string nomeFicheiro;
+            if (tipo == TipoReciboVerdePrestOUAdquir.Adquirente)
+                nomeFicheiro = Path.Combine(diretorio, GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES_WINTOUCH_ADQUIRIDOS));
+            else
+                nomeFicheiro = Path.Combine(diretorio, GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.AT_LISTA_RECIBOS_VERDES_WINTOUCH_PRESTADOS));
+
             using (StreamWriter fileStream = new StreamWriter(nomeFicheiro))
             {
                 fileStream.WriteLine("WCONTAB5.60");
@@ -214,19 +227,26 @@ namespace Download_PDFs_AT_e_SS
         /// <returns></returns>
         private static DefinicoesExportTipoReciboVerde ObterDefinicoesExportacaoRecibo(ReciboVerde reciboVerde)
         {
+            //Seleciona se usa as definicoes de Prestador ou Adquirente
+            DefinicoesExportacao definicoesExportacaoTipo;
+            if (reciboVerde.tipo == TipoReciboVerdePrestOUAdquir.Prestador)
+                definicoesExportacaoTipo = Definicoes.definicoesExportacaoPrestador;
+            else
+                definicoesExportacaoTipo = Definicoes.definicoesExportacaoAdquirente;
+
             //Obtem para que conta cada valor deve ir, etc.
             //Seleciona consoante o tipo de documento (fatura-recibo, etc.)
-            DefinicoesExportTipoDoc defExportFaturaRecibo = new DefinicoesExportTipoDoc();
+            DefinicoesExportTipoDoc defExportFaturaRecibo;
             switch (reciboVerde.tipoDoc)
             {
                 case "Fatura-Recibo":
-                    defExportFaturaRecibo = Definicoes.definicoesExportacao.defExportFaturaRecibo;
+                    defExportFaturaRecibo = definicoesExportacaoTipo.defExportFaturaRecibo;
                     break;
                 case "Fatura":
-                    defExportFaturaRecibo = Definicoes.definicoesExportacao.defExportFatura;
+                    defExportFaturaRecibo = definicoesExportacaoTipo.defExportFatura;
                     break;
                 case "Recibo":
-                    defExportFaturaRecibo = Definicoes.definicoesExportacao.defExportRecibo;
+                    defExportFaturaRecibo = definicoesExportacaoTipo.defExportRecibo;
                     break;
                 default:
                     throw new Exception(String.Format("Não está previsto o tipo documento {0}", reciboVerde.tipoDoc));
@@ -267,9 +287,20 @@ namespace Download_PDFs_AT_e_SS
 
             int dia = reciboVerde.dataEmissao.Day;
             int mes = reciboVerde.dataEmissao.Month;
-            string contibuinte = reciboVerde.nifAdquirente;
 
-            string nomeEntidade = reciboVerde.nomeAdquirente;
+            string contibuinte;
+            string nomeEntidade;
+            if (reciboVerde.tipo == TipoReciboVerdePrestOUAdquir.Adquirente)
+            {
+                contibuinte = reciboVerde.nifTransmitente;
+                nomeEntidade = reciboVerde.nomeTrasmitente;
+            }
+            else
+            {
+                contibuinte = reciboVerde.nifAdquirente;
+                nomeEntidade = reciboVerde.nomeAdquirente;
+
+            }
             nomeEntidade = nomeEntidade.Length > 50 ? nomeEntidade.Substring(0, 50) : nomeEntidade;
 
             int anulado = reciboVerde.anulado ? 1 : 0;
@@ -295,10 +326,11 @@ namespace Download_PDFs_AT_e_SS
         /// <param name="totaisTipoAdiantamento"></param>
         /// <param name="totaisTipoAdiantamentoPagamento"></param>
         /// <param name="totaisAnulados"></param>
+        /// <param name="tipo">Prestador ou Adquirente</param>
         private static void GeraTabelaTxtTotais(RecibosVerdesValores totaisTipoPagamento,
             RecibosVerdesValores totaisTipoAdiantamento, RecibosVerdesValores totaisTipoAdiantamentoPagamento,
             RecibosVerdesValores totaisAnulados,
-            int mes)
+            int mes, TipoReciboVerdePrestOUAdquir tipo)
         {
             //Gera a tabela para txt
 
@@ -312,7 +344,7 @@ namespace Download_PDFs_AT_e_SS
             table.Columns.Add("IRS", typeof(decimal));
             table.Columns.Add("Recebido", typeof(decimal));
 
-            table.Rows.Add("Fatura-Recibo", totaisTipoPagamento.valorBase, totaisTipoPagamento.valorIvaContinente,
+            table.Rows.Add("Pagamento", totaisTipoPagamento.valorBase, totaisTipoPagamento.valorIvaContinente,
                 totaisTipoPagamento.impostoSelo, totaisTipoPagamento.irsSemRetencao,
                 totaisTipoPagamento.importanciaRecebida);
 
@@ -333,10 +365,17 @@ namespace Download_PDFs_AT_e_SS
 
             var text = ConsoleTableBuilder.From(table).Export().ToString();
 
-            var diretorio = Path.Combine(DownloadFolder, GetFolderTipoDeclaracao(Declaracao.AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH, mes),
+            var diretorio = Path.Combine(DownloadFolder, GetFolderTipoDeclaracao(Declaracao.AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH_PRESTADOS, mes),
                empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
             Directory.CreateDirectory(diretorio);
-            File.WriteAllText(Path.Combine(diretorio, "totais.txt"), text);
+
+            string nomeFicheiro;
+            if(tipo == TipoReciboVerdePrestOUAdquir.Adquirente)
+                nomeFicheiro = "Totais adquiridos.txt";
+            else
+                nomeFicheiro = "Totais emitidos.txt";
+
+            File.WriteAllText(Path.Combine(diretorio, nomeFicheiro), text);
         }
     }
 
@@ -369,15 +408,25 @@ namespace Download_PDFs_AT_e_SS
         AdiantamentoPagamento
     }
 
+    enum TipoReciboVerdePrestOUAdquir
+    {
+        Prestador = 0,
+        Adquirente = 1
+    }
+
     [Serializable()]
     class ReciboVerde
     {
+        
+
         public string tipoDoc, numDoc;
-        public string nifTransmitente, nifAdquirente, descricao, nomeAdquirente;
+        public string nifTransmitente, nifAdquirente, descricao, nomeAdquirente, nomeTrasmitente;
         public DateTime dataEmissao, dataTransmissao;
         public string detailsUrl;
         public bool anulado;
         public RecibosVerdesValores valores;
         public TipoReciboVerde tipoReciboVerde;
+
+        public TipoReciboVerdePrestOUAdquir tipo; //Prestador ou Adquirente (PRESTADOR ou ADQUIRENTE)
     }
 }

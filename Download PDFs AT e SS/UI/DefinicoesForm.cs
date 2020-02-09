@@ -16,20 +16,26 @@ namespace Download_PDFs_AT_e_SS.Forms
         {
             InitializeComponent();
 
+            gridViewClassifEmitidos.DataSource = CriaListaElementosClassificacao(Definicoes.definicoesExportacaoPrestador);
+            gridViewClassifEmitidos.CellEnter += (sender, e) => ((DataGridView)sender).BeginEdit(true);
+
+            gridViewClassifAdquridos.DataSource = CriaListaElementosClassificacao(Definicoes.definicoesExportacaoAdquirente);
+            gridViewClassifAdquridos.CellEnter += (sender, e) => ((DataGridView)sender).BeginEdit(true);
+        }
+
+        private BindingList<DefinicoesExportTipoReciboVerde> CriaListaElementosClassificacao(DefinicoesExportacao definicoesExportacao)
+        {
             BindingList<DefinicoesExportTipoReciboVerde> listaDefExport = new BindingList<DefinicoesExportTipoReciboVerde>();
-            listaDefExport.Add(Definicoes.definicoesExportacao.defExportFaturaRecibo.defExportTipoPagamento);
-            listaDefExport.Add(Definicoes.definicoesExportacao.defExportFaturaRecibo.defExportTipoAdiantamento);
-            listaDefExport.Add(Definicoes.definicoesExportacao.defExportFaturaRecibo.defExportTipoAdiantamentoPagamento);
-            listaDefExport.Add(Definicoes.definicoesExportacao.defExportFatura.defExportTipoPagamento);
-            listaDefExport.Add(Definicoes.definicoesExportacao.defExportFatura.defExportTipoAdiantamento);
-            listaDefExport.Add(Definicoes.definicoesExportacao.defExportFatura.defExportTipoAdiantamentoPagamento);
-            listaDefExport.Add(Definicoes.definicoesExportacao.defExportRecibo.defExportTipoPagamento);
-            listaDefExport.Add(Definicoes.definicoesExportacao.defExportRecibo.defExportTipoAdiantamento);
-            listaDefExport.Add(Definicoes.definicoesExportacao.defExportRecibo.defExportTipoAdiantamentoPagamento);
-
-
-            dataGridViewDefExportacaoRecVerdes.DataSource = listaDefExport;
-            dataGridViewDefExportacaoRecVerdes.CellEnter += (sender, e) => ((DataGridView)sender).BeginEdit(true);
+            listaDefExport.Add(definicoesExportacao.defExportFaturaRecibo.defExportTipoPagamento);
+            listaDefExport.Add(definicoesExportacao.defExportFaturaRecibo.defExportTipoAdiantamento);
+            listaDefExport.Add(definicoesExportacao.defExportFaturaRecibo.defExportTipoAdiantamentoPagamento);
+            listaDefExport.Add(definicoesExportacao.defExportFatura.defExportTipoPagamento);
+            listaDefExport.Add(definicoesExportacao.defExportFatura.defExportTipoAdiantamento);
+            listaDefExport.Add(definicoesExportacao.defExportFatura.defExportTipoAdiantamentoPagamento);
+            listaDefExport.Add(definicoesExportacao.defExportRecibo.defExportTipoPagamento);
+            listaDefExport.Add(definicoesExportacao.defExportRecibo.defExportTipoAdiantamento);
+            listaDefExport.Add(definicoesExportacao.defExportRecibo.defExportTipoAdiantamentoPagamento);
+            return listaDefExport;
         }
 
         bool saveDefinicoes = false;

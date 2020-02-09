@@ -33,7 +33,8 @@ namespace Download_PDFs_AT_e_SS
         public static Declaracao SS_ExtratoRemun = new Declaracao("Extrato de remunerações", TipoDeclaracao.Mensal, Downloader.DownloadExtratoRemuneracoes, Autenticacao.SSDireta);
         public static Declaracao SS_FundosComp_DocPag = new Declaracao("Fundos de comp. - Doc. Pagamento", TipoDeclaracao.Mensal, Downloader.DownloadFundoCompDocPag, Autenticacao.SSFundosCompensacao);
         public static Declaracao AT_LISTA_RECIBOS_VERDES = new Declaracao("R. Verdes Emitidos - PDFs", TipoDeclaracao.Mensal, Downloader.DownloadRecibosVerdesEmitidos, Autenticacao.AT);
-        public static Declaracao AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH = new Declaracao("R. Verdes Emitidos - Wintouch", TipoDeclaracao.Mensal, Downloader.DownloadRecibosVerdesEmitidosWintouch, Autenticacao.AT);
+        public static Declaracao AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH_PRESTADOS = new Declaracao("R. Verdes Emitidos - Wintouch", TipoDeclaracao.Mensal, Downloader.DownloadRecibosVerdesEmitidosWintouchPrestados, Autenticacao.AT);
+        public static Declaracao AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH_ADQUIRIDOS = new Declaracao("R. Verdes Adquiridos - Wintouch", TipoDeclaracao.Mensal, Downloader.DownloadRecibosVerdesEmitidosWintouchAdquiridos, Autenticacao.AT);
 
         //Anuais
         public static Declaracao AT_IRS = new Declaracao("IRS - Modelo 3", TipoDeclaracao.Anual, Downloader.DownloadIRS, Autenticacao.AT);
