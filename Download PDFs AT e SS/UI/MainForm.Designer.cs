@@ -65,6 +65,7 @@
             this.chkHeadless = new System.Windows.Forms.CheckBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.btnDefinicoes = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemConsultarEmpresa = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuEmpresa.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -196,12 +197,13 @@
             // 
             this.ctxMenuEmpresa.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemEditarEmpresa,
+            this.menuItemConsultarEmpresa,
             this.menuItemRemoverEmpresa,
             this.menuItemNovaEmpresa,
             this.toolStripSeparator1,
             this.abrirCertidaoPermanenteToolStripMenuItem});
             this.ctxMenuEmpresa.Name = "ctxMenuEmpresa";
-            this.ctxMenuEmpresa.Size = new System.Drawing.Size(214, 98);
+            this.ctxMenuEmpresa.Size = new System.Drawing.Size(214, 142);
             // 
             // menuItemEditarEmpresa
             // 
@@ -386,6 +388,13 @@
             this.btnDefinicoes.Text = "Definições";
             this.btnDefinicoes.Click += new System.EventHandler(this.btnDefinicoes_Click);
             // 
+            // menuItemConsultarEmpresa
+            // 
+            this.menuItemConsultarEmpresa.Name = "menuItemConsultarEmpresa";
+            this.menuItemConsultarEmpresa.Size = new System.Drawing.Size(213, 22);
+            this.menuItemConsultarEmpresa.Text = "Consultar";
+            this.menuItemConsultarEmpresa.Click += new System.EventHandler(this.menuItemConsultarEmpresa_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnExecutar;
@@ -470,6 +479,7 @@
         private System.Windows.Forms.CheckBox chkHeadless;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem btnDefinicoes;
+        private System.Windows.Forms.ToolStripMenuItem menuItemConsultarEmpresa;
     }
 }
 

@@ -19,7 +19,7 @@ namespace Download_PDFs_AT_e_SS
         /// 
         /// </summary>
         /// <param name="empresaAEditar">Se for null é porque estamos a criar uma empresa nova. O resultado será colocado na empresaAEditar</param>
-        public FormEditarEmpresa(Empresa empresaAEditar)
+        public FormEditarEmpresa(Empresa empresaAEditar, bool consultarApenas)
         {
             if (empresaAEditar == null)
             {
@@ -34,6 +34,19 @@ namespace Download_PDFs_AT_e_SS
 
             InitializeComponent();
             this.DialogResult = DialogResult.Cancel;
+
+            //Se estiver no modo de consultar não deixa alterar
+            if(consultarApenas)
+            {
+                this.Text = "Consultar dados da empresa";
+                foreach (Control x in this.Controls)
+                {
+                    if (x is TextBox)
+                    {
+                        ((TextBox)x).ReadOnly = true;
+                    }
+                }
+            }
         }
 
         private void FormEditarEmpresa_Load(object sender, EventArgs e)

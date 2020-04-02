@@ -181,7 +181,7 @@ namespace Download_PDFs_AT_e_SS
 
         private void menuItemEditarEmpresa_Click(object sender, EventArgs e)
         {
-            new FormEditarEmpresa(empresaRightClicked).ShowDialog();
+            new FormEditarEmpresa(empresaRightClicked, false).ShowDialog();
         }
 
         private void menuItemRemoverEmpresa_Click(object sender, EventArgs e)
@@ -194,7 +194,7 @@ namespace Download_PDFs_AT_e_SS
 
         private void menuItemNovaEmpresa_Click(object sender, EventArgs e)
         {
-            if(new FormEditarEmpresa(null).ShowDialog() == DialogResult.OK)
+            if(new FormEditarEmpresa(null, false).ShowDialog() == DialogResult.OK)
             {
                 listaEmpresas.Items.Add(Dados.empresas.Last());
             }
@@ -246,6 +246,11 @@ namespace Download_PDFs_AT_e_SS
         {
             DefinicoesForm definicoesForm = new DefinicoesForm();
             definicoesForm.ShowDialog();
+        }
+
+        private void menuItemConsultarEmpresa_Click(object sender, EventArgs e)
+        {
+            new FormEditarEmpresa(empresaRightClicked, true).ShowDialog();
         }
     }
 }
