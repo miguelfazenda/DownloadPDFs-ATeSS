@@ -39,13 +39,16 @@ namespace Download_PDFs_AT_e_SS
             if(consultarApenas)
             {
                 this.Text = "Consultar dados da empresa";
-                foreach (Control x in this.Controls)
+                List<TextBox> textBoxesToSetReadonly = new List<TextBox>();
+                textBoxesToSetReadonly.AddRange(this.Controls.OfType<TextBox>());
+                textBoxesToSetReadonly.AddRange(groupBox1.Controls.OfType<TextBox>());
+                foreach (Control x in textBoxesToSetReadonly)
                 {
-                    if (x is TextBox)
-                    {
-                        ((TextBox)x).ReadOnly = true;
-                    }
+                    ((TextBox)x).ReadOnly = true;
                 }
+
+                btnCancel.Visible = false;
+                btnOK.Visible = false;
             }
         }
 

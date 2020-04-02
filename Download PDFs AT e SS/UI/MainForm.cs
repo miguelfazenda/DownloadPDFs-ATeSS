@@ -164,6 +164,7 @@ namespace Download_PDFs_AT_e_SS
             bool empresaSelecionada = (index != ListBox.NoMatches);
 
             menuItemEditarEmpresa.Visible = empresaSelecionada;
+            menuItemConsultarEmpresa.Visible = empresaSelecionada;
             menuItemRemoverEmpresa.Visible = empresaSelecionada;
 
             if (empresaSelecionada)
