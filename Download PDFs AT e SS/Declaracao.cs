@@ -32,6 +32,7 @@ namespace Download_PDFs_AT_e_SS
         public static Declaracao AT_Retencoes = new Declaracao("Retenções", TipoDeclaracao.Mensal, Downloader.DownloadRetencoes, Autenticacao.AT);
         public static Declaracao SS_ExtratoRemun = new Declaracao("Extrato de remunerações", TipoDeclaracao.Mensal, Downloader.DownloadExtratoRemuneracoes, Autenticacao.SSDireta);
         public static Declaracao SS_FundosComp_DocPag = new Declaracao("Fundos de comp. - Doc. Pagamento", TipoDeclaracao.Mensal, Downloader.DownloadFundoCompDocPag, Autenticacao.SSFundosCompensacao);
+
         public static Declaracao AT_LISTA_RECIBOS_VERDES = new Declaracao("R. Verdes Emitidos - PDFs", TipoDeclaracao.Mensal, Downloader.DownloadRecibosVerdesEmitidos, Autenticacao.AT);
         public static Declaracao AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH_PRESTADOS = new Declaracao("R. Verdes Emitidos - Wintouch", TipoDeclaracao.Mensal, Downloader.DownloadRecibosVerdesEmitidosWintouchPrestados, Autenticacao.AT);
         public static Declaracao AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH_ADQUIRIDOS = new Declaracao("R. Verdes Adquiridos - Wintouch", TipoDeclaracao.Mensal, Downloader.DownloadRecibosVerdesEmitidosWintouchAdquiridos, Autenticacao.AT);
@@ -45,7 +46,9 @@ namespace Download_PDFs_AT_e_SS
 
         //Pedidos
         public static Declaracao AT_CerticaoDivida = new Declaracao("Certidão AT", TipoDeclaracao.Pedido, Downloader.DownloadCerticaoDivida, Autenticacao.AT);
-
+        public static Declaracao SS_Pedir_Certidao = new Declaracao("SS Pedir certidão", TipoDeclaracao.Pedido, Downloader.SSPedirCertidao, Autenticacao.SSDireta);
+        public static Declaracao SS_Transferir_Ultima_Certidao = new Declaracao("SS Tranferir última certidão", TipoDeclaracao.Pedido, Downloader.SSDownloadUltimaCertidao, Autenticacao.SSDireta);
+        
         public string Nome { get; set; }
         public TipoDeclaracao Tipo { get; set; } //Se é mensal, anual, pedido, etc.
 

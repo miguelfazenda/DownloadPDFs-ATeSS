@@ -154,9 +154,14 @@ namespace Download_PDFs_AT_e_SS
         public string AT_IES { get; set; }
         public string AT_IVA { get; set; }
         public string AT_CerticaoDivida { get; set; }
+        public string SS_Transferir_Ultima_Certidao { get; set; }
+        
+        
         public string AT_LISTA_RECIBOS_VERDES { get; set; }
         public string AT_LISTA_RECIBOS_VERDES_WINTOUCH_PRESTADOS { get; set; }
         public string AT_LISTA_RECIBOS_VERDES_WINTOUCH_ADQUIRIDOS { get; set; }
+
+
 
 
         public EstruturaNomesFicheiros()
@@ -188,8 +193,8 @@ namespace Download_PDFs_AT_e_SS
             AT_LISTA_RECIBOS_VERDES_WINTOUCH_PRESTADOS = AT_LISTA_RECIBOS_VERDES_WINTOUCH_PRESTADOS != null ? AT_LISTA_RECIBOS_VERDES_WINTOUCH_PRESTADOS : "{ano}.{mes}.{empresa.Codigo}.Recibos Verdes Emitidos.txt";
             AT_LISTA_RECIBOS_VERDES_WINTOUCH_ADQUIRIDOS = AT_LISTA_RECIBOS_VERDES_WINTOUCH_ADQUIRIDOS != null ? AT_LISTA_RECIBOS_VERDES_WINTOUCH_ADQUIRIDOS : "{ano}.{mes}.{empresa.Codigo}.Recibos Verdes Adquiridos.txt";
 
-
             AT_CerticaoDivida = AT_CerticaoDivida != null ? AT_CerticaoDivida : "{empresa.Codigo}.CertidaoAT.{empresa.NIF}.{dataHoje.ano}.{dataHoje.mes}.{dataHoje.dia}.pdf";
+            SS_Transferir_Ultima_Certidao = SS_Transferir_Ultima_Certidao != null ? SS_Transferir_Ultima_Certidao : "{empresa.Codigo}.CertidaoSS.{empresa.NIF}.{parametros.ano}.{parametros.mes}.{parametros.dia}.pdf";
         }
     }
 }

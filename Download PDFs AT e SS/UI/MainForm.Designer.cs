@@ -44,6 +44,7 @@
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.ctxMenuEmpresa = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemEditarEmpresa = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemConsultarEmpresa = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemRemoverEmpresa = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemNovaEmpresa = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -65,7 +66,7 @@
             this.chkHeadless = new System.Windows.Forms.CheckBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.btnDefinicoes = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemConsultarEmpresa = new System.Windows.Forms.ToolStripMenuItem();
+            this.procurarAtualizaçõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuEmpresa.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -203,7 +204,7 @@
             this.toolStripSeparator1,
             this.abrirCertidaoPermanenteToolStripMenuItem});
             this.ctxMenuEmpresa.Name = "ctxMenuEmpresa";
-            this.ctxMenuEmpresa.Size = new System.Drawing.Size(214, 142);
+            this.ctxMenuEmpresa.Size = new System.Drawing.Size(214, 120);
             // 
             // menuItemEditarEmpresa
             // 
@@ -211,6 +212,13 @@
             this.menuItemEditarEmpresa.Size = new System.Drawing.Size(213, 22);
             this.menuItemEditarEmpresa.Text = "Editar";
             this.menuItemEditarEmpresa.Click += new System.EventHandler(this.menuItemEditarEmpresa_Click);
+            // 
+            // menuItemConsultarEmpresa
+            // 
+            this.menuItemConsultarEmpresa.Name = "menuItemConsultarEmpresa";
+            this.menuItemConsultarEmpresa.Size = new System.Drawing.Size(213, 22);
+            this.menuItemConsultarEmpresa.Text = "Consultar";
+            this.menuItemConsultarEmpresa.Click += new System.EventHandler(this.menuItemConsultarEmpresa_Click);
             // 
             // menuItemRemoverEmpresa
             // 
@@ -293,7 +301,7 @@
             // 
             this.linkGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkGithub.AutoSize = true;
-            this.linkGithub.Location = new System.Drawing.Point(547, 500);
+            this.linkGithub.Location = new System.Drawing.Point(547, 512);
             this.linkGithub.Name = "linkGithub";
             this.linkGithub.Size = new System.Drawing.Size(40, 13);
             this.linkGithub.TabIndex = 18;
@@ -374,7 +382,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnDefinicoes});
+            this.btnDefinicoes,
+            this.procurarAtualizaçõesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(596, 24);
@@ -388,12 +397,12 @@
             this.btnDefinicoes.Text = "Definições";
             this.btnDefinicoes.Click += new System.EventHandler(this.btnDefinicoes_Click);
             // 
-            // menuItemConsultarEmpresa
+            // procurarAtualizaçõesToolStripMenuItem
             // 
-            this.menuItemConsultarEmpresa.Name = "menuItemConsultarEmpresa";
-            this.menuItemConsultarEmpresa.Size = new System.Drawing.Size(213, 22);
-            this.menuItemConsultarEmpresa.Text = "Consultar";
-            this.menuItemConsultarEmpresa.Click += new System.EventHandler(this.menuItemConsultarEmpresa_Click);
+            this.procurarAtualizaçõesToolStripMenuItem.Name = "procurarAtualizaçõesToolStripMenuItem";
+            this.procurarAtualizaçõesToolStripMenuItem.Size = new System.Drawing.Size(131, 20);
+            this.procurarAtualizaçõesToolStripMenuItem.Text = "Procurar atualizações";
+            this.procurarAtualizaçõesToolStripMenuItem.Click += new System.EventHandler(this.procurarAtualizaçõesToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -480,6 +489,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem btnDefinicoes;
         private System.Windows.Forms.ToolStripMenuItem menuItemConsultarEmpresa;
+        private System.Windows.Forms.ToolStripMenuItem procurarAtualizaçõesToolStripMenuItem;
     }
 }
 

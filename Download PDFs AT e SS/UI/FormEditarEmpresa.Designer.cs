@@ -47,10 +47,10 @@
             this.label8 = new System.Windows.Forms.Label();
             this.txtNomeDoResponsavel = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtCodigoCertidaoPermanente = new System.Windows.Forms.TextBox();
             this.txtEmailDoResponsavel = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtCodigoCertidaoPermanente = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -107,7 +107,7 @@
             this.txtCodigo.Location = new System.Drawing.Point(60, 38);
             this.txtCodigo.Name = "txtCodigo";
             this.txtCodigo.Size = new System.Drawing.Size(171, 20);
-            this.txtCodigo.TabIndex = 4;
+            this.txtCodigo.TabIndex = 3;
             // 
             // label3
             // 
@@ -139,7 +139,7 @@
             this.txtNIF.Location = new System.Drawing.Point(60, 64);
             this.txtNIF.Name = "txtNIF";
             this.txtNIF.Size = new System.Drawing.Size(171, 20);
-            this.txtNIF.TabIndex = 6;
+            this.txtNIF.TabIndex = 4;
             // 
             // label5
             // 
@@ -155,7 +155,7 @@
             this.txtNISS.Location = new System.Drawing.Point(142, 15);
             this.txtNISS.Name = "txtNISS";
             this.txtNISS.Size = new System.Drawing.Size(181, 20);
-            this.txtNISS.TabIndex = 16;
+            this.txtNISS.TabIndex = 7;
             // 
             // label6
             // 
@@ -171,7 +171,7 @@
             this.txtPasswordAT.Location = new System.Drawing.Point(89, 90);
             this.txtPasswordAT.Name = "txtPasswordAT";
             this.txtPasswordAT.Size = new System.Drawing.Size(142, 20);
-            this.txtPasswordAT.TabIndex = 14;
+            this.txtPasswordAT.TabIndex = 5;
             // 
             // label7
             // 
@@ -187,7 +187,7 @@
             this.txtTelefoneDoResponsavel.Location = new System.Drawing.Point(142, 93);
             this.txtTelefoneDoResponsavel.Name = "txtTelefoneDoResponsavel";
             this.txtTelefoneDoResponsavel.Size = new System.Drawing.Size(181, 20);
-            this.txtTelefoneDoResponsavel.TabIndex = 12;
+            this.txtTelefoneDoResponsavel.TabIndex = 10;
             // 
             // label8
             // 
@@ -203,7 +203,7 @@
             this.txtNomeDoResponsavel.Location = new System.Drawing.Point(142, 67);
             this.txtNomeDoResponsavel.Name = "txtNomeDoResponsavel";
             this.txtNomeDoResponsavel.Size = new System.Drawing.Size(181, 20);
-            this.txtNomeDoResponsavel.TabIndex = 10;
+            this.txtNomeDoResponsavel.TabIndex = 9;
             // 
             // groupBox1
             // 
@@ -224,6 +224,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Segurança Social";
             // 
+            // txtEmailDoResponsavel
+            // 
+            this.txtEmailDoResponsavel.Location = new System.Drawing.Point(142, 119);
+            this.txtEmailDoResponsavel.Name = "txtEmailDoResponsavel";
+            this.txtEmailDoResponsavel.Size = new System.Drawing.Size(181, 20);
+            this.txtEmailDoResponsavel.TabIndex = 11;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(23, 122);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(113, 13);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "Email do responsável: ";
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -238,23 +254,7 @@
             this.txtCodigoCertidaoPermanente.Location = new System.Drawing.Point(170, 174);
             this.txtCodigoCertidaoPermanente.Name = "txtCodigoCertidaoPermanente";
             this.txtCodigoCertidaoPermanente.Size = new System.Drawing.Size(142, 20);
-            this.txtCodigoCertidaoPermanente.TabIndex = 19;
-            // 
-            // txtEmailDoResponsavel
-            // 
-            this.txtEmailDoResponsavel.Location = new System.Drawing.Point(142, 119);
-            this.txtEmailDoResponsavel.Name = "txtEmailDoResponsavel";
-            this.txtEmailDoResponsavel.Size = new System.Drawing.Size(181, 20);
-            this.txtEmailDoResponsavel.TabIndex = 18;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(23, 122);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(113, 13);
-            this.label10.TabIndex = 19;
-            this.label10.Text = "Email do responsável: ";
+            this.txtCodigoCertidaoPermanente.TabIndex = 6;
             // 
             // FormEditarEmpresa
             // 

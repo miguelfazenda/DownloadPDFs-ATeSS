@@ -17,13 +17,13 @@ namespace Download_PDFs_AT_e_SS
 {
     public partial class Form1 : Form
     {
-
+        public const string AUTOUPDATE_URL = "https://github.com/miguelfazenda/DownloadPDFs-ATeSS/releases/download/Latest/autoupdate.xml";
         public Form1()
         {
             InitializeComponent();
 
 
-            AutoUpdater.Start("https://github.com/miguelfazenda/DownloadPDFs-ATeSS/releases/download/Latest/autoupdate.xml");
+            AutoUpdater.Start(AUTOUPDATE_URL);
 
             Dados.Load();
 
@@ -252,6 +252,11 @@ namespace Download_PDFs_AT_e_SS
         private void menuItemConsultarEmpresa_Click(object sender, EventArgs e)
         {
             new FormEditarEmpresa(empresaRightClicked, true).ShowDialog();
+        }
+
+        private void procurarAtualizaçõesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AutoUpdater.Start(AUTOUPDATE_URL);
         }
     }
 }

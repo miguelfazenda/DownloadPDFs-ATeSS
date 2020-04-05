@@ -56,5 +56,43 @@ namespace Download_PDFs_AT_e_SS
                 }
             }
         }
+
+        internal static void SSPedirCertidao(int ano)
+        {
+            driver.Navigate().GoToUrl("https://app.seg-social.pt/ssd/pedido_dsc.aspx");
+            Thread.Sleep(1000);
+            ClickButtonWaitForItToAppear(By.Id("ctl00_ContentPlaceHolder1_btn_iniciar"));
+
+            driver.FindElement(By.Id("ctl00_ContentPlaceHolder1_txt_resp")).SendKeys(empresaAutenticada.NomeDoResponsavel);
+            driver.FindElement(By.Id("ctl00_ContentPlaceHolder1_txt_telefone")).SendKeys(empresaAutenticada.TelefoneDoResponsavel);
+            driver.FindElement(By.Id("ctl00_ContentPlaceHolder1_txt_mail")).SendKeys(empresaAutenticada.EmailDoResponsavel);
+            driver.FindElement(By.Id("ctl00_ContentPlaceHolder1_chk_4")).Click();
+            Thread.Sleep(500);
+            driver.FindElement(By.Id("ctl00_ContentPlaceHolder1_btn_enviar")).Click();
+        }
+
+        internal static void SSDownloadUltimaCertidao(int ano)
+        {
+            driver.Navigate().GoToUrl("https://app.seg-social.pt/ssd/listadsc.aspx");
+            Thread.Sleep(2000);
+            string estadoSituacao = driver.FindElement(By.XPath("//*[@id=\"ctl00_ContentPlaceHolder1_MyDataGrid\"]/tbody/tr[2]/td[4]")).Text;
+            if (estadoSituacao != "Regularizada")
+                throw new Exception("Situação não regularizada: " + estadoSituacao);
+
+            ExpectDownload();
+
+            string data = driver.FindElement(By.XPath("//*[@id=\"ctl00_ContentPlaceHolder1_MyDataGrid\"]/tbody/tr[2]/td[3]")).Text;
+            string[] splitData = data.Split('-');
+            object fileNameParametros = new { ano = splitData[2], mes = splitData[1], dia = splitData[0] };
+
+            //Obtem o codigo do documento para o transferir
+            string numeroSequencial = driver.FindElement(By.XPath("//*[@id=\"ctl00_ContentPlaceHolder1_MyDataGrid\"]/tbody/tr[2]/td[1]")).Text;
+            ((IJavaScriptExecutor)driver).ExecuteScript("window.open('doc_dsc.aspx?doc=" + numeroSequencial + "')");
+
+            WaitForDownloadFinish(GenNovoNomeFicheiro(Definicoes.estruturaNomesFicheiros.SS_Transferir_Ultima_Certidao, fileNameParametros),
+                Declaracao.SS_Transferir_Ultima_Certidao, 0);
+            Thread.Sleep(1000);
+            
+        }
     }
 }
