@@ -67,6 +67,10 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.btnDefinicoes = new System.Windows.Forms.ToolStripMenuItem();
             this.procurarAtualizaçõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirPortalDasFinançasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirPortalEFaturaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirSegurançaSocialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirFundosDeCompensaçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuEmpresa.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -202,9 +206,13 @@
             this.menuItemRemoverEmpresa,
             this.menuItemNovaEmpresa,
             this.toolStripSeparator1,
-            this.abrirCertidaoPermanenteToolStripMenuItem});
+            this.abrirCertidaoPermanenteToolStripMenuItem,
+            this.abrirPortalDasFinançasToolStripMenuItem,
+            this.abrirPortalEFaturaToolStripMenuItem,
+            this.abrirSegurançaSocialToolStripMenuItem,
+            this.abrirFundosDeCompensaçãoToolStripMenuItem});
             this.ctxMenuEmpresa.Name = "ctxMenuEmpresa";
-            this.ctxMenuEmpresa.Size = new System.Drawing.Size(214, 120);
+            this.ctxMenuEmpresa.Size = new System.Drawing.Size(238, 230);
             // 
             // menuItemEditarEmpresa
             // 
@@ -404,6 +412,34 @@
             this.procurarAtualizaçõesToolStripMenuItem.Text = "Procurar atualizações";
             this.procurarAtualizaçõesToolStripMenuItem.Click += new System.EventHandler(this.procurarAtualizaçõesToolStripMenuItem_Click);
             // 
+            // abrirPortalDasFinançasToolStripMenuItem
+            // 
+            this.abrirPortalDasFinançasToolStripMenuItem.Name = "abrirPortalDasFinançasToolStripMenuItem";
+            this.abrirPortalDasFinançasToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.abrirPortalDasFinançasToolStripMenuItem.Text = "Abrir Portal das Finanças";
+            this.abrirPortalDasFinançasToolStripMenuItem.Click += new System.EventHandler(this.abrirPortalDasFinançasToolStripMenuItem_Click);
+            // 
+            // abrirPortalEFaturaToolStripMenuItem
+            // 
+            this.abrirPortalEFaturaToolStripMenuItem.Name = "abrirPortalEFaturaToolStripMenuItem";
+            this.abrirPortalEFaturaToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.abrirPortalEFaturaToolStripMenuItem.Text = "Abrir E-Fatura";
+            this.abrirPortalEFaturaToolStripMenuItem.Click += new System.EventHandler(this.abrirPortalEFaturaToolStripMenuItem_Click);
+            // 
+            // abrirSegurançaSocialToolStripMenuItem
+            // 
+            this.abrirSegurançaSocialToolStripMenuItem.Name = "abrirSegurançaSocialToolStripMenuItem";
+            this.abrirSegurançaSocialToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.abrirSegurançaSocialToolStripMenuItem.Text = "Abrir Segurança Social";
+            this.abrirSegurançaSocialToolStripMenuItem.Click += new System.EventHandler(this.abrirSegurançaSocialToolStripMenuItem_Click);
+            // 
+            // abrirFundosDeCompensaçãoToolStripMenuItem
+            // 
+            this.abrirFundosDeCompensaçãoToolStripMenuItem.Name = "abrirFundosDeCompensaçãoToolStripMenuItem";
+            this.abrirFundosDeCompensaçãoToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.abrirFundosDeCompensaçãoToolStripMenuItem.Text = "Abrir Fundos de Compensação";
+            this.abrirFundosDeCompensaçãoToolStripMenuItem.Click += new System.EventHandler(this.abrirFundosDeCompensaçãoToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnExecutar;
@@ -490,6 +526,10 @@
         private System.Windows.Forms.ToolStripMenuItem btnDefinicoes;
         private System.Windows.Forms.ToolStripMenuItem menuItemConsultarEmpresa;
         private System.Windows.Forms.ToolStripMenuItem procurarAtualizaçõesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem abrirPortalDasFinançasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem abrirPortalEFaturaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem abrirSegurançaSocialToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem abrirFundosDeCompensaçãoToolStripMenuItem;
     }
 }
 

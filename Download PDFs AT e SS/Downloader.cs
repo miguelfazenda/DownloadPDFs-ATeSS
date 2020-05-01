@@ -349,7 +349,7 @@ namespace Download_PDFs_AT_e_SS
             errors.Clear();
         }
 
-        private static void Autenticar(Empresa empresa, Declaracao[] declaracoes)
+        public static void Autenticar(Empresa empresa, Declaracao[] declaracoes)
         {
             //Vê em que serviços é necessário autenticar
             foreach (Declaracao declaracao in declaracoes)
@@ -358,32 +358,17 @@ namespace Download_PDFs_AT_e_SS
             //Autenticar
             if (autenticadoEm[(int)Declaracao.Autenticacao.AT])
             {
-                driver.Navigate().GoToUrl("https://www.acesso.gov.pt/v2/loginForm?partID=PFAP&path=/geral/dashboard");
-                Thread.Sleep(500);
-                driver.FindElement(By.Id("username")).SendKeys(empresa.NIF);
-                driver.FindElement(By.Id("password-nif")).SendKeys(empresa.PasswordAT);
-                Thread.Sleep(500);
-                driver.FindElement(By.Id("sbmtLogin")).Click();
+                Autenticacao.AutenticarAT(driver, empresa);
             }
 
             if (autenticadoEm[(int)Declaracao.Autenticacao.SSFundosCompensacao])
             {
-                driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/sso/login");
-                Thread.Sleep(500);
-                driver.FindElement(By.Id("username")).SendKeys(empresa.NISS);
-                driver.FindElement(By.Id("password")).SendKeys(empresa.PasswordSS);
-                Thread.Sleep(500);
-                driver.FindElement(By.XPath("//*[@id=\"credentials\"]/div[5]/input")).Click();
+                Autenticacao.AutenticarFundosCompensacao(driver, empresa);
             }
 
             if (autenticadoEm[(int)Declaracao.Autenticacao.SSDireta])
             {
-                driver.Navigate().GoToUrl("https://app.seg-social.pt/sso/login");
-                Thread.Sleep(500);
-                driver.FindElement(By.Id("username")).SendKeys(empresa.NISS);
-                driver.FindElement(By.Id("password")).SendKeys(empresa.PasswordSS);
-                Thread.Sleep(500);
-                driver.FindElement(By.XPath("//*[@id=\"credentials\"]/div[5]/input")).Click();
+                Autenticacao.AutenticarSS(driver, empresa);
             }
 
             empresaAutenticada = empresa;

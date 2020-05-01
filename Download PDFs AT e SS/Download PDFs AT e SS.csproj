@@ -72,6 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Autenticacao.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="Definicoes.cs" />
     <Compile Include="DownloaderWintouch.cs" />

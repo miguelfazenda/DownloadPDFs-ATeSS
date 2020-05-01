@@ -167,6 +167,12 @@ namespace Download_PDFs_AT_e_SS
             menuItemConsultarEmpresa.Visible = empresaSelecionada;
             menuItemRemoverEmpresa.Visible = empresaSelecionada;
 
+            abrirCertidaoPermanenteToolStripMenuItem.Visible = empresaSelecionada;
+            abrirFundosDeCompensaçãoToolStripMenuItem.Visible = empresaSelecionada;
+            abrirPortalDasFinançasToolStripMenuItem.Visible = empresaSelecionada;
+            abrirPortalEFaturaToolStripMenuItem.Visible = empresaSelecionada;
+            abrirSegurançaSocialToolStripMenuItem.Visible = empresaSelecionada;
+
             if (empresaSelecionada)
             {
                 empresaRightClicked = (Empresa)listaEmpresas.Items[index];
@@ -257,6 +263,30 @@ namespace Download_PDFs_AT_e_SS
         private void procurarAtualizaçõesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AutoUpdater.Start(AUTOUPDATE_URL);
+        }
+
+        private void abrirPortalDasFinançasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.CriarDriver();
+            Browser.AbrePortalDasFinancas(empresaRightClicked);
+        }
+
+        private void abrirPortalEFaturaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.CriarDriver();
+            Browser.AbreEFatura(empresaRightClicked);
+        }
+
+        private void abrirSegurançaSocialToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.CriarDriver();
+            Browser.AbreSegurancaSocial(empresaRightClicked);
+        }
+
+        private void abrirFundosDeCompensaçãoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Browser.CriarDriver();
+            Browser.AbreFundosDeCompensacao(empresaRightClicked);
         }
     }
 }

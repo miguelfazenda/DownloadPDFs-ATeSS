@@ -26,5 +26,28 @@ namespace Download_PDFs_AT_e_SS
         {
             Browser.driver.Navigate().GoToUrl("https://eportugal.gov.pt/RegistoOnline/Services/CertidaoPermanente/consultaCertidao.aspx?id=" + codigoCertidaoPermanente);
         }
+
+        internal static void AbrePortalDasFinancas(Empresa empresa)
+        {
+            Autenticacao.AutenticarAT(driver, empresa);
+        }
+
+        internal static void AbreEFatura(Empresa empresa)
+        {
+            Autenticacao.AutenticarAT(driver, empresa);
+            driver.Navigate().GoToUrl("https://faturas.portaldasfinancas.gov.pt/");
+        }
+
+        internal static void AbreSegurancaSocial(Empresa empresa)
+        {
+            Autenticacao.AutenticarSS(driver, empresa);
+            driver.Navigate().GoToUrl("https://app.seg-social.pt/ptss/ptss/home");
+        }
+
+        internal static void AbreFundosDeCompensacao(Empresa empresa)
+        {
+            Autenticacao.AutenticarFundosCompensacao(driver, empresa);
+            driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/fc/gfct/home");
+        }
     }
 }
