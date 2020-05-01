@@ -13,6 +13,8 @@ namespace Download_PDFs_AT_e_SS
     {
         public static IWebDriver driver;
 
+        public static List<IWebDriver> driversAbertos = new List<IWebDriver>();
+
         //Cria a instacia do driver(chrome)
         public static void CriarDriver()
         {
@@ -20,6 +22,7 @@ namespace Download_PDFs_AT_e_SS
             chromeDriverService.HideCommandPromptWindow = true;
 
             driver = new ChromeDriver(chromeDriverService);
+            driversAbertos.Add(driver);
         }
 
         internal static void AbrePedidoCertidao(string codigoCertidaoPermanente)
@@ -48,6 +51,14 @@ namespace Download_PDFs_AT_e_SS
         {
             Autenticacao.AutenticarFundosCompensacao(driver, empresa);
             driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/fc/gfct/home");
+        }
+
+        internal static void FechaDriversAbertos()
+        {
+            foreach(IWebDriver d in driversAbertos)
+            {
+                d.Quit();
+            }
         }
     }
 }

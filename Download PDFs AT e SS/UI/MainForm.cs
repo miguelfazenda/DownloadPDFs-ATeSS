@@ -219,6 +219,8 @@ namespace Download_PDFs_AT_e_SS
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Browser.FechaDriversAbertos();
+
             Properties.Settings.Default.PastaDownload = txtDownloadFolderPath.Text;
             Properties.Settings.Default.BrowserHeadless = chkHeadless.Checked;
             Properties.Settings.Default.Save();
