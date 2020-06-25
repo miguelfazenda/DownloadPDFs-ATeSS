@@ -43,6 +43,7 @@ namespace Download_PDFs_AT_e_SS
         public static Declaracao AT_IES = new Declaracao("IES", TipoDeclaracao.Anual, Downloader.DownloadIES, Autenticacao.AT);
         public static Declaracao AT_IVA = new Declaracao("IVA", TipoDeclaracao.Anual, Downloader.DownloadIVA, Autenticacao.AT);
 
+        public static Declaracao AT_LISTA_RECIBOS_VERDES_PARA_EXCEL_PRESTADOS = new Declaracao("R. Verdes Emitidos - Excel", TipoDeclaracao.Anual, Downloader.DownloadRecibosVerdesEmitidosExcelAnual, Autenticacao.AT);
 
         //Pedidos
         public static Declaracao AT_CerticaoDivida = new Declaracao("Certidão AT", TipoDeclaracao.Pedido, Downloader.DownloadCerticaoDivida, Autenticacao.AT);

@@ -63,13 +63,32 @@ namespace Download_PDFs_AT_e_SS
         /**
          * Esta função vai a cada recibo verde, navegando todas as páginas, e corre a action, dizendo qual o URL para transferir o PDF
          * ModoConsulta: Prestador ou Adquirente
+         * Mes: -1 é o ano todo
          */
         internal static void RecibosVerdesEmitidosNavegarPorCadaRecibo(int ano, int mes, TipoReciboVerdePrestOUAdquir modoConsulta, Action<string, string, string> action)
         {
-            int numDiasNoMes = DateTime.DaysInMonth(ano, mes);
+            int diaInicial = 1;
+            int diaFinal;
+            int mesInicial;
+            int mesFinal;
 
-            string url = String.Format("https://irs.portaldasfinancas.gov.pt/recibos/portal/consultar#?isAutoSearchOn=on&dataEmissaoInicio={0}-{1}-01&dataEmissaoFim={0}-{1}-{2}",
-                ano, mes, numDiasNoMes);
+            if (mes == -1)
+            {
+                //De 1-Jan a 31-Dez
+                diaFinal = 31;
+                mesInicial = 1;
+                mesFinal = 12;
+            }
+            else
+            {
+                diaFinal = DateTime.DaysInMonth(ano, mes);
+                mesInicial = mes;
+                mesFinal = mes;
+            }
+
+
+            string url = String.Format("https://irs.portaldasfinancas.gov.pt/recibos/portal/consultar#?isAutoSearchOn=on&dataEmissaoInicio={0}-{1}-{2}&dataEmissaoFim={0}-{3}-{4}",
+                ano, mesInicial, diaInicial, mesFinal, diaFinal);
 
             if(modoConsulta == TipoReciboVerdePrestOUAdquir.Prestador)
                 url += String.Format("&modoConsulta=Prestador&nifPrestadorServicos={0}", empresaAutenticada.NIF);

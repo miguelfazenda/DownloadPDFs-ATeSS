@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Download_PDFs_AT_e_SS
 {
@@ -8,10 +11,18 @@ namespace Download_PDFs_AT_e_SS
         public string Codigo { get; set; }
 
         public string NIF { get; set; }
+
+
         public string PasswordAT { get; set; }
+        public string PasswordATEncriptada { get; set; }
+        [JsonIgnore]
+        public string PasswordATDesencriptada { get; set; }
 
         public string NISS { get; set; }
         public string PasswordSS { get; set; }
+        public string PasswordSSEncriptada { get; set; }
+        [JsonIgnore]
+        public string PasswordSSDesencriptada { get; set; }
 
         public string NomeDoResponsavel { get; set; }
         public string TelefoneDoResponsavel { get; set; }
@@ -31,13 +42,42 @@ namespace Download_PDFs_AT_e_SS
             return NIF + " " + Nome;
         }
 
+        internal void EncriptarPasswordAT(string password)
+        {
+            PasswordATEncriptada = Util.ByteArrayToHexString(
+                        ProtectedData.Protect(Encoding.UTF32.GetBytes(password), null, DataProtectionScope.LocalMachine));
+            PasswordAT = String.Empty;
+        }
+
+        internal void EncriptarPasswordSS(string password)
+        {
+            PasswordSSEncriptada = Util.ByteArrayToHexString(
+                        ProtectedData.Protect(Encoding.UTF32.GetBytes(password), null, DataProtectionScope.LocalMachine));
+            PasswordSS = String.Empty;
+        }
+
+        internal void DesencriptarPasswordAT()
+        {
+            PasswordATDesencriptada = Encoding.UTF32.GetString(
+                        ProtectedData.Unprotect(Util.HexStringToByteArray(PasswordATEncriptada), null, DataProtectionScope.LocalMachine));
+        }
+
+        internal void DesencriptarPasswordSS()
+        {
+            PasswordSSDesencriptada = Encoding.UTF32.GetString(
+                        ProtectedData.Unprotect(Util.HexStringToByteArray(PasswordSSEncriptada), null, DataProtectionScope.LocalMachine));
+        }
         public object Clone()
         {
             Empresa empresa = new Empresa(Nome, Codigo, NIF);
             empresa.PasswordAT = this.PasswordAT;
+            empresa.PasswordATEncriptada = this.PasswordATEncriptada;
+            empresa.PasswordATDesencriptada = this.PasswordATDesencriptada;
 
             empresa.NISS = this.NISS;
             empresa.PasswordSS = this.PasswordSS;
+            empresa.PasswordSSEncriptada = this.PasswordSSEncriptada;
+            empresa.PasswordSSDesencriptada = this.PasswordSSDesencriptada;
 
             empresa.NomeDoResponsavel = this.NomeDoResponsavel;
             empresa.TelefoneDoResponsavel = this.TelefoneDoResponsavel;
@@ -48,5 +88,6 @@ namespace Download_PDFs_AT_e_SS
 
             return empresa;
         }
+
     }
 }

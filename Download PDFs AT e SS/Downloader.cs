@@ -146,15 +146,19 @@ namespace Download_PDFs_AT_e_SS
             //Espera que o ficheiro final esteja pronto
             Util.WaitForFileCountToBeGreaterThan(DownloadFolder, numFilesInDownloadsFolder);
 
-            string folderTipoDeclaracao = GetFolderTipoDeclaracao(declaracao, mes);
-
-            var diretorio = Path.Combine(DownloadFolder, folderTipoDeclaracao,
-                empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
+            var diretorio = GetDiretorioEmpresa(declaracao, mes);
 
             Thread.Sleep(1000);
             //Muda o nome
             Util.RenameLastModifiedFileInFolder(DownloadFolder, newName, diretorio);
             numFilesInDownloadsFolder++;
+        }
+
+        public static string GetDiretorioEmpresa(Declaracao declaracao, int mes)
+        {
+            string folderTipoDeclaracao = GetFolderTipoDeclaracao(declaracao, mes);
+            return Path.Combine(DownloadFolder, folderTipoDeclaracao,
+                empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
         }
 
         public static string GetFolderTipoDeclaracao(Declaracao declaracao, int mes)

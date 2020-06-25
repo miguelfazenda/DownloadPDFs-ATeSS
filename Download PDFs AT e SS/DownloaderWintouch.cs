@@ -1,18 +1,10 @@
 ﻿using ConsoleTableExt;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using SmartFormat;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Download_PDFs_AT_e_SS
 {
@@ -85,6 +77,9 @@ namespace Download_PDFs_AT_e_SS
             ExportarFicheiroWintouch(recibosVerdes, mes, tipo);
         }
 
+       
+
+
         /**
          * Esta função navega até à pagina de detalhes, e obtem os dados do recibo, 
          * tipo: Prestador ou Adquirente
@@ -116,6 +111,7 @@ namespace Download_PDFs_AT_e_SS
             reciboVerde.descricao = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[3]/dl/dd")).Text;
             reciboVerde.nomeAdquirente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[4]/div[2]/div[1]/div[2]/dl/dd")).Text;
             reciboVerde.nomeTrasmitente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[3]/div[2]/div/div[2]/dl/dd")).Text;
+            reciboVerde.paisAdquirente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[4]/div[2]/div[2]/div/dl/dd")).Text;
 
             //Obtem as string que têm os valores
             string valorBaseStr = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[4]/dl/div[2]/dd")).Text;
@@ -421,6 +417,7 @@ namespace Download_PDFs_AT_e_SS
 
         public string tipoDoc, numDoc;
         public string nifTransmitente, nifAdquirente, descricao, nomeAdquirente, nomeTrasmitente;
+        public string paisAdquirente;
         public DateTime dataEmissao, dataTransmissao;
         public string detailsUrl;
         public bool anulado;
