@@ -58,13 +58,19 @@ namespace Download_PDFs_AT_e_SS
 
         internal void DesencriptarPasswordAT()
         {
-            PasswordATDesencriptada = Encoding.UTF32.GetString(
+            if (PasswordATEncriptada == null || PasswordATEncriptada.Length == 0)
+                PasswordATDesencriptada = "";
+            else
+                PasswordATDesencriptada = Encoding.UTF32.GetString(
                         ProtectedData.Unprotect(Util.HexStringToByteArray(PasswordATEncriptada), null, DataProtectionScope.LocalMachine));
         }
 
         internal void DesencriptarPasswordSS()
         {
-            PasswordSSDesencriptada = Encoding.UTF32.GetString(
+            if (PasswordSSEncriptada == null || PasswordSSEncriptada.Length == 0)
+                PasswordSSDesencriptada = "";
+            else
+                PasswordSSDesencriptada = Encoding.UTF32.GetString(
                         ProtectedData.Unprotect(Util.HexStringToByteArray(PasswordSSEncriptada), null, DataProtectionScope.LocalMachine));
         }
         public object Clone()
