@@ -58,10 +58,10 @@ namespace Download_PDFs_AT_e_SS
             txtCodigo.DataBindings.Add("Text", empresaAEditarClone, "Codigo");
 
             txtNIF.DataBindings.Add("Text", empresaAEditarClone, "NIF");
-            txtPasswordAT.Text = empresaAEditarClone.PasswordATEncriptada;
+            txtPasswordAT.Text = empresaAEditarClone.PasswordAT;
 
             txtNISS.DataBindings.Add("Text", empresaAEditarClone, "NISS");
-            txtPasswordSS.Text = empresaAEditarClone.PasswordSSEncriptada;
+            txtPasswordSS.Text = empresaAEditarClone.PasswordSS;
 
             txtNomeDoResponsavel.DataBindings.Add("Text", empresaAEditarClone, "NomeDoResponsavel");
             txtTelefoneDoResponsavel.DataBindings.Add("Text", empresaAEditarClone, "TelefoneDoResponsavel");
@@ -80,17 +80,8 @@ namespace Download_PDFs_AT_e_SS
             this.DialogResult = DialogResult.OK;
 
             //Encripta a password, caso tenha sido alterada
-            if(txtPasswordAT.Text != empresaAEditarClone.PasswordATEncriptada)
-            {
-                empresaAEditarClone.PasswordATDesencriptada = txtPasswordAT.Text;
-                empresaAEditarClone.EncriptarPasswordAT(txtPasswordAT.Text);
-            }
-            if(txtPasswordSS.Text != empresaAEditarClone.PasswordSSEncriptada)
-            {
-                empresaAEditarClone.PasswordSSEncriptada = txtPasswordSS.Text;
-                empresaAEditarClone.EncriptarPasswordSS(txtPasswordSS.Text);
-            }
-
+            empresaAEditarClone.PasswordAT = txtPasswordAT.Text;
+            empresaAEditarClone.PasswordSS = txtPasswordSS.Text;
 
             //Guarda o resultado
             if (empresaAEditarOriginal == null)

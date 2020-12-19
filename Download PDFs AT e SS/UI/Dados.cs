@@ -27,53 +27,18 @@ namespace Download_PDFs_AT_e_SS
                 SaveEmpresas();
             }
 
-            //Verifica se alguma empresa ainda nao tem as passwords encriptadas
-            //Se sim encripta a password, e apaga a plain-text
-            bool temDeGravarAlteracoes = EncriptaPasswordsPlainText();
-            
-            if (temDeGravarAlteracoes)
-                File.WriteAllText(FICHEIRO_EMPRESAS, JsonConvert.SerializeObject(empresas, Formatting.Indented));
-
             //Desencripta as passwords para o programa porder usar
             foreach (Empresa empresa in empresas)
             {
-                if (empresa.PasswordATDesencriptada != String.Empty)
+                if (empresa.PasswordAT == null || empresa.PasswordAT == String.Empty)
                 {
                     empresa.DesencriptarPasswordAT();
                 }
-                if (empresa.PasswordSSDesencriptada != String.Empty)
+                if (empresa.PasswordSS == null || empresa.PasswordSS == String.Empty)
                 {
                     empresa.DesencriptarPasswordSS();
                 }
             }
-        }
-
-        /// <summary>
-        /// Verifica se alguma empresa tem uma password plain-text
-        ///   Se sim encripta a password, e apaga a plain-text
-        /// </summary>
-        /// <returns>Devolve se houve alguma alteracao</returns>
-        public static bool EncriptaPasswordsPlainText()
-        {
-            //Verifica se alguma empresa ainda nao tem as passwords encriptadas
-            //Se sim encripta a password, e apaga a plain-text
-            bool temDeGravarAlteracoes = false;
-            foreach (Empresa empresa in empresas)
-            {
-                if (empresa.PasswordAT != String.Empty)
-                {
-                    empresa.PasswordATDesencriptada = empresa.PasswordAT;
-                    empresa.EncriptarPasswordAT(empresa.PasswordAT);
-                    temDeGravarAlteracoes = true;
-                }
-                if (empresa.PasswordSS != String.Empty)
-                {
-                    empresa.PasswordATDesencriptada = empresa.PasswordAT;
-                    empresa.EncriptarPasswordSS(empresa.PasswordSS);
-                    temDeGravarAlteracoes = true;
-                }
-            }
-            return temDeGravarAlteracoes;
         }
 
         public static void SaveEmpresas()

@@ -15,7 +15,7 @@ namespace Download_PDFs_AT_e_SS
             driver.Navigate().GoToUrl("https://www.acesso.gov.pt/v2/loginForm?partID=PFAP&path=/geral/dashboard");
             Thread.Sleep(500);
             driver.FindElement(By.Id("username")).SendKeys(empresa.NIF);
-            driver.FindElement(By.Id("password-nif")).SendKeys(empresa.PasswordATDesencriptada);
+            driver.FindElement(By.Id("password-nif")).SendKeys(empresa.PasswordAT);
             Thread.Sleep(500);
             driver.FindElement(By.Id("sbmtLogin")).Click();
         }
@@ -25,7 +25,7 @@ namespace Download_PDFs_AT_e_SS
             driver.Navigate().GoToUrl("https://www.fundoscompensacao.pt/sso/login");
             Thread.Sleep(500);
             driver.FindElement(By.Id("username")).SendKeys(empresa.NISS);
-            driver.FindElement(By.Id("password")).SendKeys(empresa.PasswordSSDesencriptada);
+            driver.FindElement(By.Id("password")).SendKeys(empresa.PasswordSS);
             Thread.Sleep(500);
             driver.FindElement(By.XPath("//*[@id=\"credentials\"]/div[5]/input")).Click();
         }
@@ -35,7 +35,7 @@ namespace Download_PDFs_AT_e_SS
             driver.Navigate().GoToUrl("https://app.seg-social.pt/sso/login");
             Thread.Sleep(500);
             driver.FindElement(By.Id("username")).SendKeys(empresa.NISS);
-            driver.FindElement(By.Id("password")).SendKeys(empresa.PasswordSSDesencriptada);
+            driver.FindElement(By.Id("password")).SendKeys(empresa.PasswordSS);
             Thread.Sleep(500);
             driver.FindElement(By.XPath("//*[@id=\"credentials\"]/div[5]/input")).Click();
         }
