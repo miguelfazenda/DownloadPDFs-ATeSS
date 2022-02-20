@@ -1,4 +1,5 @@
-﻿using NPOI.SS.UserModel;
+﻿using Download_PDFs_AT_e_SS.RecibosVerdes;
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Download_PDFs_AT_e_SS
             foreach (string detailsUrl in detailsURLs)
             {
                 //Obtem os dados do recibo verde, navegado até à página de detalhes
-                ReciboVerde reciboVerde = ObterDadosReciboVerde(detailsUrl, tipo);
+                ReciboVerde reciboVerde = ScraperRecibosVerdes.ObterDadosReciboVerde(detailsUrl, tipo, driver);
                 recibosVerdes.Add(reciboVerde);
             }
 
@@ -76,7 +77,7 @@ namespace Download_PDFs_AT_e_SS
                 dataCell.SetCellValue(recibo.dataEmissao);
                 dataCell.CellStyle = dateCellStyle;
                 var dataTransmissaoCell = row.CreateCell(1);
-                dataTransmissaoCell.SetCellValue(recibo.dataTransmissao);
+                dataTransmissaoCell.SetCellValue(recibo.dataPrestacaoServico);
                 dataTransmissaoCell.CellStyle = dateCellStyle;
                 row.CreateCell(2).SetCellValue(recibo.anulado ? "Anulado" : "Emitido");
                 row.CreateCell(3).SetCellValue(recibo.tipoDoc);
@@ -84,7 +85,7 @@ namespace Download_PDFs_AT_e_SS
                 row.CreateCell(5).SetCellValue(recibo.nifAdquirente);
                 row.CreateCell(6).SetCellValue(recibo.nomeAdquirente);
                 row.CreateCell(7).SetCellValue(recibo.paisAdquirente);
-                row.CreateCell(8).SetCellValue(GetReciboTipoString(recibo.tipoReciboVerde));
+                row.CreateCell(8).SetCellValue(ScraperRecibosVerdes.GetReciboTipoString(recibo.tipoReciboVerde));
                 row.CreateCell(9).SetCellValue(recibo.descricao);
                 row.CreateCell(10).SetCellValue((double)recibo.valores.valorBase);
                 row.CreateCell(11).SetCellValue((double)recibo.valores.valorIvaContinente);
@@ -110,19 +111,6 @@ namespace Download_PDFs_AT_e_SS
             }
         }
 
-        private static string GetReciboTipoString(TipoReciboVerde tipoReciboVerde)
-        {
-            switch(tipoReciboVerde)
-            {
-                case TipoReciboVerde.Pagamento:
-                    return "Pagamento";
-                case TipoReciboVerde.Adiantamento:
-                    return "Adiantamento";
-                case TipoReciboVerde.AdiantamentoPagamento:
-                    return "Adiantamento para pagamento";
-            }
-
-            return "-";
-        }
+        
     }
 }

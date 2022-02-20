@@ -77,8 +77,19 @@ namespace Download_PDFs_AT_e_SS
         public DefinicoesExportTipoDoc defExportFatura;
         [JsonProperty]
         public DefinicoesExportTipoDoc defExportRecibo;
-        
+
         public DefinicoesExportacao()
+        {
+            defExportFaturaRecibo = new DefinicoesExportTipoDoc();
+            defExportFatura = new DefinicoesExportTipoDoc();
+            defExportRecibo = new DefinicoesExportTipoDoc();
+            defExportFaturaRecibo.defExportTipoPagamento = new DefinicoesExportTipoReciboVerde("Fatura-Recibo", "Pagamento");
+            defExportFaturaRecibo.defExportTipoAdiantamento = new DefinicoesExportTipoReciboVerde("Fatura-Recibo", "Adiantamento");
+            defExportFaturaRecibo.defExportTipoAdiantamentoPagamento = new DefinicoesExportTipoReciboVerde("Fatura-Recibo", "Adiant. para despesas");
+            defExportFatura.defExportTipoFaturaOuRecibo = new DefinicoesExportTipoReciboVerde("Fatura", "Fatura");
+            defExportRecibo.defExportTipoFaturaOuRecibo = new DefinicoesExportTipoReciboVerde("Recibo", "Recibo");
+        }
+        /*public DefinicoesExportacao()
         {
             defExportFaturaRecibo = new DefinicoesExportTipoDoc();
             defExportFatura = new DefinicoesExportTipoDoc();
@@ -104,7 +115,7 @@ namespace Download_PDFs_AT_e_SS
             defExportRecibo.defExportTipoAdiantamento.TipoReciboVerde = "Adiantamento";
             defExportRecibo.defExportTipoAdiantamentoPagamento.TipoDocumento = "Recibo";
             defExportRecibo.defExportTipoAdiantamentoPagamento.TipoReciboVerde = "Adiant. para despesas";
-        }
+        }*/
     }
 
     class DefinicoesExportTipoDoc
@@ -115,17 +126,22 @@ namespace Download_PDFs_AT_e_SS
         public DefinicoesExportTipoReciboVerde defExportTipoAdiantamento;
         [JsonProperty]
         public DefinicoesExportTipoReciboVerde defExportTipoAdiantamentoPagamento;
-
-        public DefinicoesExportTipoDoc()
-        {
-            defExportTipoPagamento = new DefinicoesExportTipoReciboVerde();
-            defExportTipoAdiantamento = new DefinicoesExportTipoReciboVerde();
-            defExportTipoAdiantamentoPagamento = new DefinicoesExportTipoReciboVerde();
-        }
+        [JsonProperty]
+        public DefinicoesExportTipoReciboVerde defExportTipoFaturaOuRecibo;
     }
 
     class DefinicoesExportTipoReciboVerde
     {
+        public DefinicoesExportTipoReciboVerde()
+        {
+        }
+
+        public DefinicoesExportTipoReciboVerde(string tipoDocumento, string tipoReciboVerde)
+        {
+            TipoDocumento = tipoDocumento;
+            TipoReciboVerde = tipoReciboVerde;
+        }
+
         [JsonProperty]
         public string TipoDocumento { get; set; }
         public string TipoReciboVerde { get; set; } //Para apresentar na tabela das definicoes

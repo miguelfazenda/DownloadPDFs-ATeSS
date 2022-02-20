@@ -1,10 +1,12 @@
 ﻿using ConsoleTableExt;
+using Download_PDFs_AT_e_SS.RecibosVerdes;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Download_PDFs_AT_e_SS
 {
@@ -43,6 +45,8 @@ namespace Download_PDFs_AT_e_SS
             RecibosVerdesValores totaisTipoPagamento = new RecibosVerdesValores();
             RecibosVerdesValores totaisTipoAdiantamento = new RecibosVerdesValores();
             RecibosVerdesValores totaisTipoAdiantamentoPagamento = new RecibosVerdesValores();
+            RecibosVerdesValores totaisTipoFatura = new RecibosVerdesValores();
+            RecibosVerdesValores totaisTipoRecibo = new RecibosVerdesValores();
             RecibosVerdesValores totaisAnulados = new RecibosVerdesValores();
 
             List<ReciboVerde> recibosVerdes = new List<ReciboVerde>(detailsURLs.Count);
@@ -53,7 +57,7 @@ namespace Download_PDFs_AT_e_SS
             foreach (string detailsUrl in detailsURLs)
             {
                 //Obtem os dados do recibo verde, navegado até à página de detalhes
-                ReciboVerde reciboVerde = ObterDadosReciboVerde(detailsUrl, tipo);
+                ReciboVerde reciboVerde = ScraperRecibosVerdes.ObterDadosReciboVerde(detailsUrl, tipo, driver);
                 recibosVerdes.Add(reciboVerde);
 
                 //Soma os valores para obter um total por tipo de recibo verde
@@ -65,6 +69,10 @@ namespace Download_PDFs_AT_e_SS
                         totaisTipoAdiantamento += reciboVerde.valores;
                     if (reciboVerde.tipoReciboVerde == TipoReciboVerde.AdiantamentoPagamento)
                         totaisTipoAdiantamentoPagamento += reciboVerde.valores;
+                    if (reciboVerde.tipoReciboVerde == TipoReciboVerde.Fatura)
+                        totaisTipoFatura += reciboVerde.valores;
+                    if (reciboVerde.tipoReciboVerde == TipoReciboVerde.Recibo)
+                        totaisTipoRecibo += reciboVerde.valores;
                 }
                 else
                 {
@@ -73,76 +81,10 @@ namespace Download_PDFs_AT_e_SS
             }
 
             //new BinaryFormatter().Serialize(new FileStream(@"c:\users\miguel\desktop\b.txt", FileMode.Create), recibosVerdes);
-            GeraTabelaTxtTotais(totaisTipoPagamento, totaisTipoAdiantamento, totaisTipoAdiantamentoPagamento, totaisAnulados, mes, tipo);
+            GeraTabelaTxtTotais(totaisTipoPagamento, totaisTipoAdiantamento, totaisTipoAdiantamentoPagamento, totaisTipoFatura, totaisTipoRecibo, totaisAnulados, mes, tipo);
             ExportarFicheiroWintouch(recibosVerdes, mes, tipo);
         }
-
-       
-
-
-        /**
-         * Esta função navega até à pagina de detalhes, e obtem os dados do recibo, 
-         * tipo: Prestador ou Adquirente
-         **/
-        private static ReciboVerde ObterDadosReciboVerde(string detailsUrl, TipoReciboVerdePrestOUAdquir tipo)
-        {
-            driver.Navigate().GoToUrl(detailsUrl);
-
-            ReciboVerde reciboVerde = new ReciboVerde();
-            reciboVerde.detailsUrl = detailsUrl;
-            reciboVerde.tipo = tipo; // Prestador ou Adquirente
-
-            //Obter dados
-            string[] doc = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[1]/div[1]/h1")).Text.Split(' ');
-            reciboVerde.tipoDoc = doc[0];
-            reciboVerde.numDoc = doc[2];
-
-            string estado = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[1]/div[1]/h1/span")).Text;
-            reciboVerde.anulado = estado.ToLower() == "anulado";
-
-            string dataEmissao = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/legend/small"))
-                .Text.Replace("Emitida a ", "");
-            string dataTransmissao = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[2]/dl/dd")).Text;
-            reciboVerde.dataEmissao = DateTime.ParseExact(dataEmissao, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            reciboVerde.dataTransmissao = DateTime.ParseExact(dataTransmissao, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-            reciboVerde.nifTransmitente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[3]/div[2]/div/div[1]/dl/dd")).Text;
-            reciboVerde.nifAdquirente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[4]/div[2]/div[1]/div[1]/dl/dd")).Text;
-            reciboVerde.descricao = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[3]/dl/dd")).Text;
-            reciboVerde.nomeAdquirente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[4]/div[2]/div[1]/div[2]/dl/dd")).Text;
-            reciboVerde.nomeTrasmitente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[3]/div[2]/div/div[2]/dl/dd")).Text;
-            reciboVerde.paisAdquirente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[4]/div[2]/div[2]/div/dl/dd")).Text;
-
-            //Obtem as string que têm os valores
-            string valorBaseStr = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[4]/dl/div[2]/dd")).Text;
-            string valorIvaContinenteStr = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[4]/dl/div[4]/dd")).Text;
-            string impostoSeloStr = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[4]/dl/div[6]/dd")).Text;
-            string irsSemRetencaoStr = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[4]/dl/div[8]/dd")).Text;
-            string importanciaRecebidaStr = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[4]/dl/div[10]/dd")).Text;
-
-            //Converte os valores para decimal
-            reciboVerde.valores = new RecibosVerdesValores();
-            reciboVerde.valores.valorBase = Convert.ToDecimal(valorBaseStr.Remove(valorBaseStr.Length - 2), culture);
-            reciboVerde.valores.valorIvaContinente = Convert.ToDecimal(valorIvaContinenteStr.Remove(valorIvaContinenteStr.Length - 2), culture);
-            reciboVerde.valores.impostoSelo = Convert.ToDecimal(impostoSeloStr.Remove(impostoSeloStr.Length - 2), culture);
-            reciboVerde.valores.irsSemRetencao = Convert.ToDecimal(irsSemRetencaoStr.Remove(irsSemRetencaoStr.Length - 2), culture);
-            reciboVerde.valores.importanciaRecebida = Convert.ToDecimal(importanciaRecebidaStr.Remove(importanciaRecebidaStr.Length - 2), culture);
-
-            //Obtem o tipo de recibo verde, vendo qual checkbox est]a checked
-            IWebElement checkboxTipoPagamento = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[1]/dl/dt[2]/div/div[1]/label/input"));
-            IWebElement checkboxTipoAdiantamento = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[1]/dl/dt[2]/div/div[2]/label/input"));
-            IWebElement checkboxTipoAdiantamentoPagam = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[5]/div[2]/div/div[1]/dl/dt[2]/div/div[3]/label/input"));
-
-            
-            if (checkboxTipoPagamento.Selected)
-                reciboVerde.tipoReciboVerde = TipoReciboVerde.Pagamento;
-            else if (checkboxTipoAdiantamento.Selected)
-                reciboVerde.tipoReciboVerde = TipoReciboVerde.Adiantamento;
-            else
-                reciboVerde.tipoReciboVerde = TipoReciboVerde.AdiantamentoPagamento;
-
-            return reciboVerde;
-        }
+        
 
         /// <summary>
         /// Esta função exporta os recibos para o ficheiro do wintouch
@@ -261,6 +203,10 @@ namespace Download_PDFs_AT_e_SS
                 case TipoReciboVerde.AdiantamentoPagamento:
                     definicoesExportTipoReciboVerde = defExportFaturaRecibo.defExportTipoAdiantamentoPagamento;
                     break;
+                case TipoReciboVerde.Fatura:
+                case TipoReciboVerde.Recibo:
+                    definicoesExportTipoReciboVerde = defExportFaturaRecibo.defExportTipoFaturaOuRecibo;
+                    break;
             }
             return definicoesExportTipoReciboVerde;
         }
@@ -288,8 +234,8 @@ namespace Download_PDFs_AT_e_SS
             string nomeEntidade;
             if (reciboVerde.tipo == TipoReciboVerdePrestOUAdquir.Adquirente)
             {
-                contibuinte = reciboVerde.nifTransmitente;
-                nomeEntidade = reciboVerde.nomeTrasmitente;
+                contibuinte = reciboVerde.nifPrestadorServicos;
+                nomeEntidade = reciboVerde.nomePrestador;
             }
             else
             {
@@ -325,6 +271,7 @@ namespace Download_PDFs_AT_e_SS
         /// <param name="tipo">Prestador ou Adquirente</param>
         private static void GeraTabelaTxtTotais(RecibosVerdesValores totaisTipoPagamento,
             RecibosVerdesValores totaisTipoAdiantamento, RecibosVerdesValores totaisTipoAdiantamentoPagamento,
+            RecibosVerdesValores totaisTipoFatura, RecibosVerdesValores totaisTipoRecibo,
             RecibosVerdesValores totaisAnulados,
             int mes, TipoReciboVerdePrestOUAdquir tipo)
         {
@@ -332,6 +279,7 @@ namespace Download_PDFs_AT_e_SS
 
             RecibosVerdesValores total = totaisTipoPagamento + totaisTipoAdiantamento + totaisTipoAdiantamentoPagamento;
 
+            // Cria a tabela
             DataTable table = new DataTable();
             table.Columns.Add("Tipo", typeof(string));
             table.Columns.Add("Valor base", typeof(decimal));
@@ -352,14 +300,28 @@ namespace Download_PDFs_AT_e_SS
                 totaisTipoAdiantamentoPagamento.impostoSelo, totaisTipoAdiantamentoPagamento.irsSemRetencao,
                 totaisTipoAdiantamentoPagamento.importanciaRecebida);
 
+            /*table.Rows.Add("Faturas", totaisTipoAdiantamentoPagamento.valorBase, totaisTipoAdiantamentoPagamento.valorIvaContinente,
+                totaisTipoAdiantamentoPagamento.impostoSelo, totaisTipoAdiantamentoPagamento.irsSemRetencao,
+                totaisTipoAdiantamentoPagamento.importanciaRecebida);*/
+
+            table.Rows.Add("Faturas", totaisTipoFatura.valorBase, totaisTipoFatura.valorIvaContinente,
+                totaisTipoFatura.impostoSelo, totaisTipoFatura.irsSemRetencao,
+                totaisTipoFatura.importanciaRecebida);
+
             table.Rows.Add("Total", total.valorBase, total.valorIvaContinente, total.impostoSelo,
                 total.irsSemRetencao, total.importanciaRecebida);
 
             table.Rows.Add("Total anulados", totaisAnulados.valorBase, totaisAnulados.valorIvaContinente, totaisAnulados.impostoSelo,
                 totaisAnulados.irsSemRetencao, totaisAnulados.importanciaRecebida);
 
+            table.Rows.Add("Recibos", totaisTipoRecibo.valorBase, totaisTipoRecibo.valorIvaContinente,
+                totaisTipoRecibo.impostoSelo, totaisTipoRecibo.irsSemRetencao,
+                totaisTipoRecibo.importanciaRecebida);
 
-            var text = ConsoleTableBuilder.From(table).Export().ToString();
+            //Gera o texto
+            var cabecalho = String.Format("ANO:{0}\nMES:{1}\nNIF: {2}\n\n", Ano, Mes, empresaAutenticada.NIF);
+            var text = cabecalho + ConsoleTableBuilder.From(table).Export().ToString();
+
 
             var diretorio = Path.Combine(DownloadFolder, GetFolderTipoDeclaracao(Declaracao.AT_LISTA_RECIBOS_VERDES_PARA_WINTOUCH_PRESTADOS, mes),
                empresaAutenticada.Codigo + "-" + empresaAutenticada.NIF);
@@ -373,57 +335,5 @@ namespace Download_PDFs_AT_e_SS
 
             File.WriteAllText(Path.Combine(diretorio, nomeFicheiro), text);
         }
-    }
-
-    [Serializable()]
-    struct RecibosVerdesValores
-    {
-        public decimal valorBase;
-        public decimal valorIvaContinente;
-        public decimal impostoSelo;
-        public decimal irsSemRetencao;
-        public decimal importanciaRecebida;
-
-        public static RecibosVerdesValores operator +(RecibosVerdesValores a, RecibosVerdesValores b)
-        {
-            RecibosVerdesValores soma = new RecibosVerdesValores();
-            soma.valorBase = a.valorBase + b.valorBase;
-            soma.valorIvaContinente = a.valorIvaContinente + b.valorIvaContinente;
-            soma.impostoSelo = a.impostoSelo + b.impostoSelo;
-            soma.irsSemRetencao = a.irsSemRetencao + b.irsSemRetencao;
-            soma.importanciaRecebida = a.importanciaRecebida + b.importanciaRecebida;
-            return soma;
-        }
-    }
-
-    [Serializable()]
-    enum TipoReciboVerde
-    {
-        Pagamento,
-        Adiantamento,
-        AdiantamentoPagamento
-    }
-
-    enum TipoReciboVerdePrestOUAdquir
-    {
-        Prestador = 0,
-        Adquirente = 1
-    }
-
-    [Serializable()]
-    class ReciboVerde
-    {
-        
-
-        public string tipoDoc, numDoc;
-        public string nifTransmitente, nifAdquirente, descricao, nomeAdquirente, nomeTrasmitente;
-        public string paisAdquirente;
-        public DateTime dataEmissao, dataTransmissao;
-        public string detailsUrl;
-        public bool anulado;
-        public RecibosVerdesValores valores;
-        public TipoReciboVerde tipoReciboVerde;
-
-        public TipoReciboVerdePrestOUAdquir tipo; //Prestador ou Adquirente (PRESTADOR ou ADQUIRENTE)
     }
 }

@@ -26,15 +26,26 @@ namespace Download_PDFs_AT_e_SS.Forms
         private BindingList<DefinicoesExportTipoReciboVerde> CriaListaElementosClassificacao(DefinicoesExportacao definicoesExportacao)
         {
             BindingList<DefinicoesExportTipoReciboVerde> listaDefExport = new BindingList<DefinicoesExportTipoReciboVerde>();
-            listaDefExport.Add(definicoesExportacao.defExportFaturaRecibo.defExportTipoPagamento);
-            listaDefExport.Add(definicoesExportacao.defExportFaturaRecibo.defExportTipoAdiantamento);
-            listaDefExport.Add(definicoesExportacao.defExportFaturaRecibo.defExportTipoAdiantamentoPagamento);
-            listaDefExport.Add(definicoesExportacao.defExportFatura.defExportTipoPagamento);
-            listaDefExport.Add(definicoesExportacao.defExportFatura.defExportTipoAdiantamento);
-            listaDefExport.Add(definicoesExportacao.defExportFatura.defExportTipoAdiantamentoPagamento);
-            listaDefExport.Add(definicoesExportacao.defExportRecibo.defExportTipoPagamento);
-            listaDefExport.Add(definicoesExportacao.defExportRecibo.defExportTipoAdiantamento);
-            listaDefExport.Add(definicoesExportacao.defExportRecibo.defExportTipoAdiantamentoPagamento);
+            DefinicoesExportTipoDoc[] array = new DefinicoesExportTipoDoc[3] { definicoesExportacao.defExportFaturaRecibo, definicoesExportacao.defExportFatura, definicoesExportacao.defExportRecibo };
+            foreach (DefinicoesExportTipoDoc d in array)
+            {
+                if (d.defExportTipoPagamento != null)
+                {
+                    listaDefExport.Add(d.defExportTipoPagamento);
+                }
+                if (d.defExportTipoAdiantamento != null)
+                {
+                    listaDefExport.Add(d.defExportTipoAdiantamento);
+                }
+                if (d.defExportTipoAdiantamentoPagamento != null)
+                {
+                    listaDefExport.Add(d.defExportTipoAdiantamentoPagamento);
+                }
+                if (d.defExportTipoFaturaOuRecibo != null)
+                {
+                    listaDefExport.Add(d.defExportTipoFaturaOuRecibo);
+                }
+            }
             return listaDefExport;
         }
 
