@@ -49,6 +49,10 @@
             this.menuItemNovaEmpresa = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.abrirCertidaoPermanenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirPortalDasFinançasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirPortalEFaturaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirSegurançaSocialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirFundosDeCompensaçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label6 = new System.Windows.Forms.Label();
             this.txtDownloadFolderPath = new System.Windows.Forms.TextBox();
             this.btnBrowseDownloadFolder = new System.Windows.Forms.Button();
@@ -67,10 +71,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.btnDefinicoes = new System.Windows.Forms.ToolStripMenuItem();
             this.procurarAtualizaçõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.abrirPortalDasFinançasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.abrirPortalEFaturaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.abrirSegurançaSocialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.abrirFundosDeCompensaçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adquirirLicençaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuEmpresa.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -212,47 +213,75 @@
             this.abrirSegurançaSocialToolStripMenuItem,
             this.abrirFundosDeCompensaçãoToolStripMenuItem});
             this.ctxMenuEmpresa.Name = "ctxMenuEmpresa";
-            this.ctxMenuEmpresa.Size = new System.Drawing.Size(238, 230);
+            this.ctxMenuEmpresa.Size = new System.Drawing.Size(238, 208);
             // 
             // menuItemEditarEmpresa
             // 
             this.menuItemEditarEmpresa.Name = "menuItemEditarEmpresa";
-            this.menuItemEditarEmpresa.Size = new System.Drawing.Size(213, 22);
+            this.menuItemEditarEmpresa.Size = new System.Drawing.Size(237, 22);
             this.menuItemEditarEmpresa.Text = "Editar";
             this.menuItemEditarEmpresa.Click += new System.EventHandler(this.menuItemEditarEmpresa_Click);
             // 
             // menuItemConsultarEmpresa
             // 
             this.menuItemConsultarEmpresa.Name = "menuItemConsultarEmpresa";
-            this.menuItemConsultarEmpresa.Size = new System.Drawing.Size(213, 22);
+            this.menuItemConsultarEmpresa.Size = new System.Drawing.Size(237, 22);
             this.menuItemConsultarEmpresa.Text = "Consultar";
             this.menuItemConsultarEmpresa.Click += new System.EventHandler(this.menuItemConsultarEmpresa_Click);
             // 
             // menuItemRemoverEmpresa
             // 
             this.menuItemRemoverEmpresa.Name = "menuItemRemoverEmpresa";
-            this.menuItemRemoverEmpresa.Size = new System.Drawing.Size(213, 22);
+            this.menuItemRemoverEmpresa.Size = new System.Drawing.Size(237, 22);
             this.menuItemRemoverEmpresa.Text = "Remover";
             this.menuItemRemoverEmpresa.Click += new System.EventHandler(this.menuItemRemoverEmpresa_Click);
             // 
             // menuItemNovaEmpresa
             // 
             this.menuItemNovaEmpresa.Name = "menuItemNovaEmpresa";
-            this.menuItemNovaEmpresa.Size = new System.Drawing.Size(213, 22);
+            this.menuItemNovaEmpresa.Size = new System.Drawing.Size(237, 22);
             this.menuItemNovaEmpresa.Text = "Nova Empresa";
             this.menuItemNovaEmpresa.Click += new System.EventHandler(this.menuItemNovaEmpresa_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(210, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(234, 6);
             // 
             // abrirCertidaoPermanenteToolStripMenuItem
             // 
             this.abrirCertidaoPermanenteToolStripMenuItem.Name = "abrirCertidaoPermanenteToolStripMenuItem";
-            this.abrirCertidaoPermanenteToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.abrirCertidaoPermanenteToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
             this.abrirCertidaoPermanenteToolStripMenuItem.Text = "Abrir certidão permanente";
             this.abrirCertidaoPermanenteToolStripMenuItem.Click += new System.EventHandler(this.abrirCertidaoPermanenteToolStripMenuItem_Click);
+            // 
+            // abrirPortalDasFinançasToolStripMenuItem
+            // 
+            this.abrirPortalDasFinançasToolStripMenuItem.Name = "abrirPortalDasFinançasToolStripMenuItem";
+            this.abrirPortalDasFinançasToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.abrirPortalDasFinançasToolStripMenuItem.Text = "Abrir Portal das Finanças";
+            this.abrirPortalDasFinançasToolStripMenuItem.Click += new System.EventHandler(this.abrirPortalDasFinançasToolStripMenuItem_Click);
+            // 
+            // abrirPortalEFaturaToolStripMenuItem
+            // 
+            this.abrirPortalEFaturaToolStripMenuItem.Name = "abrirPortalEFaturaToolStripMenuItem";
+            this.abrirPortalEFaturaToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.abrirPortalEFaturaToolStripMenuItem.Text = "Abrir E-Fatura";
+            this.abrirPortalEFaturaToolStripMenuItem.Click += new System.EventHandler(this.abrirPortalEFaturaToolStripMenuItem_Click);
+            // 
+            // abrirSegurançaSocialToolStripMenuItem
+            // 
+            this.abrirSegurançaSocialToolStripMenuItem.Name = "abrirSegurançaSocialToolStripMenuItem";
+            this.abrirSegurançaSocialToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.abrirSegurançaSocialToolStripMenuItem.Text = "Abrir Segurança Social";
+            this.abrirSegurançaSocialToolStripMenuItem.Click += new System.EventHandler(this.abrirSegurançaSocialToolStripMenuItem_Click);
+            // 
+            // abrirFundosDeCompensaçãoToolStripMenuItem
+            // 
+            this.abrirFundosDeCompensaçãoToolStripMenuItem.Name = "abrirFundosDeCompensaçãoToolStripMenuItem";
+            this.abrirFundosDeCompensaçãoToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.abrirFundosDeCompensaçãoToolStripMenuItem.Text = "Abrir Fundos de Compensação";
+            this.abrirFundosDeCompensaçãoToolStripMenuItem.Click += new System.EventHandler(this.abrirFundosDeCompensaçãoToolStripMenuItem_Click);
             // 
             // label6
             // 
@@ -391,7 +420,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnDefinicoes,
-            this.procurarAtualizaçõesToolStripMenuItem});
+            this.procurarAtualizaçõesToolStripMenuItem,
+            this.adquirirLicençaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(596, 24);
@@ -412,33 +442,12 @@
             this.procurarAtualizaçõesToolStripMenuItem.Text = "Procurar atualizações";
             this.procurarAtualizaçõesToolStripMenuItem.Click += new System.EventHandler(this.procurarAtualizaçõesToolStripMenuItem_Click);
             // 
-            // abrirPortalDasFinançasToolStripMenuItem
+            // adquirirLicençaToolStripMenuItem
             // 
-            this.abrirPortalDasFinançasToolStripMenuItem.Name = "abrirPortalDasFinançasToolStripMenuItem";
-            this.abrirPortalDasFinançasToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
-            this.abrirPortalDasFinançasToolStripMenuItem.Text = "Abrir Portal das Finanças";
-            this.abrirPortalDasFinançasToolStripMenuItem.Click += new System.EventHandler(this.abrirPortalDasFinançasToolStripMenuItem_Click);
-            // 
-            // abrirPortalEFaturaToolStripMenuItem
-            // 
-            this.abrirPortalEFaturaToolStripMenuItem.Name = "abrirPortalEFaturaToolStripMenuItem";
-            this.abrirPortalEFaturaToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
-            this.abrirPortalEFaturaToolStripMenuItem.Text = "Abrir E-Fatura";
-            this.abrirPortalEFaturaToolStripMenuItem.Click += new System.EventHandler(this.abrirPortalEFaturaToolStripMenuItem_Click);
-            // 
-            // abrirSegurançaSocialToolStripMenuItem
-            // 
-            this.abrirSegurançaSocialToolStripMenuItem.Name = "abrirSegurançaSocialToolStripMenuItem";
-            this.abrirSegurançaSocialToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
-            this.abrirSegurançaSocialToolStripMenuItem.Text = "Abrir Segurança Social";
-            this.abrirSegurançaSocialToolStripMenuItem.Click += new System.EventHandler(this.abrirSegurançaSocialToolStripMenuItem_Click);
-            // 
-            // abrirFundosDeCompensaçãoToolStripMenuItem
-            // 
-            this.abrirFundosDeCompensaçãoToolStripMenuItem.Name = "abrirFundosDeCompensaçãoToolStripMenuItem";
-            this.abrirFundosDeCompensaçãoToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
-            this.abrirFundosDeCompensaçãoToolStripMenuItem.Text = "Abrir Fundos de Compensação";
-            this.abrirFundosDeCompensaçãoToolStripMenuItem.Click += new System.EventHandler(this.abrirFundosDeCompensaçãoToolStripMenuItem_Click);
+            this.adquirirLicençaToolStripMenuItem.Name = "adquirirLicençaToolStripMenuItem";
+            this.adquirirLicençaToolStripMenuItem.Size = new System.Drawing.Size(102, 20);
+            this.adquirirLicençaToolStripMenuItem.Text = "Adquirir licença";
+            this.adquirirLicençaToolStripMenuItem.Click += new System.EventHandler(this.adquirirLicençaToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -530,6 +539,7 @@
         private System.Windows.Forms.ToolStripMenuItem abrirPortalEFaturaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem abrirSegurançaSocialToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem abrirFundosDeCompensaçãoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem adquirirLicençaToolStripMenuItem;
     }
 }
 

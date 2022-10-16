@@ -22,13 +22,45 @@ namespace Download_PDFs_AT_e_SS
         {
             InitializeComponent();
 
-
             AutoUpdater.Start(AUTOUPDATE_URL);
 
+
+
+
+            /*try
+            {
+                Licenciamento.Licenciamento.Validate();
+            }
+            catch (FileNotFoundException)
+            {
+                //DEMO
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            if (Licenciamento.Licenciamento.Demo)
+            {
+                string ProgramName = "TWS Desk";
+                //MessageBox.Show($"Esta a utilizar a versão de demonstração do {ProgramName}\nA versão de demonstração permite utilizar o programa para uma única empresa.\nCancelar");
+            }*/
+
+            //Carrega os dados
             Dados.Load();
 
+            if(Dados.empresas.Count == 0)
+            {
+            }
+            else
+            {
+                //TODO Pedir ao utilizador a password
+                Dados.DesencriptarPasswords(Program.MasterPassword);
+            }
+
+
             //Preenche listas
-            foreach(Declaracao declacacao in Declaracao.declaracoes)
+            foreach (Declaracao declacacao in Declaracao.declaracoes)
             {
                 if (declacacao.Tipo == Declaracao.TipoDeclaracao.Mensal)
                     listaDeclaracoesMensais.Items.Add(declacacao);
@@ -58,7 +90,7 @@ namespace Download_PDFs_AT_e_SS
             chkHeadless.Checked = Properties.Settings.Default.BrowserHeadless;
 
             //Mostra a versão
-            lblVersao.Text = "Versão: " + Util.GetVersion();
+            lblVersao.Text = "Versão: " + Util.GetVersion();            
         }
 
         private void btnExecutar_Click(object sender, EventArgs e)
@@ -289,6 +321,16 @@ namespace Download_PDFs_AT_e_SS
         {
             Browser.CriarDriver();
             Browser.AbreFundosDeCompensacao(empresaRightClicked);
+        }
+
+        private void adquirirLicençaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AdquirirLicenca();
+        }
+
+        private void AdquirirLicenca()
+        {
+
         }
     }
 }

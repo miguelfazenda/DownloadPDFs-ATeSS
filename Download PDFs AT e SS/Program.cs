@@ -8,6 +8,7 @@ namespace Download_PDFs_AT_e_SS
 {
     static class Program
     {
+        internal static string MasterPassword = "1234";
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

@@ -82,6 +82,8 @@ namespace Download_PDFs_AT_e_SS
             //Encripta a password, caso tenha sido alterada
             empresaAEditarClone.PasswordAT = txtPasswordAT.Text;
             empresaAEditarClone.PasswordSS = txtPasswordSS.Text;
+            empresaAEditarClone.EncriptarPasswords(Program.MasterPassword);
+
 
             //Guarda o resultado
             if (empresaAEditarOriginal == null)

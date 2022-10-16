@@ -12,11 +12,12 @@ namespace Download_PDFs_AT_e_SS
 
         public string NIF { get; set; }
 
-
+        //[JsonIgnore]
         public string PasswordAT { get; set; }
         public string PasswordATEncriptada { get; set; }
 
         public string NISS { get; set; }
+        //[JsonIgnore]
         public string PasswordSS { get; set; }
         public string PasswordSSEncriptada { get; set; }
 
@@ -38,7 +39,7 @@ namespace Download_PDFs_AT_e_SS
             return NIF + " " + Nome;
         }
 
-        internal void DesencriptarPasswordAT()
+        /*internal void DesencriptarPasswordAT()
         {
             if (PasswordATEncriptada != null && PasswordATEncriptada.Length != 0)
                 PasswordAT = Encoding.UTF32.GetString(
@@ -50,7 +51,21 @@ namespace Download_PDFs_AT_e_SS
             if (PasswordSSEncriptada != null && PasswordSSEncriptada.Length != 0)
                 PasswordSS = Encoding.UTF32.GetString(
                         ProtectedData.Unprotect(Util.HexStringToByteArray(PasswordSSEncriptada), null, DataProtectionScope.LocalMachine));
+        }*/
+
+        internal void EncriptarPasswords(string masterPassword)
+        {
+            /*PasswordSSEncriptada = Util.EncryptPlainTextToCipherText(PasswordSS, masterPassword);
+            PasswordATEncriptada = Util.EncryptPlainTextToCipherText(PasswordAT, masterPassword);*/
         }
+
+        internal void DesencriptarPasswords(string masterPassword)
+        {
+            /*PasswordSS = Util.DecryptCipherTextToPlainText(PasswordSSEncriptada, masterPassword);
+            PasswordAT = Util.DecryptCipherTextToPlainText(PasswordATEncriptada, masterPassword);*/
+        }
+
+
         public object Clone()
         {
             Empresa empresa = new Empresa(Nome, Codigo, NIF);
@@ -71,5 +86,6 @@ namespace Download_PDFs_AT_e_SS
             return empresa;
         }
 
+        
     }
 }
