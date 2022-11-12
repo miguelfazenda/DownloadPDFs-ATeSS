@@ -1,4 +1,6 @@
 ﻿using Download_PDFs_AT_e_SS.RecibosVerdes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SmartFormat;
@@ -87,89 +89,38 @@ namespace Download_PDFs_AT_e_SS
                 mesFinal = mes;
             }
 
+            driver.Navigate().GoToUrl("https://irs.portaldasfinancas.gov.pt/recibos/portal/");
+            Thread.Sleep(2000);
 
-            string url = String.Format("https://irs.portaldasfinancas.gov.pt/recibos/portal/consultar#?isAutoSearchOn=on&dataEmissaoInicio={0}-{1}-{2}&dataEmissaoFim={0}-{3}-{4}",
-                ano, mesInicial, diaInicial, mesFinal, diaFinal);
-
+            string modoConsultaStr;
             if(modoConsulta == TipoReciboVerdePrestOUAdquir.Prestador)
-                url += String.Format("&modoConsulta=Prestador&nifPrestadorServicos={0}", empresaAutenticada.NIF);
+                modoConsultaStr = String.Format("&modoConsulta=Prestador&nifPrestadorServicos={0}", empresaAutenticada.NIF);
             else
-                url += String.Format("&modoConsulta=Adquirente&nifAdquirente={0}", empresaAutenticada.NIF);
+                modoConsultaStr = String.Format("&modoConsulta=Adquirente&nifAdquirente={0}", empresaAutenticada.NIF);
+            string url = String.Format("view-source:https://irs.portaldasfinancas.gov.pt/recibos/api/obtemDocumentosV2?dataEmissaoFim={0}-{3}-{4}&dataEmissaoInicio={0}-{1}-{2}&isAutoSearchOn=on{5}&offset=0&tableSize=10000&tipoPesquisa=1",
+                ano, mesInicial, diaInicial, mesFinal, diaFinal, modoConsultaStr);
 
+        
             driver.Navigate().GoToUrl(url);
             Thread.Sleep(500);
-            driver.Navigate().GoToUrl(url);
 
-            Thread.Sleep(500);
-
-            var xPathTotalRecibos = By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[1]/p");
+            string jsonStr = driver.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]")).Text;
             
-            //Se não encontrar o numero de recibos, é porque há um erro. Faz log desse erro
-            if (!Util.IsElementPresent(driver, xPathTotalRecibos))
+            JObject json = JsonConvert.DeserializeObject<JObject>(jsonStr);
+
+            foreach(var doc in json["listaDocumentos"])
             {
-                LogError(driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[2]")).Text);
-                return;
-            }
+                var numRecibo = doc["numDocumento"].ToString();
 
-            int totalResultados = Int32.Parse(driver.FindElement(xPathTotalRecibos).Text);
-            if (totalResultados == 0)
-                return;
+                var nomeAdquirente = doc["nomeAdquirente"].ToString();
+                var nomePrestador = doc["nomePrestador"].ToString();
+                var nifPrestadorServicos = doc["nifPrestadorServicos"].ToString();
+                
+                var nomeCliente = modoConsulta == TipoReciboVerdePrestOUAdquir.Prestador ? nomeAdquirente : nomePrestador;
 
-            //Escolhe mostrar 50 items por pagina
-            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[2]/div/div/div/div/div/pf-table-size-picker/div/button")).Click();
-            driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[2]/div/div/div/div/div/pf-table-size-picker/div/ul/li[4]/a")).Click();
-            const int NUM_RESULTADOS_POR_PAG = 50;
-            Thread.Sleep(500);
+                var downloadURL = "https://irs.portaldasfinancas.gov.pt/recibos/portal/imprimir/" + nifPrestadorServicos + "/0/" + numRecibo + "/normal";
 
-            //Obtem o numero de paginas
-            var xPathNumeroPaginas = By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[3]/st-pagination/ul/li[last()-1]/a");
-            int numeroPaginas = 1;
-            if (Util.IsElementPresent(driver, xPathNumeroPaginas))
-                numeroPaginas = Int32.Parse(driver.FindElement(xPathNumeroPaginas).Text);
-            else
-                numeroPaginas = 1; //Se não houver nada a dizer o numero de paginas é porque é a única
-            
-
-            for (int pag = 0; pag < numeroPaginas; pag++)
-            {
-                //Se é a ultima página
-                bool ultimaPagina = pag == numeroPaginas - 1;
-
-                //Calcula o numero de resultados que devem estar nesta pagina
-                int numResultadosNestaPagina;
-                if (ultimaPagina)
-                {
-                    numResultadosNestaPagina = totalResultados % NUM_RESULTADOS_POR_PAG;
-                    if (numResultadosNestaPagina == 0)
-                        numResultadosNestaPagina = NUM_RESULTADOS_POR_PAG;
-                }
-                else
-                {
-                    numResultadosNestaPagina = NUM_RESULTADOS_POR_PAG;
-                }
-
-
-
-                for (int i = 0; i < numResultadosNestaPagina; i++)
-                {
-                    string xPathConjuntoBotoes = "/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tbody/tr[" + (i + 1) + "]/td[5]/div";
-
-                    //Obtem nr recibo
-                    string numRecibo = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tbody/tr[" + (i + 1) + "]/td[1]/p[1]")).Text;
-                    numRecibo = numRecibo.Split('º')[1].Trim();
-
-                    string nomeCliente = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tbody/tr[" + (i + 1) + "]/td[1]/p[2]")).Text;
-
-                    string downloadURL = driver.FindElement(By.XPath(xPathConjuntoBotoes + "/ul/li[2]/a")).GetAttribute("href");
-
-                    //Invoca a action
-                    action.Invoke(downloadURL, numRecibo, nomeCliente);
-                }
-
-                if (ultimaPagina)
-                    continue; //Não anda uma página para a frente se for a ultima
-                //Anda uma pagina para a frente
-                driver.FindElement(By.XPath("//*[@id=\"main-content\"]/div/div/consultar-app/div[3]/div/div[1]/consultar-tabela/div/div/table/tfoot/tr/td/div/div[3]/st-pagination/ul/li[last()]/a")).Click();
+                action.Invoke(downloadURL, numRecibo, nomeCliente);
             }
         }
 
