@@ -10,7 +10,8 @@ namespace Download_PDFs_AT_e_SS.RecibosVerdes
     {
         public string dataTransmissao;
 
-        public string dataEmissao;
+        public string dataEmissaoPre2023;
+        public string dataEmissaoPos2023;
 
         public string nifTransmitente;
 
@@ -44,7 +45,8 @@ namespace Download_PDFs_AT_e_SS.RecibosVerdes
         {
             dataTransmissao = "/html/body/div/main/div/div[2]/div/section/div[last()]/div[2]/div/div[2]/dl/dd",
             nifTransmitente = "/html/body/div/main/div/div[2]/div/section/div[3]/div[2]/div/div[1]/dl/dd",
-            dataEmissao = "/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/legend/small",
+            dataEmissaoPre2023 = "/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[3]/div/legend/small",
+            dataEmissaoPos2023 = "/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[3]/div/legend/small[1]",
             nifAdquirente = "/html/body/div/main/div/div[2]/div/section/div[last()-1]/div[2]/div[1]/div[1]/dl/dd",
             descricao = "/html/body/div/main/div/div[2]/div/section/div[last()]/div[2]/div/div[3]/dl/dd",
             nomeAdquirente = "/html/body/div/main/div/div[2]/div/section/div[last()-1]/div[2]/div[1]/div[2]/dl/dd",
@@ -64,7 +66,8 @@ namespace Download_PDFs_AT_e_SS.RecibosVerdes
         {
             dataTransmissao = "/html/body/div/main/div/div[2]/div/section/div[last()]/div[2]/div/div[1]/dl/dd",
             nifTransmitente = "/html/body/div/main/div/div[2]/div/section/div[last()-2]/div[2]/div/div[1]/dl/dd",
-            dataEmissao = "/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/legend/small",
+            dataEmissaoPre2023 = "/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/legend/small",
+            dataEmissaoPos2023 = "/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/legend/small[1]",
             nifAdquirente = "/html/body/div/main/div/div[2]/div/section/div[last()-1]/div[2]/div[1]/div[1]/dl/dd",
             descricao = "/html/body/div/main/div/div[2]/div/section/div[last()]/div[2]/div/div[2]/dl/dd",
             nomeAdquirente = "/html/body/div/main/div/div[2]/div/section/div[last()-1]/div[2]/div[1]/div[2]/dl/dd",
@@ -83,7 +86,8 @@ namespace Download_PDFs_AT_e_SS.RecibosVerdes
         {
             dataTransmissao = null,
             nifTransmitente = "/html/body/div/main/div/div[2]/div/section/div[3]/div[2]/div/div[1]/dl/dd",
-            dataEmissao = "/html/body/div/main/div/div[2]/div/section/div[last()]/div[2]/div/div[2]/dl/dd",
+            dataEmissaoPre2023 = "/html/body/div/main/div/div[2]/div/section/div[last()]/div[2]/div/div[2]/dl/dd",
+            dataEmissaoPos2023 = "/html/body/div/main/div/div[2]/div/section/div[last()]/div[2]/div/div[2]/dl/dd",
             nifAdquirente = "/html/body/div/main/div/div[2]/div/section/div[last()-1]/div[2]/div[1]/div[1]/dl/dd",
             descricao = "/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/legend/small",
             nomeAdquirente = "/html/body/div/main/div/div[2]/div/section/div[last()-1]/div[2]/div[1]/div[2]/dl/dd",

@@ -21,7 +21,10 @@ namespace Download_PDFs_AT_e_SS
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
 
-            driver = new ChromeDriver(chromeDriverService);
+            var chromeOptions = new ChromeOptions();
+            chromeOptions.AddArgument("--disable-search-engine-choice-screen");
+
+            driver = new ChromeDriver(chromeDriverService, chromeOptions);
             driversAbertos.Add(driver);
         }
 

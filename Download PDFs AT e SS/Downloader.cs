@@ -297,13 +297,16 @@ namespace Download_PDFs_AT_e_SS
             chromeOptions.AddUserProfilePreference("credentials_enable_service", false);
             chromeOptions.AddUserProfilePreference("profile.password_manager_enabled", false);
             chromeOptions.AddUserProfilePreference("profile.default_content_setting_values.images", 2);
+            chromeOptions.AddArgument("--disable-search-engine-choice-screen");
+            // chromeOptions.AddArgument("--user-data-dir=" + Path.Combine(Directory.GetCurrentDirectory(), "chromedriver_data"));
+            // chromeOptions.AddArgument("--profile-directory=TWS");
             if (headless)
                 chromeOptions.AddArgument("--headless");
 
 
             //tentar --headless para nao mostrar nada
 
-            //ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService("chromedriver.exe", "Chrome-bin\\chrome.exe");
+            //ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService("chromedriver.exe", Path.Combine(Directory.GetCurrentDirectory(), "chrome\\chrome.exe"));
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
 

@@ -37,7 +37,7 @@ namespace Download_PDFs_AT_e_SS
             foreach (string detailsUrl in detailsURLs)
             {
                 //Obtem os dados do recibo verde, navegado até à página de detalhes
-                ReciboVerde reciboVerde = ScraperRecibosVerdes.ObterDadosReciboVerde(detailsUrl, tipo, driver);
+                ReciboVerde reciboVerde = ScraperRecibosVerdes.ObterDadosReciboVerde(detailsUrl, tipo, driver, ano);
                 recibosVerdes.Add(reciboVerde);
             }
 
