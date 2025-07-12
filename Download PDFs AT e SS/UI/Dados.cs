@@ -29,7 +29,10 @@ namespace Download_PDFs_AT_e_SS
         public static FicheiroEmpresas ficheiroEmpresas;
         public static List<Empresa> empresas;
 
+        public static List<Tuple<string, string>> sites = new List<Tuple<string, string>>();
+
         public static readonly string FICHEIRO_EMPRESAS = "empresas.json";
+        public static readonly string FICHEIRO_SITES = "sites.json";
 
         public static void Load()
         {
@@ -57,6 +60,18 @@ namespace Download_PDFs_AT_e_SS
                 empresas = new List<Empresa>();
                 empresas.Add(primeiraEmpresa);
             }*/
+
+            if(File.Exists(FICHEIRO_SITES))
+            {
+                var s = JsonConvert.DeserializeObject<List<string[]>>(File.ReadAllText(FICHEIRO_SITES));
+                foreach(var a in s)
+                {
+                    if(a.Length > 1)
+                        sites.Add(new Tuple<string, string>(a[0], a[1]));
+                    else
+                        sites.Add(new Tuple<string, string>(a[0], null));
+                }
+            }
         }
 
         public static void DesencriptarPasswords(string masterPassword)

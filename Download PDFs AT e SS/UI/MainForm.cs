@@ -58,6 +58,11 @@ namespace Download_PDFs_AT_e_SS
                 Dados.DesencriptarPasswords(Program.MasterPassword);
             }
 
+            foreach(var site in Dados.sites)
+            {
+                listaSites.Items.Add(site.Item1);
+            }
+
 
             //Preenche listas
             foreach (Declaracao declacacao in Declaracao.declaracoes)
@@ -331,6 +336,25 @@ namespace Download_PDFs_AT_e_SS
         private void AdquirirLicenca()
         {
 
+        }
+
+        private void listaSites_DoubleClick(object sender, EventArgs e)
+        {
+
+            int i = listaSites.SelectedIndex;
+            if (i < 0 || i >= Dados.sites.Count)
+                return;
+
+            var url = Dados.sites[i].Item2;
+
+            if (url == null) return;
+
+            //Open
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
         }
     }
 }

@@ -15,12 +15,12 @@ namespace Download_PDFs_AT_e_SS
             driver.Navigate().GoToUrl("https://www.acesso.gov.pt/v2/loginForm?partID=PFAP&path=/geral/dashboard");
             Thread.Sleep(500);
             
-            driver.FindElement(By.XPath("//*[@id=\"wrapper\"]/section/div/div/div/label[2]")).Click();
+            driver.FindElement(By.XPath("//*[@id=\"radix-:ra:-trigger-N\"]")).Click();
 
-            driver.FindElement(By.Id("username")).SendKeys(empresa.NIF);
-            driver.FindElement(By.Id("password-nif")).SendKeys(empresa.PasswordAT);
+            driver.FindElement(By.Name("username")).SendKeys(empresa.NIF);
+            driver.FindElement(By.Name("password")).SendKeys(empresa.PasswordAT);
             Thread.Sleep(500);
-            driver.FindElement(By.Id("sbmtLogin")).Click();
+            driver.FindElement(By.XPath("/html/body/div/div/main/div[2]/div[2]/div[1]/div[3]/form/button")).Click();
         }
 
         internal static void AutenticarFundosCompensacao(IWebDriver driver, Empresa empresa)

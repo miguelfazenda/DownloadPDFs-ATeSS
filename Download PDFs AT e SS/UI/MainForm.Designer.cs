@@ -72,6 +72,7 @@
             this.btnDefinicoes = new System.Windows.Forms.ToolStripMenuItem();
             this.procurarAtualizaçõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adquirirLicençaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listaSites = new System.Windows.Forms.ListBox();
             this.ctxMenuEmpresa.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -183,7 +184,7 @@
             // btnExecutar
             // 
             this.btnExecutar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExecutar.Location = new System.Drawing.Point(391, 554);
+            this.btnExecutar.Location = new System.Drawing.Point(600, 554);
             this.btnExecutar.Name = "btnExecutar";
             this.btnExecutar.Size = new System.Drawing.Size(75, 23);
             this.btnExecutar.TabIndex = 10;
@@ -299,13 +300,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDownloadFolderPath.Location = new System.Drawing.Point(119, 528);
             this.txtDownloadFolderPath.Name = "txtDownloadFolderPath";
-            this.txtDownloadFolderPath.Size = new System.Drawing.Size(266, 20);
+            this.txtDownloadFolderPath.Size = new System.Drawing.Size(475, 20);
             this.txtDownloadFolderPath.TabIndex = 12;
             // 
             // btnBrowseDownloadFolder
             // 
             this.btnBrowseDownloadFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseDownloadFolder.Location = new System.Drawing.Point(391, 528);
+            this.btnBrowseDownloadFolder.Location = new System.Drawing.Point(600, 528);
             this.btnBrowseDownloadFolder.Name = "btnBrowseDownloadFolder";
             this.btnBrowseDownloadFolder.Size = new System.Drawing.Size(29, 20);
             this.btnBrowseDownloadFolder.TabIndex = 13;
@@ -338,7 +339,7 @@
             // 
             this.linkGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkGithub.AutoSize = true;
-            this.linkGithub.Location = new System.Drawing.Point(547, 512);
+            this.linkGithub.Location = new System.Drawing.Point(756, 512);
             this.linkGithub.Name = "linkGithub";
             this.linkGithub.Size = new System.Drawing.Size(40, 13);
             this.linkGithub.TabIndex = 18;
@@ -386,7 +387,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(119, 556);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(266, 20);
+            this.progressBar.Size = new System.Drawing.Size(475, 20);
             this.progressBar.TabIndex = 23;
             // 
             // btnSelecionarTodasEmpresas
@@ -409,7 +410,7 @@
             // 
             // chkHeadless
             // 
-            this.chkHeadless.Location = new System.Drawing.Point(472, 541);
+            this.chkHeadless.Location = new System.Drawing.Point(684, 531);
             this.chkHeadless.Name = "chkHeadless";
             this.chkHeadless.Size = new System.Drawing.Size(112, 32);
             this.chkHeadless.TabIndex = 26;
@@ -424,7 +425,7 @@
             this.adquirirLicençaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(596, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(805, 24);
             this.menuStrip1.TabIndex = 27;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -449,12 +450,22 @@
             this.adquirirLicençaToolStripMenuItem.Text = "Adquirir licença";
             this.adquirirLicençaToolStripMenuItem.Click += new System.EventHandler(this.adquirirLicençaToolStripMenuItem_Click);
             // 
+            // listaSites
+            // 
+            this.listaSites.FormattingEnabled = true;
+            this.listaSites.Location = new System.Drawing.Point(632, 112);
+            this.listaSites.Name = "listaSites";
+            this.listaSites.Size = new System.Drawing.Size(164, 381);
+            this.listaSites.TabIndex = 28;
+            this.listaSites.DoubleClick += new System.EventHandler(this.listaSites_DoubleClick);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnExecutar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(596, 589);
+            this.ClientSize = new System.Drawing.Size(805, 589);
+            this.Controls.Add(this.listaSites);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.chkHeadless);
             this.Controls.Add(this.label9);
@@ -540,6 +551,7 @@
         private System.Windows.Forms.ToolStripMenuItem abrirSegurançaSocialToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem abrirFundosDeCompensaçãoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem adquirirLicençaToolStripMenuItem;
+        private System.Windows.Forms.ListBox listaSites;
     }
 }
 

@@ -25,24 +25,42 @@ namespace Download_PDFs_AT_e_SS.RecibosVerdes
             reciboVerde.detailsUrl = detailsUrl;
             reciboVerde.tipo = tipo; // Prestador ou Adquirente
 
+
             
+
             // /html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/h1/text()
             //Obter dados
-            if(ano >= 2023)
+            if (ano >= 2023)
             {
                 string[] a = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/h1")).Text.Split('/');
-                reciboVerde.tipoDoc = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[3]/div/legend/h4")).Text;//doc[0];
                 reciboVerde.numDoc = a[1];
             }
             else
             {
+                //var title_element_text = driver.FindElement(By.XPath("//h1")).Text;
                 string[] doc = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/h1")).Text.Split(' ');
-                reciboVerde.tipoDoc = doc[0];
                 reciboVerde.numDoc = doc[2];
             }
 
             // Remove todos os carateres nao numericos do numDoc
             reciboVerde.numDoc = new string(reciboVerde.numDoc.Where(c => char.IsDigit(c)).ToArray());
+
+
+
+
+
+
+            // Extrai dados da legenda
+            var dados_legend = driver.FindElement(By.CssSelector("legend")).Text.ToString().Replace("\r", "").Split('\n');
+
+            var linha_data_emissao = dados_legend.First((x) => x.StartsWith("Emitid"));
+            string dataEmissao = Regex.Match(linha_data_emissao, "\\b\\d{4}-\\d{2}-\\d{2}\\b").Value;
+            reciboVerde.dataEmissao = DateTime.ParseExact(dataEmissao, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            reciboVerde.tipoDoc = dados_legend[0];
+
+
+
 
             //Seleciona os XPaths para obter cada valor do HTML, dependendo do tipo de documento
             RecibosVerdesXPaths xPaths = null;
@@ -57,14 +75,15 @@ namespace Download_PDFs_AT_e_SS.RecibosVerdes
 
 
 
+
+
+
             string estado = driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/section/div[2]/div/div/div[2]/div/h1/span")).Text;
             reciboVerde.anulado = estado.ToLower() == "anulado";
 
             string xPathDataEmissao = ano >= 2023 ? xPaths.dataEmissaoPos2023 : xPaths.dataEmissaoPre2023;
 
-            string dataEmissaoTxt = driver.FindElement(By.XPath(xPathDataEmissao)).Text;
-            string dataEmissao = regexReciboVerdeDataEmissao.Match(dataEmissaoTxt).Value;
-            reciboVerde.dataEmissao = DateTime.ParseExact(dataEmissao, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            
             string dataTransmissao = null;
             if (xPaths.dataTransmissao != null)
             {
