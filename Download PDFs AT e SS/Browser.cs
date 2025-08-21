@@ -47,7 +47,7 @@ namespace Download_PDFs_AT_e_SS
         internal static void AbreSegurancaSocial(Empresa empresa)
         {
             Autenticacao.AutenticarSS(driver, empresa);
-            driver.Navigate().GoToUrl("https://app.seg-social.pt/ptss/ptss/home");
+            driver.Navigate().GoToUrl("https://www.seg-social.pt/ptss/pssd/home?dswid=6586");
         }
 
         internal static void AbreFundosDeCompensacao(Empresa empresa)
