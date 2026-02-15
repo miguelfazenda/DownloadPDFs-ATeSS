@@ -100,7 +100,7 @@ namespace Download_PDFs_AT_e_SS
             string url = String.Format("view-source:https://irs.portaldasfinancas.gov.pt/recibos/api/obtemDocumentosV2?dataEmissaoFim={0}-{3}-{4}&dataEmissaoInicio={0}-{1}-{2}&isAutoSearchOn=on{5}&offset=0&tableSize=10000&tipoPesquisa=1",
                 ano, mesInicial, diaInicial, mesFinal, diaFinal, modoConsultaStr);
 
-        
+
             driver.Navigate().GoToUrl(url);
             Thread.Sleep(500);
 

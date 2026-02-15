@@ -25,7 +25,7 @@ namespace Download_PDFs_AT_e_SS
             RecibosVerdesEmitidosNavegarPorCadaRecibo(ano, -1, tipo, (string downloadURL, string numRecibo, string nomeCliente) =>
             {
                 //Para cada recibo, regista o URL para obter os detalhes
-                string detailsUrl = downloadURL.Replace("/imprimir/", "/detalhe/").Replace("/normal", "");
+                string detailsUrl = downloadURL.Replace("/imprimir/", "/consultar/detalheV2/").Replace("/normal", "");
                 detailsURLs.Add(detailsUrl);
             });
 
