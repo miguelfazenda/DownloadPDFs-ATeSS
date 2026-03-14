@@ -18,6 +18,30 @@ class EstruturaNomesFicheiros:
     AT_LISTA_RECIBOS_VERDES_PARA_EXCEL_PRESTADOS = "RV_Excel_{}.xlsx"
 
 
+
+# --- Declaracao class and static list ---
+class Declaracao:
+    declaracoes = []
+
+    def __init__(
+        self,
+        nome,
+        tipo,
+        download_function_anual=None,
+        download_function_mensal=None,
+        autenticacao_necessaria: str = None,
+    ):
+        self.nome = nome
+        self.tipo = tipo
+        self.download_function_anual = download_function_anual
+        self.download_function_mensal = download_function_mensal
+        self.autenticacao_necessaria = autenticacao_necessaria
+        Declaracao.declaracoes.append(self)
+
+    def __str__(self):
+        return self.nome
+
+
 class Downloader:
     @staticmethod
     def get_folder_tipo_declaracao(tipo_declaracao, mes):
@@ -171,24 +195,3 @@ class Downloader:
         print(f"[{tipo}] {msg}")
 
 
-# --- Declaracao class and static list ---
-class Declaracao:
-    declaracoes = []
-
-    def __init__(
-        self,
-        nome,
-        tipo,
-        download_function_anual=None,
-        download_function_mensal=None,
-        autenticacao_necessaria: str = None,
-    ):
-        self.nome = nome
-        self.tipo = tipo
-        self.download_function_anual = download_function_anual
-        self.download_function_mensal = download_function_mensal
-        self.autenticacao_necessaria = autenticacao_necessaria
-        Declaracao.declaracoes.append(self)
-
-    def __str__(self):
-        return self.nome

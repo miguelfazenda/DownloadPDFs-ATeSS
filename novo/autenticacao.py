@@ -58,3 +58,11 @@ class Autenticacao:
         continuar_btns = driver.find_elements(By.ID, "continuarBtn")
         if continuar_btns:
             continuar_btns[0].click()
+
+        # caso haja um botão "Continuar sem ativar" (autenticação de dois fatores), clicar nele
+        continuar_sem_ativar_btns = driver.find_elements(By.ID, "btnContinuarSemAtivar")
+        if continuar_sem_ativar_btns:
+            continuar_sem_ativar_btns[0].click()
+            time.sleep(0.5)
+
+        time.sleep(100)

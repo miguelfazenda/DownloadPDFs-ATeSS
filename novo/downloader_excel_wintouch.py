@@ -7,9 +7,12 @@ from tabulate import tabulate
 from definicoes import get_export_defs
 from scraper_recibos_verdes import (
     TipoReciboVerdePrestOUAdquir,
+    TipoReciboVerde,
     ScraperRecibosVerdes,
     ReciboVerde,
+    RecibosVerdesValores,
 )
+
 from downloader_at import DownloaderAT
 
 # Assumes ReciboVerde, RecibosVerdesValores, TipoReciboVerde, TipoReciboVerdePrestOUAdquir are imported from scraper_recibos_verdes.py
@@ -104,6 +107,7 @@ class DownloaderWintouch:
         )
         print(recibos_verdes)
 
+        # 2. Export Wintouch file
         DownloaderWintouch._export_wintouch(
             recibos_verdes,
             mes,
@@ -113,6 +117,62 @@ class DownloaderWintouch:
             download_folder,
             gen_novo_nome_ficheiro,
             estrutura_nomes_ficheiros,
+        )
+
+        # 3. Calculate and export totals file
+
+        # Inicializar totais
+        totais_pagamento = RecibosVerdesValores()
+        totais_adiantamento = RecibosVerdesValores()
+        totais_adiantamento_pagamento = RecibosVerdesValores()
+        totais_fatura = RecibosVerdesValores()
+        totais_recibo = RecibosVerdesValores()
+        totais_anulados = RecibosVerdesValores()
+
+        # Calcular totais por tipo
+        for i, recibo in enumerate(recibos_verdes):
+            print(
+                f"DEBUG Recibo {i+1}: Nº {recibo.num_doc}, Tipo: {recibo.tipo_recibo_verde}, Anulado: {recibo.anulado}"
+            )
+            print(
+                f"  Valores: Base={recibo.valores.valor_base}, IVA={recibo.valores.valor_iva_continente}, Recebido={recibo.valores.importancia_recebida}"
+            )
+
+            if recibo.anulado:
+                totais_anulados += recibo.valores
+                print("  -> Adicionado a anulados")
+            elif recibo.tipo_recibo_verde == TipoReciboVerde.Pagamento:
+                totais_pagamento += recibo.valores
+                print("  -> Adicionado a Pagamento")
+            elif recibo.tipo_recibo_verde == TipoReciboVerde.Adiantamento:
+                totais_adiantamento += recibo.valores
+                print("  -> Adicionado a Adiantamento")
+            elif recibo.tipo_recibo_verde == TipoReciboVerde.AdiantamentoPagamento:
+                totais_adiantamento_pagamento += recibo.valores
+                print("  -> Adicionado a Adiantamento para despesas")
+            elif recibo.tipo_recibo_verde == TipoReciboVerde.Fatura:
+                totais_fatura += recibo.valores
+                print("  -> Adicionado a Faturas")
+            elif recibo.tipo_recibo_verde == TipoReciboVerde.Recibo:
+                totais_recibo += recibo.valores
+                print("  -> Adicionado a Recibos")
+            else:
+                print(f"  -> Tipo não reconhecido: {recibo.tipo_recibo_verde}")
+
+        # Gerar ficheiro de totais
+        DownloaderWintouch.gera_tabela_txt_totais(
+            totais_pagamento,
+            totais_adiantamento,
+            totais_adiantamento_pagamento,
+            totais_fatura,
+            totais_recibo,
+            totais_anulados,
+            mes,
+            tipo,
+            ano,
+            empresa_autenticada,
+            download_folder,
+            get_folder_tipo_declaracao,
         )
 
     @staticmethod

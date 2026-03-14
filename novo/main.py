@@ -28,7 +28,7 @@ from dados import Empresa
 Declaracao(
     "R. Verdes Emitidos - Wintouch",
     "Mensal",
-    download_function_mensal=lambda driver, ano, mes, empresa, folder_tipo_declaracao, download_folder, gen_novo_nome_ficheiro, estrutura_nomes_ficheiros: DownloaderWintouch.download_recibos_verdes_wintouch(
+    download_function_mensal=lambda driver, ano, mes, empresa, folder_tipo_declaracao, download_folder, gen_novo_nome_ficheiro, estrutura_nomes_ficheiros: DownloaderWintouch.download_recibos_verdes_emitidos_wintouch(
         driver,
         ano,
         mes,
@@ -43,7 +43,7 @@ Declaracao(
 Declaracao(
     "R. Verdes Adquiridos - Wintouch",
     "Mensal",
-    download_function_mensal=lambda driver, ano, mes, empresa, folder_tipo_declaracao, download_folder, gen_novo_nome_ficheiro, estrutura_nomes_ficheiros: DownloaderWintouch.download_recibos_verdes_wintouch(
+    download_function_mensal=lambda driver, ano, mes, empresa, folder_tipo_declaracao, download_folder, gen_novo_nome_ficheiro, estrutura_nomes_ficheiros: DownloaderWintouch.download_recibos_verdes_adquiridos_wintouch(
         driver,
         ano,
         mes,
